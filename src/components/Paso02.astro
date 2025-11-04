@@ -1,0 +1,14 @@
+---
+import Button from "@UI/Button.astro"
+---
+
+<div class="hidden" data-step="2">
+  <picture class="w-full h-full relative z-0 bg-claro">
+      <source srcset="https://placehold.co/1920x650/3b3b3b/494949?text=Paso2" media="(min-width: 1280px)">
+      <source srcset="https://placehold.co/1536x1400/3b3b3b/494949?text=Paso2" media="(min-width: 768px)">
+      <img  class="w-full h-full object-cover" src="https://placehold.co/640x1000/3b3b3b/494949?text=Paso2" alt="¡Gira la ruleta y gana premios al instante!">
+    </picture>
+    <div class="w-full h-full absolute top-0 left-0">
+      <Button data-next-step="1" data-aos="zoom-in-up" data-aos-delay="100" as="a" href="https://www.claro.com.pe/personas/app/claro-musica/" classes="min-w-fit bg-white px-10 py-3 xl:py-3.5 border border-claro text-claro hover:bg-claro hover:text-white xl:mt-6 btn_step" >¡Quiero participar!</Button>
+    </div>
+</div>

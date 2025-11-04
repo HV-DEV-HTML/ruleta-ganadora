@@ -1,0 +1,33 @@
+---
+import Paso01 from "@components/Paso01.astro"
+import Paso02 from "@components/Paso02.astro"
+---
+
+<section class="p-0 relative banner_sorteo" data-current-step="1">
+  <Paso01 />
+  <Paso02 />
+</section>
+
+<script>
+  const banner = document.querySelector(".banner_sorteo") as HTMLElement;
+  const allBTns = banner.querySelectorAll(".btn_step");
+
+  allBTns.forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const btnEl = e.currentTarget as HTMLElement;
+      const nextStep = Number(btnEl.dataset.nextStep);
+      const currentStep = Number(banner.dataset.currentStep);
+      console.log({nextStep, currentStep});
+      nextToStep(nextStep, currentStep);
+    });
+  });
+
+  const nextToStep = (nextStep: Number, currentStep: Number) => {
+    const currentStepEl = banner.querySelector(`[data-step="${currentStep}"]`);
+    currentStepEl.classList.add("hidden");
+    const nextStepEl = banner.querySelector(`[data-step="${nextStep}"]`);
+    nextStepEl.classList.remove("hidden");
+    banner.dataset.currentStep = nextStep.toString();
+  };
+</script>

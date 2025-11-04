@@ -1,0 +1,21 @@
+---
+import Button from "@UI/Button.astro"
+---
+
+<div data-step="1">
+  <picture class="w-full h-full relative z-0 bg-claro">
+      <source srcset="https://placehold.co/1920x650/3b3b3b/494949?text=Desktop" media="(min-width: 1280px)">
+      <source srcset="https://placehold.co/1536x1400/3b3b3b/494949?text=Tablet" media="(min-width: 768px)">
+      <img  class="w-full h-full object-cover" src="https://placehold.co/640x1000/3b3b3b/494949?text=Mobile" alt="¡Gira la ruleta y gana premios al instante!">
+    </picture>
+    <div class="w-full h-full absolute top-0 left-0">
+      <div class="container h-full py-10 flex flex-col justify-between items-center xl:items-start">
+        <div class="flex flex-col items-center xl:items-start gap-4 xl:gap-6 max-w-[600px] xl:pt-10 2xl:pt-12">
+          <h1 data-aos="zoom-in-right"  class="font-amx-black text-3xl md:text-4xl xl:text-5xl 2xl:text-6xl leading-none xl:leading-tight text-center xl:text-left text-white">¡Gira la ruleta y gana premios al instante!</h1>
+          <p data-aos="zoom-in-right" data-aos-delay="50" class="font-amx-regular text-base xl:text-lg text-center xl:text-left text-white">Por tus recargas, activaciones o paquetes, Claro te premia con beneficios exclusivos. <strong class="font-amx-bold">¡Participa y descubre qué sorpresa te espera hoy!</strong></p>
+          <Button data-next-step="2" data-aos="zoom-in-up" data-aos-delay="100" as="a" href="https://www.claro.com.pe/personas/app/claro-musica/" classes="min-w-fit bg-white px-10 py-3 xl:py-3.5 border border-claro text-claro hover:bg-claro hover:text-white xl:mt-6 btn_step" >¡Quiero participar!</Button>
+        </div>
+        <p data-aos="zoom-in-up" data-aos-delay="150" class="font-amx-regular text-[10px] uppercase text-center text-white xl:text-left xl:max-w-[600px]">Lorem ipsum dolor sit amet consectetur. Eu molestie sit mus vulputate lacus volutpat blandit. Adipiscing diam sed mi vitae vel vitae massa. Interdum tempor tincidunt varius sit viverra massa amet lacus malesuada. Tempus id porttitor faucibus amet quam. Lacus id interdum vitae feugiat quam.</p>
+      </div>
+    </div>
+</div>

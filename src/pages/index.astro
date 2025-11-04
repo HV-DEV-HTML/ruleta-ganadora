@@ -1,12 +1,17 @@
 ---
+import "aos/dist/aos.css";
 import Layout from '@layouts/Layout.astro';
-import Button from "@UI/Button.astro"
+import Banner from "@components/Banner.astro"
+import Participa from "@components/Participa.astro"
 ---
 
-<Layout title='Prepago chévere'>
-	<div class="grid gap-2 container">
-		<Button as="a" href="https://www.claro.com.pe/personas/app/claro-musica/" classes="min-w-fit" >Saber más</Button>
-		<Button classes="min-w-fit cursor-pointer" type="submit" >Boton submit</Button>
-		<Button disabled classes="min-w-fit">Boton</Button>
-	</div>
+<Layout title='Ruleta Ganadora'>
+	<Banner />
+	<Participa />
 </Layout>
+
+<script>
+  import AOS from "aos";
+  AOS.init();
+  AOS.refresh();
+</script>
