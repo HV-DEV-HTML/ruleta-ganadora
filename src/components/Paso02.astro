@@ -11,23 +11,24 @@ import Button from "@UI/Button.astro"
     <div class="w-full h-full absolute top-0 left-0">
       <div class="container h-full py-10 flex flex-col xl:flex-row justify-end items-center xl:items-end gap-8">
         <div class="flex flex-col items-center xl:items-start gap-4 xl:gap-6 w-full max-w-[600px] xl:order-2">
-          <form data-aos="zoom-in-up" class="bg-white px-4 md:px-10 py-7 md:py-10 w-full rounded-2xl font-roboto flex flex-col gap-3 md:gap-4 md:max-w-[560px]" action="">
+          <form id="form-registro" data-aos="zoom-in-up" class="bg-white px-4 md:px-10 py-7 md:py-10 xl:py-9 2xl:py-10 w-full rounded-2xl font-roboto flex flex-col gap-3 md:gap-4 md:max-w-[560px]" action="">
             <h3 class="text-center font-amx-bold text-xl md:text-3xl pb-2">Regístrate para girar la ruleta</h3>
             <fieldset>
               <label for="name" class="text-xs md:text-sm font-bold">Nombres y Apellidos</label>
-              <input type="text" name="name" id="name" class="placeholder:text-[#75787C] text-black text-base md:text-lg" placeholder="Nombres y apellidos" required>
+              <input type="text" name="name" id="name" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-base md:text-lg focus:outline-none" placeholder="Nombres y apellidos" required>
             </fieldset>
             <fieldset>
               <label for="phone" class="text-xs md:text-sm font-bold">Número celular Claro</label>
-              <input type="text" name="phone" id="phone" class="placeholder:text-[#75787C] text-black text-base md:text-lg" placeholder="Ingrese numero de celular" required>
+              <input type="text" name="phone" id="phone" maxlength="9" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-base md:text-lg focus:outline-none" placeholder="Ingrese numero de celular" required>
             </fieldset>
             <fieldset>
               <label for="email" class="text-xs md:text-sm font-bold">Correo electrónico</label>
-              <input type="email" name="email" id="email" class="placeholder:text-[#75787C] text-black text-base md:text-lg" placeholder="Ingrese correo electrónico">
+              <input type="email" name="email" id="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-base md:text-lg focus:outline-none" placeholder="Ingrese correo electrónico" required>
+              <div id="email-errors"></div>
             </fieldset>
             <fieldset class="flex flex-col gap-1.5">
               <label class="flex items-center space-x-2">
-                <input type="checkbox" name="terms" id="terms" class="accent-claro" checked=""/>
+                <input type="checkbox" name="terms" id="terms" class="accent-claro" checked="" required/>
                 <div class="text-xs md:text-sm xl:text-base text-gray-900 dark:text-gray-200">
                   Acepto los <strong class="underline cursor-pointer">términos y condiciones</strong>
                 </div>
@@ -39,10 +40,114 @@ import Button from "@UI/Button.astro"
                 </div>
               </label>
             </fieldset>
-            <Button data-next-step="1" data-aos="zoom-in-up" data-aos-delay="100" type="submit" disabled href="https://www.claro.com.pe/personas/app/claro-musica/" classes="min-w-fit bg-white px-12 py-2.5 xl:py-3.5 border border-claro text-claro hover:bg-claro hover:text-white disabled:bg-gray-200 disabled:border-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed mx-auto btn_step" >Continuar</Button>
+            <Button id="btn-submit-form" data-aos="zoom-in-up" data-aos-delay="100" type="submit" disabled href="https://www.claro.com.pe/personas/app/claro-musica/" classes="min-w-fit bg-white px-12 py-2.5 xl:py-3.5 border border-claro text-claro cursor-pointer hover:bg-claro hover:text-white disabled:bg-gray-200 disabled:border-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed mx-auto" >Continuar</Button>
           </form>
         </div>
         <p data-aos="zoom-in-up" data-aos-delay="150" class="font-amx-regular text-[10px] uppercase text-center text-white xl:text-left xl:max-w-[600px] xl:order-1">Lorem ipsum dolor sit amet consectetur. Eu molestie sit mus vulputate lacus volutpat blandit. Adipiscing diam sed mi vitae vel vitae massa. Interdum tempor tincidunt varius sit viverra massa amet lacus malesuada. Tempus id porttitor faucibus amet quam. Lacus id interdum vitae feugiat quam.</p>
       </div>
     </div>
 </div>
+
+<script>
+  import JustValidate from 'just-validate';
+  import {autoSuggestEmail} from '@/utils/autosuggestEmail';
+
+  // Restricciones de entrada en los campos
+  const restrictInput = (selector, allowedRegex) => {
+    const element = document.querySelector(selector);
+    if (element) {
+      element.addEventListener("input", (event) => {
+        const input = event.target as HTMLInputElement;
+        input.value = input.value.replace(allowedRegex, "");
+      });
+    }
+  };
+
+  const form = document.querySelector('#form-registro') as HTMLFormElement;
+  const submitBtn = document.querySelector('#btn-submit-form') as HTMLButtonElement;
+  const fieldEmail = document.querySelector('#email') as HTMLInputElement;
+  
+  const validator = new JustValidate('#form-registro', {
+    errorFieldCssClass: 'border-red-500',
+    errorLabelCssClass: 'text-red-500 text-xs mt-1',
+    successFieldCssClass: 'border-green-500',
+    validateBeforeSubmitting: true,
+  });
+
+  validator
+    .addField('#name', [
+      { rule: "required", errorMessage: "El nombre es obligatorio." },
+        { rule: "minLength", value: 3, errorMessage: "El nombre debe tener al menos 3 caracteres." },
+        { rule: "maxLength", value: 60, errorMessage: "El nombre no puede superar los 60 caracteres." },
+        {
+          validator: (value) => /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value),
+          errorMessage: "Solo se permiten letras.",
+        }
+    ])
+    .addField('#phone', [
+      {
+        rule: 'required',
+        errorMessage: 'El número celular es obligatorio',
+      },
+      {
+        rule: 'customRegexp',
+        value: /^9\d{8}$/,
+        errorMessage: 'Ingrese un número celular válido (9 dígitos que inicie con 9)',
+      },
+    ])
+    .addField('#email', [
+      {
+        rule: 'email',
+        errorMessage: 'Ingrese un correo electrónico válido',
+      },
+      {
+        rule: 'required',
+        errorMessage: 'El correo electrónico es obligatorio',
+      }
+    ], {
+      errorsContainer: '#email-errors',
+    })
+    .addField('#terms', [
+      {
+        rule: 'required',
+        errorMessage: 'Debe aceptar los términos y condiciones',
+      },
+    ])
+    .onValidate(({ isValid, isSubmitted, fields, errors, failedRules, failedRulesCount }) => {     
+      if (isValid) {
+        submitBtn.disabled = !isValid;
+      }else{
+        submitBtn.disabled = !isValid;
+      }
+    })
+    .onSuccess((event) => {
+      event.preventDefault();
+      alert('Formulario válido, procesando...');
+      // Aquí puedes agregar la lógica para enviar el formulario
+    });
+  
+  // #name solo se permiten letras
+  restrictInput("#name", /[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g);
+  //#email solo se permiten caracteres validos
+  restrictInput("#email", /[^a-zA-Z0-9@.]/g);
+  // #phone solo se permiten numeros
+  restrictInput("#phone", /[^0-9]/g);
+
+  // Inicializar autoSuggestEmail para sugerencias de correo
+  new autoSuggestEmail(fieldEmail, {
+    domains: [
+      "gmail.com",
+      "hotmail.com", 
+      "yahoo.com",
+      "icloud.com",
+      "outlook.com",
+    ],
+    priority: [
+      "gmail.com",
+      "hotmail.com",
+      "outlook.com", 
+      "icloud.com",
+      "yahoo.com",
+    ],
+  });
+</script>

@@ -34,3 +34,54 @@
 .headerEv .hdMainLeft .logo img{
   max-width: fit-content;
 }
+
+/* Just-validate styles */
+input.border-red-500,
+select.border-red-500,
+textarea.border-red-500 {
+  border-color: #ef4444 !important;
+}
+
+input.border-green-500,
+select.border-green-500,
+textarea.border-green-500 {
+  border-color: #10b981 !important;
+}
+
+.just-validate-error-label {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #ef4444;
+}
+
+/* AutoSuggest Email styles */
+.asm-dropdown {
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  margin-top: 0.25rem;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.asm-dropdown li {
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.asm-dropdown li:hover,
+.asm-dropdown li.is-highlighted {
+  background-color: #f3f4f6;
+}
+
+.asm-dropdown li strong {
+  font-weight: 600;
+  color: black;
+}
