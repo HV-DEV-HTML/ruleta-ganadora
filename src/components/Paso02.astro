@@ -2,13 +2,47 @@
 import Button from "@UI/Button.astro"
 ---
 
-<div class="hidden" data-step="2">
+<div class="w-full h-full hidden" data-step="2">
   <picture class="w-full h-full relative z-0 bg-claro">
       <source srcset="https://placehold.co/1920x650/3b3b3b/494949?text=Paso2" media="(min-width: 1280px)">
       <source srcset="https://placehold.co/1536x1400/3b3b3b/494949?text=Paso2" media="(min-width: 768px)">
-      <img  class="w-full h-full object-cover" src="https://placehold.co/640x1000/3b3b3b/494949?text=Paso2" alt="¡Gira la ruleta y gana premios al instante!">
+      <img data-aos="fade-in"  class="w-full h-full object-cover" src="https://placehold.co/640x1000/3b3b3b/494949?text=Paso2" alt="¡Gira la ruleta y gana premios al instante!">
     </picture>
     <div class="w-full h-full absolute top-0 left-0">
-      <Button data-next-step="1" data-aos="zoom-in-up" data-aos-delay="100" as="a" href="https://www.claro.com.pe/personas/app/claro-musica/" classes="min-w-fit bg-white px-10 py-3 xl:py-3.5 border border-claro text-claro hover:bg-claro hover:text-white xl:mt-6 btn_step" >¡Quiero participar!</Button>
+      <div class="container h-full py-10 flex flex-col xl:flex-row justify-end items-center xl:items-end gap-8">
+        <div class="flex flex-col items-center xl:items-start gap-4 xl:gap-6 w-full max-w-[600px] xl:order-2">
+          <form data-aos="zoom-in-up" class="bg-white px-4 md:px-10 py-7 md:py-10 w-full rounded-2xl font-roboto flex flex-col gap-3 md:gap-4 md:max-w-[560px]" action="">
+            <h3 class="text-center font-amx-bold text-xl md:text-3xl pb-2">Regístrate para girar la ruleta</h3>
+            <fieldset>
+              <label for="name" class="text-xs md:text-sm font-bold">Nombres y Apellidos</label>
+              <input type="text" name="name" id="name" class="placeholder:text-[#75787C] text-black text-base md:text-lg" placeholder="Nombres y apellidos" required>
+            </fieldset>
+            <fieldset>
+              <label for="phone" class="text-xs md:text-sm font-bold">Número celular Claro</label>
+              <input type="text" name="phone" id="phone" class="placeholder:text-[#75787C] text-black text-base md:text-lg" placeholder="Ingrese numero de celular" required>
+            </fieldset>
+            <fieldset>
+              <label for="email" class="text-xs md:text-sm font-bold">Correo electrónico</label>
+              <input type="email" name="email" id="email" class="placeholder:text-[#75787C] text-black text-base md:text-lg" placeholder="Ingrese correo electrónico">
+            </fieldset>
+            <fieldset class="flex flex-col gap-1.5">
+              <label class="flex items-center space-x-2">
+                <input type="checkbox" name="terms" id="terms" class="accent-claro" checked=""/>
+                <div class="text-xs md:text-sm xl:text-base text-gray-900 dark:text-gray-200">
+                  Acepto los <strong class="underline cursor-pointer">términos y condiciones</strong>
+                </div>
+              </label>
+              <label class="flex items-center space-x-2">
+                <input type="checkbox" name="comunicacion" id="comunicacion" class="accent-claro" checked=""/>
+                <div class="text-xs md:text-sm xl:text-base text-gray-900 dark:text-gray-200">
+                  Acepto recibir <strong class="underline cursor-pointer">comunicación publicitaria de Claro.</strong>
+                </div>
+              </label>
+            </fieldset>
+            <Button data-next-step="1" data-aos="zoom-in-up" data-aos-delay="100" type="submit" disabled href="https://www.claro.com.pe/personas/app/claro-musica/" classes="min-w-fit bg-white px-12 py-2.5 xl:py-3.5 border border-claro text-claro hover:bg-claro hover:text-white disabled:bg-gray-200 disabled:border-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed mx-auto btn_step" >Continuar</Button>
+          </form>
+        </div>
+        <p data-aos="zoom-in-up" data-aos-delay="150" class="font-amx-regular text-[10px] uppercase text-center text-white xl:text-left xl:max-w-[600px] xl:order-1">Lorem ipsum dolor sit amet consectetur. Eu molestie sit mus vulputate lacus volutpat blandit. Adipiscing diam sed mi vitae vel vitae massa. Interdum tempor tincidunt varius sit viverra massa amet lacus malesuada. Tempus id porttitor faucibus amet quam. Lacus id interdum vitae feugiat quam.</p>
+      </div>
     </div>
 </div>

@@ -3,14 +3,35 @@ import Paso01 from "@components/Paso01.astro"
 import Paso02 from "@components/Paso02.astro"
 ---
 
-<section class="p-0 relative banner_sorteo" data-current-step="1">
+<section class="p-0 relative banner_sorteo xl:h-[580px] 2xl:h-[620px]" data-current-step="1">
+  <button class="absolute w-full top-3 xl:top-5 left-0 z-1 btn_back_step hidden cursor-pointer" data-prev-step="1">
+    <div class="container flex items-center gap-2">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 24C5.38667 24 0 18.6133 0 12C0 5.38667 5.38667 0 12 0C18.6133 0 24 5.38667 24 12C24 18.6133 18.6133 24 12 24ZM12 1.82667C6.38667 1.82667 1.82667 6.38667 1.82667 12C1.82667 17.6133 6.38667 22.1733 12 22.1733C17.6133 22.1733 22.1733 17.6133 22.1733 12C22.1733 6.38667 17.6133 1.82667 12 1.82667Z" fill="white"/>
+        <path d="M11.9999 17.3467C11.7599 17.3467 11.5332 17.2534 11.3599 17.0801L6.9199 12.6401C6.5599 12.2801 6.5599 11.7067 6.9199 11.3467L11.3599 6.90672C11.7199 6.54672 12.2932 6.54672 12.6532 6.90672C13.0132 7.26672 13.0132 7.84005 12.6532 8.20005L8.86657 11.9867L12.6532 15.7734C13.0132 16.1334 13.0132 16.7067 12.6532 17.0667C12.4799 17.2401 12.2399 17.3334 12.0132 17.3334L11.9999 17.3467Z" fill="white"/>
+        <path d="M16.4398 12.9071H7.57317C7.0665 12.9071 6.6665 12.4938 6.6665 12.0004C6.6665 11.5071 7.07984 11.0938 7.57317 11.0938H16.4398C16.9465 11.0938 17.3465 11.5071 17.3465 12.0004C17.3465 12.4938 16.9332 12.9071 16.4398 12.9071Z" fill="white"/>
+      </svg>
+      <span class="text-white font-amx-bold text-base">Volver</span>
+    </div>
+  </button>
   <Paso01 />
   <Paso02 />
 </section>
 
 <script>
+  import AOS from "aos";
   const banner = document.querySelector(".banner_sorteo") as HTMLElement;
   const allBTns = banner.querySelectorAll(".btn_step");
+  const btnBackStep = banner.querySelector(".btn_back_step") as HTMLElement;
+
+  btnBackStep.addEventListener("click", (e) => {
+    e.preventDefault();
+    const btnEl = e.currentTarget as HTMLElement;
+    const prevStep = Number(btnEl.dataset.prevStep);
+    const currentStep = Number(banner.dataset.currentStep);
+    console.log({prevStep, currentStep});
+    nextToStep(currentStep, prevStep);
+  });
 
   allBTns.forEach(btn => {
     btn.addEventListener("click", (e) => {
@@ -18,16 +39,45 @@ import Paso02 from "@components/Paso02.astro"
       const btnEl = e.currentTarget as HTMLElement;
       const nextStep = Number(btnEl.dataset.nextStep);
       const currentStep = Number(banner.dataset.currentStep);
+      btnBackStep.dataset.prevStep = currentStep.toString();
       console.log({nextStep, currentStep});
-      nextToStep(nextStep, currentStep);
+      nextToStep(currentStep, nextStep);
     });
   });
 
-  const nextToStep = (nextStep: Number, currentStep: Number) => {
+
+  const resetAosAnimations = (element: Element) => {
+    const aosElements = element.querySelectorAll('[data-aos]');
+    aosElements.forEach(el => {
+      el.classList.remove('aos-animate', 'aos-init');
+    });
+  };
+
+  const preserveAosState = (element: Element) => {
+    const aosElements = element.querySelectorAll('[data-aos]');
+    aosElements.forEach(el => {
+      el.classList.remove('aos-animate');
+      el.classList.add('aos-init');
+    });
+  };
+
+  const nextToStep = (currentStep: number, nextStep: number) => {
     const currentStepEl = banner.querySelector(`[data-step="${currentStep}"]`);
-    currentStepEl.classList.add("hidden");
     const nextStepEl = banner.querySelector(`[data-step="${nextStep}"]`);
+
+    if (nextStep <= 1) {
+      btnBackStep.classList.add("hidden");
+    } else {
+      btnBackStep.classList.remove("hidden");
+    }
+    
+    currentStepEl.classList.add("hidden");
+    preserveAosState(currentStepEl);
+    
     nextStepEl.classList.remove("hidden");
     banner.dataset.currentStep = nextStep.toString();
+    resetAosAnimations(nextStepEl);
+    
+    setTimeout(() => AOS.refreshHard(), 50);
   };
 </script>
