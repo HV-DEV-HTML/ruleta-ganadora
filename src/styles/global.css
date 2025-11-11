@@ -99,7 +99,3 @@ textarea.border-green-500 {
     transform: translateY(0px); /* Return to original position */
   }
 }
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}

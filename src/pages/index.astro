@@ -4,48 +4,16 @@ import Layout from "@layouts/Layout.astro";
 import Banner from "@components/Banner.astro";
 import Participa from "@components/Participa.astro";
 import Button from "@UI/Button.astro";
+import bg_circle from "@/assets/images/bg_transparent_circle.png"
 ---
 
 <Layout title="Ruleta Ganadora">
 	<Banner />
-	<!-- <div class="bg-linear-to-t from-white to-[#FFFCE0]">
-		<Participa />
-	</div> -->
-	<section>
-		<div class="container text-center flex flex-col gap-2">
-			<h2>¡Participar es muy fácil!</h2>
-			<div class="flex gap-4 justify-center">
-				<Button>Prepago</Button>
-				<Button>Postpago</Button>
-			</div>
-			<div class="flex gap-4 justify-center py-4">
-				<picture>
-					<img src="https://placehold.co/270x400?text=Image+1" alt="">
-				</picture>
-				<picture>
-					<img src="https://placehold.co/270x400?text=Image+2" alt="">
-				</picture>
-				<picture>
-					<img src="https://placehold.co/270x400?text=Image+3" alt="">
-				</picture>
-			</div>
-			<div class="flex gap-4 justify-center py-4">
-				<div>
-					<h3>Paso 01</h3>
-					<p>Realiza una recarga desde S/7 o adquiere un paquete...</p>
-				</div>
-				<div>
-					<h3>Paso 02</h3>
-					<p>Ingresa tus datos y valida tu línea Claro.</p>
-				</div>
-				<div>
-					<h3>Paso 03</h3>
-					<p>¡Gira la ruleta y gana premios al instante!</p>
-				</div>
-			</div>
-		</div>
-	</section>
-	<section>
+	<div class="relative md:-mt-20 xl:-mt-40">
+		<img class="absolute object-contain -top-14 md:-top-3/12 xl:-top-4/12 2xl:-top-5/12 left-0 inset-0 backdrop-blur-[2px]" src={bg_circle.src} alt="">
+		<!-- <Participa /> -->
+	</div>
+	<section class="relative z-10">
 		<div class="container text-center flex flex-col gap-2">
 			<h2>Conoce los premios que puedes ganar</h2>
 			<p>Cada giro te da la oportunidad de ganar beneficios instantáneos:</p>
@@ -63,56 +31,6 @@ import Button from "@UI/Button.astro";
 			</div>
 		</div>
 	</section>
-	<!-- <section class="hero">
-		<h1>Regístrate y participa en Ruleta Ganadora</h1>
-		<p>Gira y gana más gigas, accesorios, equipos y muchos premios más</p>
-		<button>¡Quiero participar!</button>
-	</section>
-
-	<main>
-		<section class="como-participar">
-			<h2>¡Participar es muy fácil!</h2>
-
-			<div class="segmentos">
-				<button>Prepago</button>
-				<button>Postpago</button>
-			</div>
-
-			<div class="pasos">
-				<article class="paso">
-					<h3>Paso 01</h3>
-					<p>Realiza una recarga desde S/7 o adquiere un paquete...</p>
-				</article>
-				<article class="paso">
-					<h3>Paso 02</h3>
-					<p>Ingresa tus datos y valida tu línea Claro.</p>
-				</article>
-				<article class="paso">
-					<h3>Paso 03</h3>
-					<p>¡Gira la ruleta y gana premios al instante!</p>
-				</article>
-			</div>
-		</section>
-
-		<section class="premios">
-			<h2>Conoce los premios que puedes ganar</h2>
-			<p>Cada giro te da la oportunidad de ganar beneficios instantáneos</p>
-
-			<button>¡Quiero participar!</button>
-
-			<div class="carousel-premios">
-				<button class="prev"></button>
-				<ul class="lista-premios">
-					<li>Celulares</li>
-					<li>Audífonos</li>
-					<li>Accesorios</li>
-				</ul>
-				<button class="next"></button>
-			</div>
-		</section>
-		<section class="terminos">
-		</section>
-	</main> -->
 </Layout>
 
 <script>
