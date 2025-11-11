@@ -13,6 +13,7 @@
   --breakpoint-container-2xl: 1440px;
   --color-claro: #DA291C;
   --color-claro-dark: #9F1C12;
+  --animate-float: float 3s ease-in-out infinite;
 }
 
 @utility container {
@@ -84,4 +85,21 @@ textarea.border-green-500 {
 .asm-dropdown li strong {
   font-weight: 600;
   color: black;
+}
+
+
+@keyframes float {
+  0% {
+    transform: translateY(0px); /* Start at original position */
+  }
+  50% {
+    transform: translateY(-15px); /* Move up 15px */
+  }
+  100% {
+    transform: translateY(0px); /* Return to original position */
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
 }

@@ -2,20 +2,19 @@
 import Button from "@UI/Button.astro"
 ---
 
-<div class="w-full h-full" data-step="1">
-  <picture class="w-full h-full relative z-0 bg-claro">
-      <source srcset="https://placehold.co/1920x650/3b3b3b/494949?text=Desktop" media="(min-width: 1280px)">
-      <source srcset="https://placehold.co/1536x1400/3b3b3b/494949?text=Tablet" media="(min-width: 768px)">
-      <img  class="w-full h-full object-cover" src="https://placehold.co/640x1000/3b3b3b/494949?text=Mobile" alt="¡Gira la ruleta y gana premios al instante!">
-    </picture>
-    <div class="w-full h-full absolute top-0 left-0">
-      <div class="container h-full py-10 flex flex-col justify-between items-center xl:items-start">
-        <div class="flex flex-col items-center xl:items-start gap-4 xl:gap-6 max-w-[600px] xl:pt-4 2xl:pt-12">
-          <h1 data-aos="zoom-in-right"  class="font-amx-black text-3xl md:text-4xl xl:text-5xl 2xl:text-6xl leading-none xl:leading-tight text-center xl:text-left text-white">¡Gira la ruleta y gana premios al instante!</h1>
-          <p data-aos="zoom-in-right" data-aos-delay="50" class="font-amx-regular text-base xl:text-lg text-center xl:text-left text-white">Por tus recargas, activaciones o paquetes, Claro te premia con beneficios exclusivos. <strong class="font-amx-bold">¡Participa y descubre qué sorpresa te espera hoy!</strong></p>
-          <Button data-next-step="2" data-aos="zoom-in-up" data-aos-delay="100" as="a" href="https://www.claro.com.pe/personas/app/claro-musica/" classes="min-w-fit bg-white px-10 py-3 xl:py-3.5 border border-claro text-claro hover:bg-claro hover:text-white 2xl:mt-6 btn_step" >¡Quiero participar!</Button>
-        </div>
-        <p data-aos="zoom-in-up" data-aos-delay="150" class="font-amx-regular text-[10px] uppercase text-center text-white xl:text-left xl:max-w-[600px]">Lorem ipsum dolor sit amet consectetur. Eu molestie sit mus vulputate lacus volutpat blandit. Adipiscing diam sed mi vitae vel vitae massa. Interdum tempor tincidunt varius sit viverra massa amet lacus malesuada. Tempus id porttitor faucibus amet quam. Lacus id interdum vitae feugiat quam.</p>
-      </div>
-    </div>
+<div class="w-full h-full py-6 md:py-8 2xl:py-16 px-3 md:px-8 flex flex-col gap-6 xl:gap-10 2xl:gap-14" data-step="1">
+  <div class="flex flex-col items-center justify-center">
+    <h1 data-aos="zoom-in-right"  class="font-amx-regular text-xl md:text-3xl 2xl:text-[45px] leading-none italic xl:leading-[0.5] text-center text-claro">REGÍSTRATE Y PARTICIPA EN <strong class="block leading-none font-amx-black text-3xl md:text-5xl 2xl:text-[66px]">RULETA GANADORA</strong></h1>
+    <p data-aos="zoom-in-right" data-aos-delay="50" class="font-amx-bold italic text-[11px] md:text-sm 2xl:text-xl text-center bg-claro text-white leading-none rounded-full px-2 md:px-3 py-1.5 md:py-2">¡Gira y gana más gigas, accesorios, equipos y muchos premios más!</p>
+  </div>
+  <button class="w-fit mx-auto md:ml-auto md:mr-0 xl:mx-auto cursor-pointer font-amx-bold flex xl:gap-1 items-center btn_step group" data-next-step="2" data-aos="zoom-in-up" data-aos-delay="100">
+    <span class="leading-none bg-claro text-white md:text-lg rounded-full px-5 py-2.5 xl:py-3.5 transition-all duration-300 group-hover:bg-claro-dark group-hover:text-white">
+        ¡Quiero participar!
+    </span>
+    <span class="bg-white text-claro rounded-full size-8 flex items-center justify-center translate-x-0 transition-all duration-300 group-hover:translate-x-1.5">
+      <svg width="22" height="17" viewBox="0 0 22 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M0 8.3474C-1.07226e-08 8.10209 0.097447 7.86683 0.270904 7.69338C0.444361 7.51992 0.67962 7.42247 0.924925 7.42247L18.4245 7.42247L12.6036 1.60161C12.5128 1.51693 12.4399 1.41482 12.3893 1.30137C12.3388 1.18791 12.3116 1.06543 12.3094 0.94124C12.3072 0.817051 12.3301 0.693692 12.3766 0.578523C12.4231 0.463353 12.4923 0.358733 12.5802 0.270904C12.668 0.183074 12.7726 0.113835 12.8878 0.067317C13.003 0.0207968 13.1263 -0.00204755 13.2505 0.000143993C13.3747 0.00233553 13.4972 0.0295171 13.6106 0.0800695C13.7241 0.130622 13.8262 0.203509 13.9109 0.294381L21.3103 7.69378C21.4835 7.86721 21.5808 8.10229 21.5808 8.3474C21.5808 8.5925 21.4835 8.82759 21.3103 9.00101L13.9109 16.4004C13.8262 16.4913 13.7241 16.5642 13.6106 16.6147C13.4972 16.6653 13.3747 16.6925 13.2505 16.6946C13.1263 16.6968 13.003 16.674 12.8878 16.6275C12.7726 16.581 12.668 16.5117 12.5802 16.4239C12.4923 16.3361 12.4231 16.2314 12.3766 16.1163C12.3301 16.0011 12.3072 15.8777 12.3094 15.7536C12.3116 15.6294 12.3388 15.5069 12.3893 15.3934C12.4399 15.28 12.5128 15.1779 12.6036 15.0932L18.4245 9.27232L0.924925 9.27232C0.67962 9.27232 0.444361 9.17487 0.270904 9.00142C0.0974471 8.82796 1.07227e-08 8.5927 0 8.3474Z" fill="currentColor"/>
+      </svg>
+    </span>
+  </button>
 </div>
