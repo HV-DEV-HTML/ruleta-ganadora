@@ -1,38 +1,33 @@
 ---
-import "swiper/css/bundle";
+// No imports needed
 ---
 
 <section class="relative pt-0 bg-transparent z-10 text-white">
   <div class="container">
     <h2 class="text-center font-amx-bold text-2xl md:text-3xl xl:text-4xl">¡Participar es muy fácil!</h2>
-    <!-- Swiper para mobile/tablet -->
-    <div class="swiper slider_participa w-[250px] h-[450px] py-10 lg:hidden mx-auto">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide rounded-2xl overflow-hidden">
-          <img class="w-full h-full object-cover absolute inset-0" src="https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/b6f5eb64-887c-43b1-aaba-d52a4c59a379" alt="">
-        </div>
-        <div class="swiper-slide rounded-2xl overflow-hidden">
-          <img class="w-full h-full object-cover absolute inset-0" src="https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/e906353b-fde0-4518-9a03-16545c1161bd" alt="">
-        </div>
-        <div class="swiper-slide rounded-2xl overflow-hidden">
-          <img class="w-full h-full object-cover absolute inset-0" src="https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/fc21e481-e28a-41a8-9db3-3b62c1ddc17e" alt="">
-        </div>
-      </div>
-      <div class="swiper-button-next" style="--swiper-navigation-sides-offset: -60px"></div>
-      <div class="swiper-button-prev" style="--swiper-navigation-sides-offset: -60px"></div>
-    </div>
-
-    <!-- Cards estáticos para desktop -->
-    <div class="hidden lg:flex justify-center items-center gap-6 py-10">
-      <div class="w-[280px] xl:w-[320px] h-[400px] xl:h-[450px] rounded-2xl overflow-hidden shadow-2xl transform translate-x-14 -rotate-6 hover:rotate-0 hover:scale-108 transition-transform duration-300">
+    <!-- Cards container - único para todas las resoluciones -->
+    <div class="cards-container relative w-full h-[450px] py-10 flex justify-center items-center">
+      <div class="card w-[250px] lg:w-[280px] xl:w-[320px] h-[400px] lg:h-[400px] xl:h-[450px] rounded-2xl overflow-hidden shadow-2xl absolute lg:relative cursor-grab active:cursor-grabbing" data-index="0">
         <img class="w-full h-full object-cover" src="https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/b6f5eb64-887c-43b1-aaba-d52a4c59a379" alt="Paso 1">
       </div>
-      <div class="w-[280px] xl:w-[320px] h-[400px] xl:h-[450px] rounded-2xl overflow-hidden shadow-2xl z-10 transition-all duration-300 hover:scale-108">
+      <div class="card w-[250px] lg:w-[280px] xl:w-[320px] h-[400px] lg:h-[400px] xl:h-[450px] rounded-2xl overflow-hidden shadow-2xl absolute lg:relative cursor-grab active:cursor-grabbing" data-index="1">
         <img class="w-full h-full object-cover" src="https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/e906353b-fde0-4518-9a03-16545c1161bd" alt="Paso 2">
       </div>
-      <div class="w-[280px] xl:w-[320px] h-[400px] xl:h-[450px] rounded-2xl overflow-hidden shadow-2xl transform -translate-x-14 rotate-6 hover:rotate-0 hover:scale-108 transition-transform duration-300">
+      <div class="card w-[250px] lg:w-[280px] xl:w-[320px] h-[400px] lg:h-[400px] xl:h-[450px] rounded-2xl overflow-hidden shadow-2xl absolute lg:relative cursor-grab active:cursor-grabbing" data-index="2">
         <img class="w-full h-full object-cover" src="https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/fc21e481-e28a-41a8-9db3-3b62c1ddc17e" alt="Paso 3">
       </div>
+      
+      <!-- Botones de navegación solo mobile/tablet -->
+      <button class="nav-btn nav-prev absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 z-50 w-12 h-12 rounded-full bg-white/85 flex items-center justify-center shadow-lg lg:hidden">
+        <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+      </button>
+      <button class="nav-btn nav-next absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 z-50 w-12 h-12 rounded-full bg-white/85 flex items-center justify-center shadow-lg lg:hidden">
+        <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+      </button>
     </div>
 
     <!-- Textos de pasos -->
@@ -54,47 +49,165 @@ import "swiper/css/bundle";
 </section>
 
 <script>
-  import Swiper from "swiper/bundle";
+  import { gsap } from "gsap";
+  import { Draggable } from "gsap/Draggable";
   
-  // Solo inicializar Swiper en mobile/tablet
-  if (window.innerWidth < 1024) {
-    const sliderParticipaSteps = document.querySelector(".slider_participa_steps") as HTMLElement;
-    const sliderParticipa = new Swiper(".slider_participa", {
-        effect: "cards",
-        cardsEffect: {
-          rotate: true,
-          perSlideOffset: 10,
-          perSlideRotate: 4,
-          slideShadows: true,
-        },
-        grabCursor: true,
-        speed: 500,
-        loop: false,
-        mousewheel: {
-          invert: false,
-        },
-        navigation: {
-          nextEl: ".slider_participa .swiper-button-next",
-          prevEl: ".slider_participa .swiper-button-prev",
-        },
-        on: {
-          init: function () {
-            const currentStep = this.realIndex + 1;
-            sliderParticipaSteps.querySelector(`[data-step="${currentStep}"]`)?.classList.remove("hidden");
-          },
-        },
-    });
+  gsap.registerPlugin(Draggable);
+
+  const cards = gsap.utils.toArray<HTMLElement>(".card");
+  const sliderParticipaSteps = document.querySelector(".slider_participa_steps") as HTMLElement;
+  const navPrev = document.querySelector(".nav-prev") as HTMLElement;
+  const navNext = document.querySelector(".nav-next") as HTMLElement;
+  
+  let currentIndex = 0;
+  const isMobile = window.innerWidth < 1024;
+
+  // Función para actualizar el paso visible
+  const updateStep = (index: number) => {
+    if (!isMobile) return; // En desktop todos los pasos son visibles
     
-    sliderParticipa.on("slideChange", () => {
-      const currentStep = sliderParticipa.realIndex + 1;
-      sliderParticipaSteps.querySelectorAll(`[data-step]`).forEach(step => {
-        step.classList.add("hidden");
-      });
-      sliderParticipaSteps.querySelector(`[data-step="${currentStep}"]`)?.classList.remove("hidden");
+    sliderParticipaSteps.querySelectorAll(`[data-step]`).forEach(step => {
+      step.classList.add("hidden");
     });
+    sliderParticipaSteps.querySelector(`[data-step="${index + 1}"]`)?.classList.remove("hidden");
+  };
+
+  if (isMobile) {
+    // MOBILE/TABLET: Efecto cards con drag
+    const cardPositions = [
+      { x: 0, y: 0, rotation: 0, scale: 1, zIndex: 30 },      // Card activo (centro)
+      { x: 15, y: 15, rotation: 4, scale: 0.95, zIndex: 20 }, // Card siguiente
+      { x: -15, y: -15, rotation: -4, scale: 0.9, zIndex: 10 } // Card anterior
+    ];
+
+    // Inicializar posiciones
+    cards.forEach((card, i) => {
+      const posIndex = (i - currentIndex + cards.length) % cards.length;
+      const pos = cardPositions[Math.min(posIndex, 2)];
+      
+      gsap.set(card, {
+        x: pos.x,
+        y: pos.y,
+        rotation: pos.rotation,
+        scale: pos.scale,
+        zIndex: pos.zIndex,
+        opacity: posIndex < 3 ? 1 : 0
+      });
+    });
+
+    // Función para animar a un índice específico
+    const animateToIndex = (newIndex: number) => {
+      if (newIndex < 0 || newIndex >= cards.length) return;
+      
+      currentIndex = newIndex;
+      
+      cards.forEach((card, i) => {
+        const posIndex = (i - currentIndex + cards.length) % cards.length;
+        const pos = cardPositions[Math.min(posIndex, 2)];
+        
+        gsap.to(card, {
+          x: pos.x,
+          y: pos.y,
+          rotation: pos.rotation,
+          scale: pos.scale,
+          zIndex: pos.zIndex,
+          opacity: posIndex < 3 ? 1 : 0,
+          duration: 0.5,
+          ease: "power2.out"
+        });
+      });
+      
+      updateStep(currentIndex);
+    };
+
+    // Draggable en el card activo
+    let draggableInstance: Draggable[];
+    
+    const updateDraggable = () => {
+      if (draggableInstance) {
+        draggableInstance.forEach(d => d.kill());
+      }
+      
+      draggableInstance = Draggable.create(cards[currentIndex], {
+        type: "x",
+        bounds: { minX: -150, maxX: 150 },
+        inertia: true,
+        onDragEnd: function() {
+          const dragDistance = this.x;
+          
+          if (dragDistance < -50 && currentIndex < cards.length - 1) {
+            // Swipe left - siguiente
+            animateToIndex(currentIndex + 1);
+            setTimeout(updateDraggable, 500);
+          } else if (dragDistance > 50 && currentIndex > 0) {
+            // Swipe right - anterior
+            animateToIndex(currentIndex - 1);
+            setTimeout(updateDraggable, 500);
+          } else {
+            // Volver a posición original
+            gsap.to(cards[currentIndex], {
+              x: 0,
+              duration: 0.3,
+              ease: "power2.out"
+            });
+          }
+        }
+      });
+    };
+
+    updateDraggable();
+
+    // Navegación con botones
+    navPrev?.addEventListener("click", () => {
+      if (currentIndex > 0) {
+        animateToIndex(currentIndex - 1);
+        setTimeout(updateDraggable, 500);
+      }
+    });
+
+    navNext?.addEventListener("click", () => {
+      if (currentIndex < cards.length - 1) {
+        animateToIndex(currentIndex + 1);
+        setTimeout(updateDraggable, 500);
+      }
+    });
+
+    // Inicializar paso visible
+    updateStep(currentIndex);
+
   } else {
-    // En desktop, mostrar todos los pasos
-    const sliderParticipaSteps = document.querySelector(".slider_participa_steps") as HTMLElement;
+    // DESKTOP: Cards estáticos con hover effects
+    cards.forEach((card, i) => {
+      const rotations = [-6, 0, 6];
+      const xOffsets = [56, 0, -56]; // translate-x-14 = 56px
+      
+      gsap.set(card, {
+        rotation: rotations[i],
+        x: xOffsets[i],
+        zIndex: i === 1 ? 10 : 1
+      });
+
+      // Hover effects
+      card.addEventListener("mouseenter", () => {
+        gsap.to(card, {
+          rotation: 0,
+          scale: 1.08,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+      });
+
+      card.addEventListener("mouseleave", () => {
+        gsap.to(card, {
+          rotation: rotations[i],
+          scale: 1,
+          duration: 0.3,
+          ease: "power2.out"
+        });
+      });
+    });
+
+    // Mostrar todos los pasos en desktop
     sliderParticipaSteps.querySelectorAll(`[data-step]`).forEach(step => {
       step.classList.remove("hidden");
     });
