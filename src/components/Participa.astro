@@ -5,9 +5,8 @@ import "swiper/css/bundle";
 <section class="relative pt-0 bg-transparent z-10 text-white">
   <div class="container">
     <h2 class="text-center font-amx-bold text-2xl md:text-3xl xl:text-4xl">¡Participar es muy fácil!</h2>
-
-
-    <!-- <div class="swiper mySwiper w-[250px] h-[450px] py-14">
+    <!-- Swiper para mobile/tablet -->
+    <div class="swiper slider_participa w-[250px] h-[450px] py-10 lg:hidden mx-auto">
       <div class="swiper-wrapper">
         <div class="swiper-slide rounded-2xl overflow-hidden">
           <img class="w-full h-full object-cover absolute inset-0" src="https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/b6f5eb64-887c-43b1-aaba-d52a4c59a379" alt="">
@@ -19,32 +18,36 @@ import "swiper/css/bundle";
           <img class="w-full h-full object-cover absolute inset-0" src="https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/fc21e481-e28a-41a8-9db3-3b62c1ddc17e" alt="">
         </div>
       </div>
-      <!-- <div class="swiper-button-next"></div>
-      <div class="swiper-button-prev"></div> -->
-    </div> -->
+      <div class="swiper-button-next" style="--swiper-navigation-sides-offset: -60px"></div>
+      <div class="swiper-button-prev" style="--swiper-navigation-sides-offset: -60px"></div>
+    </div>
 
+    <!-- Cards estáticos para desktop -->
+    <div class="hidden lg:flex justify-center items-center gap-6 py-10">
+      <div class="w-[280px] xl:w-[320px] h-[400px] xl:h-[450px] rounded-2xl overflow-hidden shadow-2xl transform translate-x-14 -rotate-6 hover:rotate-0 hover:scale-108 transition-transform duration-300">
+        <img class="w-full h-full object-cover" src="https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/b6f5eb64-887c-43b1-aaba-d52a4c59a379" alt="Paso 1">
+      </div>
+      <div class="w-[280px] xl:w-[320px] h-[400px] xl:h-[450px] rounded-2xl overflow-hidden shadow-2xl z-10 transition-all duration-300 hover:scale-108">
+        <img class="w-full h-full object-cover" src="https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/e906353b-fde0-4518-9a03-16545c1161bd" alt="Paso 2">
+      </div>
+      <div class="w-[280px] xl:w-[320px] h-[400px] xl:h-[450px] rounded-2xl overflow-hidden shadow-2xl transform -translate-x-14 rotate-6 hover:rotate-0 hover:scale-108 transition-transform duration-300">
+        <img class="w-full h-full object-cover" src="https://github.com/ecemgo/mini-samples-great-tricks/assets/13468728/fc21e481-e28a-41a8-9db3-3b62c1ddc17e" alt="Paso 3">
+      </div>
+    </div>
 
-    <div class="flex flex-col md:flex-row justify-center items-center gap-8 xl:gap-14 pt-6 xl:pt-14">
-      <div class="flex flex-col items-center justify-center gap-4 max-w-[240px] xl:max-w-[260px]">
-        <picture class="max-w-[150px] xl:max-w-[200px] rounded-full block overflow-hidden">
-          <img src="https:placehold.co/300x300/FCF3F3/transparent" alt="">
-        </picture>
-        <p class="w-[40px] h-[40px] flex items-center justify-center rounded-full bg-claro text-white font-axm-bold font-bold text-xl">1</p>
-        <h3 class="font-amx-bold font-bold text-base xl:text-[20px] text-center md:min-h-[98px] xl:min-h-[120px]">Si eres Postpago renueva o cámbiate a Claro. Si eres Prepago recarga, compra o activa un paquete desde S/7</h3>
+    <!-- Textos de pasos -->
+    <div class="flex flex-col md:flex-row justify-center xl:justify-between items-start gap-4 lg:gap-10 px-4 slider_participa_steps">
+      <div class="flex flex-col gap-1 hidden md:flex w-full md:max-w-[210px] xl:max-w-[320px]" data-step="1">
+        <p class="text-center font-amx-black text-3xl">Paso 1</p>
+        <p class="text-center md:text-xs xl:text-lg leading-tight font-amx-regular text-balance">Realiza una recarga desde S/ 7 o adquiere un paquete de alta, portabilidad o renovación para participar.</p>
       </div>
-      <div class="flex flex-col items-center justify-center gap-4 max-w-[240px] xl:max-w-[260px]">
-        <picture class="max-w-[150px] xl:max-w-[200px] rounded-full block overflow-hidden">
-          <img src="https:placehold.co/300x300/FCF3F3/transparent" alt="">
-        </picture>
-        <p class="w-[40px] h-[40px] flex items-center justify-center rounded-full bg-claro text-white font-axm-bold font-bold text-xl">2</p>
-        <h3 class="font-amx-bold font-bold text-base xl:text-[20px] text-center md:min-h-[98px] xl:min-h-[120px]">Ingresa tus datos y valida tu línea Claro</h3>
+      <div class="flex flex-col gap-1 hidden md:flex w-full md:max-w-[210px] xl:max-w-[320px]" data-step="2">
+        <p class="text-center font-amx-black text-3xl">Paso 2</p>
+        <p class="text-center md:text-xs xl:text-lg leading-tight font-amx-regular text-balance">Ingresa tus datos y valida tu línea Claro.</p>
       </div>
-      <div class="flex flex-col items-center justify-center gap-4 max-w-[240px] xl:max-w-[260px]">
-        <picture class="max-w-[150px] xl:max-w-[200px] rounded-full block overflow-hidden">
-          <img src="https:placehold.co/300x300/FCF3F3/transparent" alt="">
-        </picture>
-        <p class="w-[40px] h-[40px] flex items-center justify-center rounded-full bg-claro text-white font-axm-bold font-bold text-xl">3</p>
-        <h3 class="font-amx-bold font-bold text-base xl:text-[20px] text-center md:min-h-[98px] xl:min-h-[120px]">¡Gira la ruleta virtual y gana premios al instante!</h3>
+      <div class="flex flex-col gap-1 hidden md:flex w-full md:max-w-[210px] xl:max-w-[320px]" data-step="3">
+        <p class="text-center font-amx-black text-3xl">Paso 3</p>
+        <p class="text-center md:text-xs xl:text-lg leading-tight font-amx-regular text-balance">¡Gira la ruleta y gana premios al instante!</p>
       </div>
     </div>
   </div>
@@ -52,21 +55,48 @@ import "swiper/css/bundle";
 
 <script>
   import Swiper from "swiper/bundle";
-
-  // const swiper = new Swiper(".swiper", {
-  //     effect: "cards",
-  //     cardsEffect: {
-  //       rotate: true,
-  //       perSlideOffset: 10, // Separación entre cards (default: 8)
-  //       perSlideRotate: 4, // Rotación de cada card (default: 2)
-  //       slideShadows: true, // Sombras en los cards
-  //     },
-  //     grabCursor: true,
-  //     speed: 500,
-  //     loop: false,
-  //     mousewheel: {
-  //       invert: false,
-  //     },
-  // });
-  // swiper.slideTo(1, 150);
+  
+  // Solo inicializar Swiper en mobile/tablet
+  if (window.innerWidth < 1024) {
+    const sliderParticipaSteps = document.querySelector(".slider_participa_steps") as HTMLElement;
+    const sliderParticipa = new Swiper(".slider_participa", {
+        effect: "cards",
+        cardsEffect: {
+          rotate: true,
+          perSlideOffset: 10,
+          perSlideRotate: 4,
+          slideShadows: true,
+        },
+        grabCursor: true,
+        speed: 500,
+        loop: false,
+        mousewheel: {
+          invert: false,
+        },
+        navigation: {
+          nextEl: ".slider_participa .swiper-button-next",
+          prevEl: ".slider_participa .swiper-button-prev",
+        },
+        on: {
+          init: function () {
+            const currentStep = this.realIndex + 1;
+            sliderParticipaSteps.querySelector(`[data-step="${currentStep}"]`)?.classList.remove("hidden");
+          },
+        },
+    });
+    
+    sliderParticipa.on("slideChange", () => {
+      const currentStep = sliderParticipa.realIndex + 1;
+      sliderParticipaSteps.querySelectorAll(`[data-step]`).forEach(step => {
+        step.classList.add("hidden");
+      });
+      sliderParticipaSteps.querySelector(`[data-step="${currentStep}"]`)?.classList.remove("hidden");
+    });
+  } else {
+    // En desktop, mostrar todos los pasos
+    const sliderParticipaSteps = document.querySelector(".slider_participa_steps") as HTMLElement;
+    sliderParticipaSteps.querySelectorAll(`[data-step]`).forEach(step => {
+      step.classList.remove("hidden");
+    });
+  }
 </script>

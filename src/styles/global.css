@@ -28,7 +28,7 @@
 :root{
   --swiper-pagination-bullet-width: 10px;
   --swiper-pagination-bullet-height: 10px;
-  --swiper-navigation-color: #DE187D;
+  --swiper-navigation-color: rgba(255, 255, 255, 0.85);
   --swiper-pagination-color: #DA291C;
 }
 
