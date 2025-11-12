@@ -14,7 +14,7 @@ import Icon05 from "@components/Banner/Icon05.astro"
 import Icon06 from "@components/Banner/Icon06.astro"
 ---
 
-<section class="p-0 relative banner_sorteo h-[520px] md:h-auto xl:h-[700px] 2xl:h-[900px]" data-current-step="1">
+<section class="p-0 relative banner_sorteo h-[530px] md:h-auto xl:h-[780px] 2xl:h-[900px]" data-current-step="1">
   <picture class="w-full h-full relative z-0 bg-claro">
     <source srcset={bg_desktop.src} media="(min-width: 1280px)">
     <source srcset={bg_tablet.src} media="(min-width: 768px)">
@@ -50,6 +50,8 @@ import Icon06 from "@components/Banner/Icon06.astro"
 
 <script>
   import AOS from "aos";
+  import { applyFloatWithParallax } from "@/utils/animations.js";
+  
   const banner = document.querySelector(".banner_sorteo") as HTMLElement;
   const allBTns = banner.querySelectorAll(".btn_step");
   const btnBackStep = banner.querySelector(".btn_back_step") as HTMLElement;
@@ -113,4 +115,32 @@ import Icon06 from "@components/Banner/Icon06.astro"
     
     setTimeout(() => AOS.refreshHard(), 50);
   };
+
+  // Aplicar animación de float y parallax a todos los iconos con clase .icon_parallax
+  const iconsParallax = banner.querySelectorAll(".icon_parallax");
+
+  iconsParallax.forEach((icon) => {
+    const iconEl = icon as HTMLElement;
+    const delay = parseFloat(iconEl.dataset.delay || "0");
+    const invertX = iconEl.dataset.invertX === "true";
+    
+    applyFloatWithParallax(
+      iconEl,
+      {
+        distance: 25,
+        duration: 2,
+        ease: "sine.inOut",
+        delay: delay
+      },
+      {
+        container: banner,
+        intensity: 30,
+        duration: 0.3,
+        ease: "power2.out",
+        enableX: true,
+        enableY: false,
+        invertX: invertX
+      }
+    );
+  });  
 </script>

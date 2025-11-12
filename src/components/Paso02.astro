@@ -3,19 +3,19 @@ import Button from "@UI/Button.astro"
 ---
 
 <div class="w-full h-full hidden" data-step="2">
-  <form id="form-registro" data-aos="zoom-in-up" class="bg-white px-4 md:px-10 py-7 md:py-10 xl:py-9 2xl:py-10 w-full rounded-2xl font-roboto flex flex-col gap-3 md:gap-4 md:max-w-[560px]" action="">
-    <h3 class="text-center font-amx-bold text-xl md:text-3xl pb-2">Valida tus datos para participar</h3>
-    <fieldset>
-      <label for="name" class="text-xs md:text-sm font-bold">Nombres y Apellidos</label>
-      <input type="text" name="name" id="name" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-base md:text-lg focus:outline-none" placeholder="Nombres y apellidos" required>
-    </fieldset>
+  <form id="form-registro" data-aos="zoom-in-up" class="bg-white px-4 md:px-10 py-8 md:py-10 xl:py-9 2xl:py-10 w-full rounded-2xl font-roboto flex flex-col gap-3 md:gap-4 md:max-w-[540px] mx-auto relative xl:-top-7 xl:-right-14 z-10" action="">
+    <h3 class="text-center font-amx-bold text-xl md:text-3xl leading-none">Valida tus datos para participar</h3>
     <fieldset>
       <label for="phone" class="text-xs md:text-sm font-bold">Número celular Claro</label>
-      <input type="text" name="phone" id="phone" maxlength="9" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-base md:text-lg focus:outline-none" placeholder="Ingrese numero de celular" required>
+      <input type="text" name="phone" id="phone" maxlength="9" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-base focus:outline-none" placeholder="Ingrese numero de celular" required>
+    </fieldset>
+    <fieldset>
+      <label for="name" class="text-xs md:text-sm font-bold">Nombres y Apellidos</label>
+      <input type="text" name="name" id="name" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-base focus:outline-none" placeholder="Nombres y apellidos" required>
     </fieldset>
     <fieldset>
       <label for="email" class="text-xs md:text-sm font-bold">Correo electrónico</label>
-      <input type="email" name="email" id="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-base md:text-lg focus:outline-none" placeholder="Ingrese correo electrónico" required>
+      <input type="email" name="email" id="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-base focus:outline-none" placeholder="Ingrese correo electrónico" required>
       <div id="email-errors"></div>
     </fieldset>
     <fieldset class="flex flex-col gap-1.5">
