@@ -18,12 +18,12 @@
       </div>
       
       <!-- Botones de navegación solo mobile/tablet -->
-      <button class="nav-btn nav-prev absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 z-50 w-12 h-12 rounded-full bg-white/85 flex items-center justify-center shadow-lg lg:hidden">
+      <button class="nav-btn nav-prev absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 z-50 w-12 h-12 rounded-full bg-white/85 flex items-center justify-center shadow-lg lg:hidden transition-opacity duration-300 disabled:opacity-30 disabled:cursor-not-allowed" disabled>
         <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
         </svg>
       </button>
-      <button class="nav-btn nav-next absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 z-50 w-12 h-12 rounded-full bg-white/85 flex items-center justify-center shadow-lg lg:hidden">
+      <button class="nav-btn nav-next absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 z-50 w-12 h-12 rounded-full bg-white/85 flex items-center justify-center shadow-lg lg:hidden transition-opacity duration-300 disabled:opacity-30 disabled:cursor-not-allowed">
         <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
         </svg>
@@ -56,13 +56,13 @@
 
   const cards = gsap.utils.toArray<HTMLElement>(".card");
   const sliderParticipaSteps = document.querySelector(".slider_participa_steps") as HTMLElement;
-  const navPrev = document.querySelector(".nav-prev") as HTMLElement;
-  const navNext = document.querySelector(".nav-next") as HTMLElement;
+  const navPrev = document.querySelector(".nav-prev") as HTMLButtonElement;
+  const navNext = document.querySelector(".nav-next") as HTMLButtonElement;
   
   let currentIndex = 0;
   const isMobile = window.innerWidth < 1024;
 
-  // Función para actualizar el paso visible
+  // Función para actualizar el paso visible y botones
   const updateStep = (index: number) => {
     if (!isMobile) return; // En desktop todos los pasos son visibles
     
@@ -70,6 +70,14 @@
       step.classList.add("hidden");
     });
     sliderParticipaSteps.querySelector(`[data-step="${index + 1}"]`)?.classList.remove("hidden");
+    
+    // Actualizar estado de botones
+    if (navPrev) {
+      navPrev.disabled = index === 0;
+    }
+    if (navNext) {
+      navNext.disabled = index === cards.length - 1;
+    }
   };
 
   if (isMobile) {
