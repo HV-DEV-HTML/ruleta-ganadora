@@ -68,8 +68,14 @@ import Button from "@UI/Button.astro"
       })
       .onSuccess((event) => {
         event.preventDefault();
-        alert('Formulario válido, procesando...');
-        // Aquí puedes agregar la lógica para enviar el formulario
+        
+        // Aquí puedes agregar la lógica para validar el código con el backend
+        
+        // Redirigir a la URL especificada en el botón
+        const redirectUrl = submitBtn.getAttribute('href');
+        if (redirectUrl) {
+          window.location.href = redirectUrl;
+        }
       });
     
     // #codeClaro solo se permiten numeros

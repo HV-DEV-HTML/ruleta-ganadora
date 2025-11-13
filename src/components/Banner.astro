@@ -58,28 +58,7 @@ import Icon06 from "@components/Banner/Icon06.astro"
   const allBTns = banner.querySelectorAll(".btn_step");
   const btnBackStep = banner.querySelector(".btn_back_step") as HTMLElement;
 
-  btnBackStep.addEventListener("click", (e) => {
-    e.preventDefault();
-    const btnEl = e.currentTarget as HTMLElement;
-    const prevStep = Number(btnEl.dataset.prevStep);
-    const currentStep = Number(banner.dataset.currentStep);
-    console.log({prevStep, currentStep});
-    nextToStep(currentStep, prevStep);
-  });
-
-  allBTns.forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      e.preventDefault();
-      const btnEl = e.currentTarget as HTMLElement;
-      const nextStep = Number(btnEl.dataset.nextStep);
-      const currentStep = Number(banner.dataset.currentStep);
-      btnBackStep.dataset.prevStep = currentStep.toString();
-      console.log({nextStep, currentStep});
-      nextToStep(currentStep, nextStep);
-    });
-  });
-
-
+  // Funciones de utilidad para animaciones AOS
   const resetAosAnimations = (element: Element) => {
     const aosElements = element.querySelectorAll('[data-aos]');
     aosElements.forEach(el => {
@@ -95,6 +74,7 @@ import Icon06 from "@components/Banner/Icon06.astro"
     });
   };
 
+  // Función principal de transición entre pasos
   const nextToStep = (currentStep: number, nextStep: number) => {
     const currentStepEl = banner.querySelector(`[data-step="${currentStep}"]`);
     const nextStepEl = banner.querySelector(`[data-step="${nextStep}"]`);
@@ -119,6 +99,40 @@ import Icon06 from "@components/Banner/Icon06.astro"
     
     setTimeout(() => AOS.refreshHard(), 50);
   };
+
+  // Exponer funciones globalmente para uso en otros componentes
+  (window as any).bannerStepTransition = {
+    nextToStep,
+    resetAosAnimations,
+    preserveAosState,
+    getCurrentStep: () => Number(banner.dataset.currentStep)
+  };
+
+  // Botón de retroceso
+  btnBackStep.addEventListener("click", (e) => {
+    e.preventDefault();
+    const btnEl = e.currentTarget as HTMLElement;
+    const prevStep = Number(btnEl.dataset.prevStep);
+    const currentStep = Number(banner.dataset.currentStep);
+    console.log({prevStep, currentStep});
+    nextToStep(currentStep, prevStep);
+  });
+
+  // Botones de avance (excluir submit buttons para evitar conflicto con validación)
+  allBTns.forEach(btn => {
+    const btnEl = btn as HTMLElement;
+    // Solo agregar listener si NO es un botón de tipo submit
+    if (btnEl.getAttribute('type') !== 'submit') {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const nextStep = Number(btnEl.dataset.nextStep);
+        const currentStep = Number(banner.dataset.currentStep);
+        btnBackStep.dataset.prevStep = currentStep.toString();
+        console.log({nextStep, currentStep});
+        nextToStep(currentStep, nextStep);
+      });
+    }
+  });
 
   // Aplicar animación de float y parallax a todos los iconos con clase .icon_parallax
   const iconsParallax = banner.querySelectorAll(".icon_parallax");

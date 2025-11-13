@@ -141,8 +141,22 @@ import Button from "@UI/Button.astro"
     })
     .onSuccess((event) => {
       event.preventDefault();
-      // Aquí puedes agregar la lógica para enviar el formulario
-      resetForm();
+      
+      // Obtener el paso siguiente del botón
+      const nextStep = Number(submitBtn.dataset.nextStep);
+      
+      // Usar las funciones globales de transición
+      if ((window as any).bannerStepTransition) {
+        const currentStep = (window as any).bannerStepTransition.getCurrentStep();
+        (window as any).bannerStepTransition.nextToStep(currentStep, nextStep);
+      }
+      
+      // Aquí puedes agregar la lógica para enviar el formulario (API call, etc.)
+      
+      // Resetear el formulario después de la transición
+      setTimeout(() => {
+        resetForm();
+      }, 500);
     });
 
   //Crea una funcion para restear el formulario y poder usarlo en onSuccess
