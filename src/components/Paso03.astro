@@ -1,0 +1,78 @@
+---
+import Button from "@UI/Button.astro"
+---
+
+<div class="w-full h-full hidden" data-step="3">
+  <form id="form-code" data-aos="zoom-in-up" class="bg-white px-4 md:px-10 py-8 md:py-10 xl:py-9 2xl:py-10 w-full rounded-2xl font-roboto flex flex-col gap-3 md:gap-4 md:max-w-[540px] mx-auto relative top-5 md:top-0 2xl:top-8 xl:-right-16 z-10 shadow-lg" action="">
+    <h3 class="text-center font-amx-bold text-xl md:text-3xl leading-none">Ingresa tu código de validación</h3>
+    <p class="font-amx-regular text-sm text-balance text-center leading-tight">Se te ha enviado un código de validación al correo electrónico ingresado. Revisa tu bandeja de entrada o spam.</p>
+    <fieldset>
+      <label for="codeClaro" class="text-xs md:text-sm font-bold">Código de validación</label>
+      <input type="text" name="codeClaro" id="codeClaro" maxlength="5" inputmode="numeric" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-base focus:outline-none" placeholder="Ingrese código (Ejm: 10935)" required>
+    </fieldset>
+    
+    <Button id="btn-submit-code" data-aos="zoom-in-up" data-aos-delay="100" type="submit" disabled href="https://www.claro.com.pe/personas/app/claro-musica/" classes="min-w-fit bg-white px-12 py-2.5 xl:py-3.5 border border-claro text-claro cursor-pointer hover:bg-claro hover:text-white disabled:bg-gray-200 disabled:border-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed mx-auto" >Validar y girar la ruleta</Button>
+  </form>
+</div>
+
+<script>
+  import JustValidate from 'just-validate';
+
+  // Restricciones de entrada en los campos
+  const restrictInput = (selector, allowedRegex) => {
+    const element = document.querySelector(selector);
+    if (element) {
+      element.addEventListener("input", (event) => {
+        const input = event.target as HTMLInputElement;
+        input.value = input.value.replace(allowedRegex, "");
+      });
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('#form-code') as HTMLFormElement;
+    const submitBtn = document.querySelector('#btn-submit-code') as HTMLButtonElement;
+    
+    if (!form || !submitBtn) return;
+    
+    const validator = new JustValidate('#form-code', {
+      errorFieldCssClass: 'border-red-500',
+      errorLabelCssClass: 'text-red-500 text-xs mt-1',
+      successFieldCssClass: 'border-green-500',
+      validateBeforeSubmitting: true,
+    });
+
+    validator
+      .addField('#codeClaro', [
+        {
+          rule: 'required',
+          errorMessage: 'El código es obligatorio',
+        },
+        {
+          rule: 'minLength',
+          value: 4,
+          errorMessage: 'El código debe tener al menos 4 caracteres',
+        },
+        {
+          rule: 'maxLength',
+          value: 5,
+          errorMessage: 'El código debe tener máximo 5 caracteres',
+        },
+      ])
+      .onValidate(({ isValid, isSubmitted, fields, errors, failedRules, failedRulesCount }) => {     
+        if (isValid) {
+          submitBtn.disabled = !isValid;
+        }else{
+          submitBtn.disabled = !isValid;
+        }
+      })
+      .onSuccess((event) => {
+        event.preventDefault();
+        alert('Formulario válido, procesando...');
+        // Aquí puedes agregar la lógica para enviar el formulario
+      });
+    
+    // #codeClaro solo se permiten numeros
+    restrictInput("#codeClaro", /[^0-9]/g);
+  });
+</script>

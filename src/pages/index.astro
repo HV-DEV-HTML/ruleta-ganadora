@@ -5,6 +5,8 @@ import Banner from "@components/Banner.astro";
 import Participa from "@components/Participa.astro";
 import Button from "@UI/Button.astro";
 import bg_circle from "@/assets/images/bg_transparent_circle.png"
+import ModalTratamientos from "@components/Modal/Tratamientos.astro"
+import ModalPromociones from "@components/Modal/Promociones.astro"
 ---
 
 <Layout title="Ruleta Ganadora">
@@ -31,6 +33,8 @@ import bg_circle from "@/assets/images/bg_transparent_circle.png"
 			</div>
 		</div>
 	</section>
+	<ModalTratamientos />
+	<ModalPromociones />
 </Layout>
 
 <script>

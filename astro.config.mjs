@@ -14,7 +14,7 @@ export default defineConfig({
   compressHTML: false,
   build: {
     assets: '_assets',
-    // assetsPrefix: 'https://www.claro.com.pe/assets/havas/prepago'
+    assetsPrefix: 'https://www.claro.com.pe/assets/havas/ruleta'
   },
   vite: {
     plugins: [tailwindcss()]
