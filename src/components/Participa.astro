@@ -60,11 +60,20 @@
   const navNext = document.querySelector(".nav-next") as HTMLButtonElement;
   
   let currentIndex = 0;
-  const isMobile = window.innerWidth < 1024;
+  let draggableInstance: Draggable[] = [];
+  let hoverListeners: Array<{ element: HTMLElement; enter: () => void; leave: () => void }> = [];
+  let buttonListeners: Array<{ element: HTMLElement; handler: () => void }> = [];
+  let currentMode: 'mobile' | 'desktop' | null = null;
 
   // Función para actualizar el paso visible y botones
-  const updateStep = (index: number) => {
-    if (!isMobile) return; // En desktop todos los pasos son visibles
+  const updateStep = (index: number, isMobile: boolean) => {
+    if (!isMobile) {
+      // En desktop, mostrar todos los pasos
+      sliderParticipaSteps.querySelectorAll(`[data-step]`).forEach(step => {
+        step.classList.remove("hidden");
+      });
+      return;
+    }
     
     sliderParticipaSteps.querySelectorAll(`[data-step]`).forEach(step => {
       step.classList.add("hidden");
@@ -80,12 +89,40 @@
     }
   };
 
-  if (isMobile) {
-    // MOBILE/TABLET: Efecto cards con drag
+  // Función para limpiar todas las animaciones y listeners
+  const cleanup = () => {
+    // Limpiar draggable
+    if (draggableInstance.length > 0) {
+      draggableInstance.forEach(d => d.kill());
+      draggableInstance = [];
+    }
+    
+    // Limpiar hover listeners
+    hoverListeners.forEach(({ element, enter, leave }) => {
+      element.removeEventListener("mouseenter", enter);
+      element.removeEventListener("mouseleave", leave);
+    });
+    hoverListeners = [];
+    
+    // Limpiar button listeners
+    buttonListeners.forEach(({ element, handler }) => {
+      element.removeEventListener("click", handler);
+    });
+    buttonListeners = [];
+    
+    // Reset cards a estado neutral
+    cards.forEach(card => {
+      gsap.killTweensOf(card);
+      gsap.set(card, { clearProps: "all" });
+    });
+  };
+
+  // Configuración para mobile
+  const initMobile = () => {
     const cardPositions = [
       { x: 0, y: 0, rotation: 0, scale: 1, zIndex: 30, opacity: 1 },           // Card activo (centro)
-      { x: 8, y: 4, rotation: 9, scale: 0.95, zIndex: 20, opacity: 1 },    // Card siguiente
-      { x: -8, y: -10, rotation: -9, scale: 0.97, zIndex: 10, opacity: 1 }  // Card anterior
+      { x: 8, y: 12, rotation: 8, scale: 0.94, zIndex: 20, opacity: 0.9 },    // Card siguiente
+      { x: -8, y: -12, rotation: -9, scale: 0.95, zIndex: 10, opacity: 0.9 }  // Card anterior
     ];
 
     // Inicializar posiciones
@@ -125,23 +162,22 @@
         });
       });
       
-      updateStep(currentIndex);
+      updateStep(currentIndex, true);
     };
 
     // Draggable en el card activo
-    let draggableInstance: Draggable[];
+    let localDraggableInstance: Draggable[];
     
     const updateDraggable = () => {
-      if (draggableInstance) {
-        draggableInstance.forEach(d => d.kill());
+      if (localDraggableInstance) {
+        localDraggableInstance.forEach(d => d.kill());
       }
       
-      draggableInstance = Draggable.create(cards[currentIndex], {
+      localDraggableInstance = Draggable.create(cards[currentIndex], {
         type: "x",
         bounds: { minX: -150, maxX: 150 },
         inertia: true,
         onDrag: function() {
-          // Feedback visual durante el drag
           const dragPercent = Math.abs(this.x) / 150;
           gsap.to(cards[currentIndex], {
             rotation: this.x * 0.05,
@@ -153,15 +189,12 @@
           const dragDistance = this.x;
           
           if (dragDistance < -50 && currentIndex < cards.length - 1) {
-            // Swipe left - siguiente
             animateToIndex(currentIndex + 1);
             setTimeout(updateDraggable, 400);
           } else if (dragDistance > 50 && currentIndex > 0) {
-            // Swipe right - anterior
             animateToIndex(currentIndex - 1);
             setTimeout(updateDraggable, 400);
           } else {
-            // Volver a posición original con animación suave
             gsap.to(cards[currentIndex], {
               x: 0,
               rotation: 0,
@@ -172,34 +205,45 @@
           }
         }
       });
+      
+      // Guardar en el array global para cleanup
+      draggableInstance = localDraggableInstance;
     };
 
     updateDraggable();
 
     // Navegación con botones
-    navPrev?.addEventListener("click", () => {
+    const prevHandler = () => {
       if (currentIndex > 0) {
         animateToIndex(currentIndex - 1);
         setTimeout(updateDraggable, 400);
       }
-    });
-
-    navNext?.addEventListener("click", () => {
+    };
+    
+    const nextHandler = () => {
       if (currentIndex < cards.length - 1) {
         animateToIndex(currentIndex + 1);
         setTimeout(updateDraggable, 400);
       }
-    });
+    };
+
+    navPrev?.addEventListener("click", prevHandler);
+    navNext?.addEventListener("click", nextHandler);
+    
+    // Guardar listeners para cleanup
+    if (navPrev) buttonListeners.push({ element: navPrev, handler: prevHandler });
+    if (navNext) buttonListeners.push({ element: navNext, handler: nextHandler });
 
     // Inicializar paso visible
-    updateStep(currentIndex);
+    updateStep(currentIndex, true);
+  };
 
-  } else {
-    // DESKTOP: Cards estáticos con hover effects
+  // Configuración para desktop
+  const initDesktop = () => {
     cards.forEach((card, i) => {
       const rotations = [-6, 0, 6];
-      const xOffsets = [56, 0, -56]; // translate-x-14 = 56px
-      const originalZIndex = i === 1 ? 10 : 1; // Guardar zIndex original
+      const xOffsets = [56, 0, -56];
+      const originalZIndex = i === 1 ? 10 : 1;
       
       gsap.set(card, {
         rotation: rotations[i],
@@ -208,31 +252,66 @@
       });
 
       // Hover effects
-      card.addEventListener("mouseenter", () => {
+      const enterHandler = () => {
         gsap.to(card, {
           rotation: 0,
           scale: 1.08,
           duration: 0.3,
-          zIndex: 12,
+          zIndex: 20,
           ease: "power2.out"
         });
-        console.log(i, "index")
-      });
-
-      card.addEventListener("mouseleave", () => {
+      };
+      
+      const leaveHandler = () => {
         gsap.to(card, {
           rotation: rotations[i],
           scale: 1,
           duration: 0.3,
-          zIndex: originalZIndex, // Restaurar zIndex original
+          zIndex: originalZIndex,
           ease: "power2.out"
         });
-      });
+      };
+
+      card.addEventListener("mouseenter", enterHandler);
+      card.addEventListener("mouseleave", leaveHandler);
+      
+      // Guardar listeners para cleanup
+      hoverListeners.push({ element: card, enter: enterHandler, leave: leaveHandler });
     });
 
     // Mostrar todos los pasos en desktop
-    sliderParticipaSteps.querySelectorAll(`[data-step]`).forEach(step => {
-      step.classList.remove("hidden");
-    });
-  }
+    updateStep(0, false);
+  };
+
+  // Función principal de inicialización
+  const init = () => {
+    const isMobile = window.innerWidth < 1024;
+    
+    // Si el modo no ha cambiado, no hacer nada
+    if (currentMode === (isMobile ? 'mobile' : 'desktop')) return;
+    
+    // Limpiar configuración anterior
+    cleanup();
+    
+    // Inicializar nuevo modo
+    currentMode = isMobile ? 'mobile' : 'desktop';
+    
+    if (isMobile) {
+      initMobile();
+    } else {
+      initDesktop();
+    }
+  };
+
+  // Inicializar al cargar
+  init();
+
+  // Manejar resize con debounce
+  let resizeTimeout: number;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = window.setTimeout(() => {
+      init();
+    }, 250);
+  });
 </script>
