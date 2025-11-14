@@ -1,0 +1,158 @@
+---
+import loading_svg from "@/assets/loading.svg?raw";
+---
+
+<div
+  class="fixed top-0 left-0 w-full h-full items-center justify-center bg-black/60 backdrop-blur-[3px] z-50 flex box_preload opacity-0 invisible transition-all duration-300"
+>
+  <div class="flex flex-col items-center gap-1.5 text-white">
+    <div class="mb-4">
+      <svg
+        width="60"
+        height="59"
+        viewBox="0 0 60 59"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <mask id="donut-mask" maskUnits="userSpaceOnUse">
+            <!-- fondo transparente -->
+            <rect width="60" height="59" fill="black" />
+            <!-- círculo de la máscara cuyo trazo se animará -->
+            <circle
+              data-mask-circle
+              cx="16.7"
+              cy="42.8"
+              r="16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="12"
+              stroke-linecap="butt"
+            />
+          </mask>
+        </defs>
+        <path data-shape="medium" d="M34.6684 27.5999L54.0969 8.74577L48.9383 3.80469L29.5098 22.6588L34.6684 27.5999Z"
+          fill="currentColor"></path>
+        <path data-shape="first" d="M21.6422 0H14.7568V19.988H21.6422V0Z" fill="currentColor"
+        ></path>
+        <path data-shape="last" d="M60 35.2148H38.3633V41.8775H60V35.2148Z" fill="currentColor"
+        ></path>
+        <!-- dona principal: círculo relleno recortado por la máscara -->
+        <circle
+          data-shape="circle"
+          cx="16.7"
+          cy="42.8"
+          r="16.7"
+          fill="currentColor"
+          mask="url(#donut-mask)"
+        />
+      </svg>
+    </div>
+    <p class="text-center text-xl font-amx-medium font-bold">
+      Estamos validando tus datos
+    </p>
+    <p class="text-center text-base font-amx-regular">
+      Espera unos segundos...
+    </p>
+  </div>
+</div>
+
+<script>
+  import { gsap } from "gsap";
+  document.addEventListener('DOMContentLoaded', () => {
+    // Requiere que "gsap" esté disponible de forma global
+    const maskCircle = document.querySelector('svg [data-mask-circle]') as SVGPathElement;
+    const shapeFirst = document.querySelector('svg [data-shape="first"]') as SVGPathElement;
+    const shapeMedium = document.querySelector('svg [data-shape="medium"]') as SVGPathElement;
+    const shapeLast = document.querySelector('svg [data-shape="last"]') as SVGPathElement;
+  
+    if (maskCircle && typeof maskCircle.getTotalLength === "function") {
+      const length = maskCircle.getTotalLength();
+  
+      // Estado inicial: trazo de la máscara totalmente oculto
+      gsap.set(maskCircle, {
+        strokeDasharray: length + 1,
+        strokeDashoffset: length,
+      });
+  
+      // Estado inicial de los rectángulos (no visibles, ligeramente comprimidos)
+      if (shapeFirst) {
+        gsap.set(shapeFirst, {
+          scaleY: 0.1,
+          opacity: 0,
+          transformOrigin: "50% 100%",
+        });
+      }
+      if (shapeMedium) {
+        gsap.set(shapeMedium, {
+          scaleY: 0.1,
+          opacity: 0,
+          transformOrigin: "50% 100%",
+        });
+      }
+      if (shapeLast) {
+        gsap.set(shapeLast, {
+          scaleX: 0.1,
+          opacity: 0,
+          transformOrigin: "0% 50%",
+        });
+      }
+  
+      const tl = gsap.timeline({ repeat: -1, repeatDelay: 0.4 });
+  
+      // 1) La máscara dibuja la dona de 0 a 100%
+      tl.fromTo(
+        maskCircle,
+        { strokeDashoffset: length },
+        {
+          strokeDashoffset: 0,
+          duration: 0.90,
+          ease: "power2.inOut",
+        }
+      );
+  
+      // 2) first comienza aproximadamente a mitad de la animación del círculo
+      //    crece hacia arriba con un ligero "pop"
+      if (shapeFirst) {
+        tl.to(
+          shapeFirst,
+          {
+            scaleY: 1,
+            opacity: 1,
+            duration: 0.35,
+            ease: "back.out(1.4)",
+          },
+          0.6 // tiempo absoluto en la timeline (mitad del círculo de 1.2s)
+        );
+      }
+  
+      // 3) medium continúa después de first, con un pequeño solapamiento
+      if (shapeMedium) {
+        tl.to(
+          shapeMedium,
+          {
+            scaleY: 1,
+            opacity: 1,
+            duration: 0.35,
+            ease: "back.out(1.4)",
+          },
+          ">-0.25" // empieza un poco después de first
+        );
+      }
+  
+      // 4) last se forma al final, extendiéndose horizontalmente
+      if (shapeLast) {
+        tl.to(
+          shapeLast,
+          {
+            scaleX: 1,
+            opacity: 1,
+            duration: 0.35,
+            ease: "back.out(1.4)",
+          },
+          ">-0.2" // comienza tras medium
+        );
+      }
+    }
+  });
+</script>

@@ -30,6 +30,7 @@ import Button from "@UI/Button.astro"
   };
 
   document.addEventListener('DOMContentLoaded', () => {
+    const box_preload = document.querySelector('.box_preload') as HTMLDivElement;
     const form = document.querySelector('#form-code') as HTMLFormElement;
     const submitBtn = document.querySelector('#btn-submit-code') as HTMLButtonElement;
     
@@ -68,14 +69,9 @@ import Button from "@UI/Button.astro"
       })
       .onSuccess((event) => {
         event.preventDefault();
-        
         // Aquí puedes agregar la lógica para validar el código con el backend
-        
-        // Redirigir a la URL especificada en el botón
-        const redirectUrl = submitBtn.getAttribute('href');
-        if (redirectUrl) {
-          window.location.href = redirectUrl;
-        }
+        box_preload.classList.remove('opacity-0', 'invisible');
+        document.body.classList.add('overflow-hidden');
       });
     
     // #codeClaro solo se permiten numeros
