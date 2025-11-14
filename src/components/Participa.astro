@@ -1,319 +1,114 @@
 ---
-import card_01 from "@/assets/images/card_01.png"
-import card_02 from "@/assets/images/card_02.png"
-import card_03 from "@/assets/images/card_03.png"
+import card_01 from "@/assets/images/card_01.png";
+import card_01_postpago from "@/assets/images/card_01_postpago.png";
+import card_02 from "@/assets/images/card_02.png";
+import card_03 from "@/assets/images/card_03.png";
+import CardSlider from "./CardSlider.astro";
+
+const prepagoCards = [
+  {
+    image: card_01.src,
+    alt: "Paso 1 Prepago",
+    step: 1,
+    title: "Realiza una recarga desde S/ 7 o adquiere un paquete de alta, portabilidad o renovación para participar.",
+  },
+  {
+    image: card_02.src,
+    alt: "Paso 2 Prepago",
+    step: 2,
+    title: "Ingresa tus datos y valida tu línea Claro.",
+  },
+  {
+    image: card_03.src,
+    alt: "Paso 3 Prepago",
+    step: 3,
+    title: "¡Gira la ruleta y gana premios al instante!",
+  },
+];
+
+const postpagoCards = [
+  {
+    image: card_01_postpago.src,
+    alt: "Paso 1 Postpago",
+    step: 1,
+    title: "Adquiere un paquete de alta, portabilidad o renovación para participar.",
+  },
+  {
+    image: card_02.src,
+    alt: "Paso 2 Postpago",
+    step: 2,
+    title: "Ingresa tus datos y valida tu línea Claro.",
+  },
+  {
+    image: card_03.src,
+    alt: "Paso 3 Postpago",
+    step: 3,
+    title: "¡Gira la ruleta y gana premios al instante!",
+  },
+];
 ---
 
-<section class="relative pt-0 bg-transparent z-10 text-white">
+<section class="relative pt-10 md:pt-0 bg-transparent z-10 text-white">
   <div class="container">
-    <h2 class="text-center font-amx-bold text-2xl md:text-3xl xl:text-4xl">¡Participar es muy fácil!</h2>
-    <!-- Cards container - único para todas las resoluciones -->
-    <div class="cards-container relative w-full h-[450px] xl:h-auto py-10 flex justify-center items-center">
-      <div class="card w-[250px] lg:w-[280px] xl:w-[320px] h-[400px] lg:h-[400px] xl:h-[450px] rounded-4xl overflow-hidden shadow-2xl absolute lg:relative cursor-grab active:cursor-grabbing" data-index="0">
-        <img class="w-full h-full object-cover" src={card_01.src} alt="Paso 1">
-      </div>
-      <div class="card w-[250px] lg:w-[280px] xl:w-[320px] h-[400px] lg:h-[400px] xl:h-[450px] rounded-4xl overflow-hidden shadow-2xl absolute lg:relative cursor-grab active:cursor-grabbing" data-index="1">
-        <img class="w-full h-full object-cover" src={card_02.src} alt="Paso 2">
-      </div>
-      <div class="card w-[250px] lg:w-[280px] xl:w-[320px] h-[400px] lg:h-[400px] xl:h-[450px] rounded-4xl overflow-hidden shadow-2xl absolute lg:relative cursor-grab active:cursor-grabbing" data-index="2">
-        <img class="w-full h-full object-cover" src={card_03.src} alt="Paso 3">
-      </div>
-      
-      <!-- Botones de navegación solo mobile/tablet -->
-      <button class="nav-btn nav-prev absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 z-50 w-10 h-10 rounded-full text-[#FFC5C1] flex items-center justify-center shadow-lg lg:hidden transition-opacity duration-300 disabled:opacity-30 disabled:cursor-not-allowed" disabled>
-        <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-        </svg>
+    <h2 class="text-center font-amx-bold text-3xl xl:text-4xl">¡Participar es muy fácil!</h2>
+
+    <div class="tabs-container flex justify-center gap-4 pt-8 pb-8 md:max-w-[500px] mx-auto" role="tablist" aria-label="Tipo de plan">
+      <button
+        class="tab-btn w-full px-6 py-3 rounded-full font-amx-bold text-lg transition-all duration-300 bg-transparent text-primary border-2 border-white shadow-lg cursor-pointer"
+        data-tab="prepago"
+        role="tab"
+        aria-selected="true"
+      >
+        Prepago
       </button>
-      <button class="nav-btn nav-next absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 z-50 w-10 h-10 rounded-full text-[#FFC5C1] flex items-center justify-center shadow-lg lg:hidden transition-opacity duration-300 disabled:opacity-30 disabled:cursor-not-allowed">
-        <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-        </svg>
+      <button
+        class="tab-btn w-full px-6 py-3 rounded-full font-amx-bold text-lg transition-all duration-300 bg-white/30 border-2 border-transparent text-white/70 cursor-pointer"
+        data-tab="postpago"
+        role="tab"
+        aria-selected="false"
+      >
+        Postpago
       </button>
     </div>
 
-    <!-- Textos de pasos -->
-    <div class="flex flex-col md:flex-row justify-center xl:justify-between items-start gap-4 lg:gap-10 px-4 slider_participa_steps">
-      <div class="flex flex-col gap-1 hidden md:flex w-full md:max-w-[210px] xl:max-w-[320px]" data-step="1">
-        <p class="text-center font-amx-black text-3xl">Paso 1</p>
-        <p class="text-center md:text-xs xl:text-lg leading-tight font-amx-regular text-balance">Realiza una recarga desde S/ 7 o adquiere un paquete de alta, portabilidad o renovación para participar.</p>
-      </div>
-      <div class="flex flex-col gap-1 hidden md:flex w-full md:max-w-[210px] xl:max-w-[320px]" data-step="2">
-        <p class="text-center font-amx-black text-3xl">Paso 2</p>
-        <p class="text-center md:text-xs xl:text-lg leading-tight font-amx-regular text-balance">Ingresa tus datos y valida tu línea Claro.</p>
-      </div>
-      <div class="flex flex-col gap-1 hidden md:flex w-full md:max-w-[210px] xl:max-w-[320px]" data-step="3">
-        <p class="text-center font-amx-black text-3xl">Paso 3</p>
-        <p class="text-center md:text-xs xl:text-lg leading-tight font-amx-regular text-balance">¡Gira la ruleta y gana premios al instante!</p>
-      </div>
+    <div class="tab-content" data-content="prepago" role="tabpanel">
+      <CardSlider cards={prepagoCards} tabId="prepago" />
+    </div>
+
+    <div class="tab-content hidden" data-content="postpago" role="tabpanel" aria-hidden="true">
+      <CardSlider cards={postpagoCards} tabId="postpago" />
     </div>
   </div>
 </section>
 
 <script>
-  import { gsap } from "gsap";
-  import { Draggable } from "gsap/Draggable";
-  
-  gsap.registerPlugin(Draggable);
+  const tabButtons = document.querySelectorAll(".tab-btn");
+  const tabContents = document.querySelectorAll(".tab-content");
 
-  const cards = gsap.utils.toArray<HTMLElement>(".card");
-  const sliderParticipaSteps = document.querySelector(".slider_participa_steps") as HTMLElement;
-  const navPrev = document.querySelector(".nav-prev") as HTMLButtonElement;
-  const navNext = document.querySelector(".nav-next") as HTMLButtonElement;
-  
-  let currentIndex = 0;
-  let draggableInstance: Draggable[] = [];
-  let hoverListeners: Array<{ element: HTMLElement; enter: () => void; leave: () => void }> = [];
-  let buttonListeners: Array<{ element: HTMLElement; handler: () => void }> = [];
-  let currentMode: 'mobile' | 'desktop' | null = null;
+  tabButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const tabName = btn.getAttribute("data-tab");
+      if (!tabName) return;
 
-  // Función para actualizar el paso visible y botones
-  const updateStep = (index: number, isMobile: boolean) => {
-    if (!isMobile) {
-      // En desktop, mostrar todos los pasos
-      sliderParticipaSteps.querySelectorAll(`[data-step]`).forEach(step => {
-        step.classList.remove("hidden");
-      });
-      return;
-    }
-    
-    sliderParticipaSteps.querySelectorAll(`[data-step]`).forEach(step => {
-      step.classList.add("hidden");
-    });
-    sliderParticipaSteps.querySelector(`[data-step="${index + 1}"]`)?.classList.remove("hidden");
-    
-    // Actualizar estado de botones
-    if (navPrev) {
-      navPrev.disabled = index === 0;
-    }
-    if (navNext) {
-      navNext.disabled = index === cards.length - 1;
-    }
-  };
-
-  // Función para limpiar todas las animaciones y listeners
-  const cleanup = () => {
-    // Limpiar draggable
-    if (draggableInstance.length > 0) {
-      draggableInstance.forEach(d => d.kill());
-      draggableInstance = [];
-    }
-    
-    // Limpiar hover listeners
-    hoverListeners.forEach(({ element, enter, leave }) => {
-      element.removeEventListener("mouseenter", enter);
-      element.removeEventListener("mouseleave", leave);
-    });
-    hoverListeners = [];
-    
-    // Limpiar button listeners
-    buttonListeners.forEach(({ element, handler }) => {
-      element.removeEventListener("click", handler);
-    });
-    buttonListeners = [];
-    
-    // Reset cards a estado neutral
-    cards.forEach(card => {
-      gsap.killTweensOf(card);
-      gsap.set(card, { clearProps: "all" });
-    });
-  };
-
-  // Configuración para mobile
-  const initMobile = () => {
-    const cardPositions = [
-      { x: 0, y: 0, rotation: 0, scale: 1, zIndex: 30, opacity: 1 },           // Card activo (centro)
-      { x: 8, y: 12, rotation: 8, scale: 0.94, zIndex: 20, opacity: 0.9 },    // Card siguiente
-      { x: -8, y: -12, rotation: -9, scale: 0.95, zIndex: 10, opacity: 0.9 }  // Card anterior
-    ];
-
-    // Inicializar posiciones
-    cards.forEach((card, i) => {
-      const posIndex = (i - currentIndex + cards.length) % cards.length;
-      const pos = cardPositions[Math.min(posIndex, 2)];
-      
-      gsap.set(card, {
-        x: pos.x,
-        y: pos.y,
-        rotation: pos.rotation,
-        scale: pos.scale,
-        zIndex: pos.zIndex,
-        opacity: posIndex < 3 ? pos.opacity : 0
-      });
-    });
-
-    // Función para animar a un índice específico
-    const animateToIndex = (newIndex: number) => {
-      if (newIndex < 0 || newIndex >= cards.length) return;
-      
-      currentIndex = newIndex;
-      
-      cards.forEach((card, i) => {
-        const posIndex = (i - currentIndex + cards.length) % cards.length;
-        const pos = cardPositions[Math.min(posIndex, 2)];
-        
-        gsap.to(card, {
-          x: pos.x,
-          y: pos.y,
-          rotation: pos.rotation,
-          scale: pos.scale,
-          zIndex: pos.zIndex,
-          opacity: posIndex < 3 ? pos.opacity : 0,
-          duration: 0.4,
-          ease: "power2.inOut"
-        });
-      });
-      
-      updateStep(currentIndex, true);
-    };
-
-    // Draggable en el card activo
-    let localDraggableInstance: Draggable[];
-    
-    const updateDraggable = () => {
-      if (localDraggableInstance) {
-        localDraggableInstance.forEach(d => d.kill());
-      }
-      
-      localDraggableInstance = Draggable.create(cards[currentIndex], {
-        type: "x",
-        bounds: { minX: -150, maxX: 150 },
-        inertia: true,
-        onDrag: function() {
-          const dragPercent = Math.abs(this.x) / 150;
-          gsap.to(cards[currentIndex], {
-            rotation: this.x * 0.05,
-            scale: 1 - (dragPercent * 0.05),
-            duration: 0.1
-          });
-        },
-        onDragEnd: function() {
-          const dragDistance = this.x;
-          
-          if (dragDistance < -50 && currentIndex < cards.length - 1) {
-            animateToIndex(currentIndex + 1);
-            setTimeout(updateDraggable, 400);
-          } else if (dragDistance > 50 && currentIndex > 0) {
-            animateToIndex(currentIndex - 1);
-            setTimeout(updateDraggable, 400);
-          } else {
-            gsap.to(cards[currentIndex], {
-              x: 0,
-              rotation: 0,
-              scale: 1,
-              duration: 0.4,
-              ease: "back.out(1.2)"
-            });
-          }
-        }
-      });
-      
-      // Guardar en el array global para cleanup
-      draggableInstance = localDraggableInstance;
-    };
-
-    updateDraggable();
-
-    // Navegación con botones
-    const prevHandler = () => {
-      if (currentIndex > 0) {
-        animateToIndex(currentIndex - 1);
-        setTimeout(updateDraggable, 400);
-      }
-    };
-    
-    const nextHandler = () => {
-      if (currentIndex < cards.length - 1) {
-        animateToIndex(currentIndex + 1);
-        setTimeout(updateDraggable, 400);
-      }
-    };
-
-    navPrev?.addEventListener("click", prevHandler);
-    navNext?.addEventListener("click", nextHandler);
-    
-    // Guardar listeners para cleanup
-    if (navPrev) buttonListeners.push({ element: navPrev, handler: prevHandler });
-    if (navNext) buttonListeners.push({ element: navNext, handler: nextHandler });
-
-    // Inicializar paso visible
-    updateStep(currentIndex, true);
-  };
-
-  // Configuración para desktop
-  const initDesktop = () => {
-    cards.forEach((card, i) => {
-      const rotations = [-6, 0, 6];
-      const xOffsets = [56, 0, -56];
-      const originalZIndex = i === 1 ? 10 : 1;
-      
-      gsap.set(card, {
-        rotation: rotations[i],
-        x: xOffsets[i],
-        zIndex: originalZIndex
+      tabButtons.forEach((b) => {
+        const isActive = b === btn;
+        b.setAttribute("aria-selected", isActive ? "true" : "false");
+        b.classList.toggle("bg-transparent", isActive);
+        b.classList.toggle("text-primary", isActive);
+        b.classList.toggle("border-white", isActive);
+        b.classList.toggle("shadow-lg", isActive);
+        b.classList.toggle("bg-transparent", !isActive);
+        b.classList.toggle("bg-white/30", !isActive);
+        //b.classList.toggle("border-transparent", !isActive);
+        b.classList.toggle("border-transparent", !isActive);
+        b.classList.toggle("text-white/70", !isActive);
       });
 
-      // Hover effects
-      const enterHandler = () => {
-        gsap.to(card, {
-          rotation: 0,
-          scale: 1.08,
-          duration: 0.3,
-          zIndex: 20,
-          ease: "power2.out"
-        });
-      };
-      
-      const leaveHandler = () => {
-        gsap.to(card, {
-          rotation: rotations[i],
-          scale: 1,
-          duration: 0.3,
-          zIndex: originalZIndex,
-          ease: "power2.out"
-        });
-      };
-
-      card.addEventListener("mouseenter", enterHandler);
-      card.addEventListener("mouseleave", leaveHandler);
-      
-      // Guardar listeners para cleanup
-      hoverListeners.push({ element: card, enter: enterHandler, leave: leaveHandler });
+      tabContents.forEach((content) => {
+        const isTarget = content.getAttribute("data-content") === tabName;
+        content.classList.toggle("hidden", !isTarget);
+        content.setAttribute("aria-hidden", isTarget ? "false" : "true");
+      });
     });
-
-    // Mostrar todos los pasos en desktop
-    updateStep(0, false);
-  };
-
-  // Función principal de inicialización
-  const init = () => {
-    const isMobile = window.innerWidth < 1024;
-    
-    // Si el modo no ha cambiado, no hacer nada
-    if (currentMode === (isMobile ? 'mobile' : 'desktop')) return;
-    
-    // Limpiar configuración anterior
-    cleanup();
-    
-    // Inicializar nuevo modo
-    currentMode = isMobile ? 'mobile' : 'desktop';
-    
-    if (isMobile) {
-      initMobile();
-    } else {
-      initDesktop();
-    }
-  };
-
-  // Inicializar al cargar
-  init();
-
-  // Manejar resize con debounce
-  let resizeTimeout: number;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = window.setTimeout(() => {
-      init();
-    }, 250);
   });
 </script>

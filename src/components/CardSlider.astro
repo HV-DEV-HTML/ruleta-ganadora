@@ -1,0 +1,314 @@
+---
+export interface Props {
+  cards: Array<{
+    image: string;
+    alt: string;
+    step: number;
+    title?: string;
+    description?: string;
+  }>;
+  tabId: string;
+}
+
+const { cards, tabId } = Astro.props;
+---
+
+<div class="card-slider" data-tab-id={tabId}>
+  <div class="cards-container relative w-full h-[450px] xl:h-auto py-10 flex justify-center items-center">
+    {cards.map((card, index) => (
+      <div
+        class="card w-[250px] lg:w-[280px] xl:w-[320px] h-[400px] lg:h-[400px] xl:h-[450px] rounded-4xl overflow-hidden shadow-card-claro absolute lg:relative cursor-grab active:cursor-grabbing"
+        data-index={index}
+      >
+        <img class="w-full h-full object-cover" src={card.image} alt={card.alt} />
+      </div>
+    ))}
+
+    <button class="nav-btn nav-prev absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 z-50 w-10 h-10 rounded-full text-[#FFC5C1] flex items-center justify-center shadow-lg lg:hidden transition-opacity duration-300 disabled:opacity-30 disabled:cursor-not-allowed" disabled>
+      <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+      </svg>
+    </button>
+    <button class="nav-btn nav-next absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 z-50 w-10 h-10 rounded-full text-[#FFC5C1] flex items-center justify-center shadow-lg lg:hidden transition-opacity duration-300 disabled:opacity-30 disabled:cursor-not-allowed">
+      <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+      </svg>
+    </button>
+  </div>
+
+  <div class="flex flex-col md:flex-row justify-center xl:justify-between items-start gap-4 lg:gap-10 px-4 slider_participa_steps">
+    {cards.map((card) => (
+      <div
+        class="flex flex-col gap-1 hidden md:flex w-full md:max-w-[210px] xl:max-w-[320px]"
+        data-step={card.step}
+      >
+        <p class="text-center font-amx-black text-3xl">Paso {card.step}</p>
+        {card.title && (
+          <p class="text-center md:text-xs xl:text-lg leading-tight font-amx-regular text-balance">
+            {card.title}
+          </p>
+        )}
+        {card.description && (
+          <p class="text-center md:text-xs xl:text-lg leading-tight font-amx-regular text-balance">
+            {card.description}
+          </p>
+        )}
+      </div>
+    ))}
+  </div>
+</div>
+
+<script>
+  import { gsap } from "gsap";
+  import { Draggable } from "gsap/Draggable";
+
+  gsap.registerPlugin(Draggable);
+
+  const initSlider = (root: HTMLElement) => {
+    const cards = gsap.utils.toArray(root.querySelectorAll<HTMLElement>(".card")) as HTMLElement[];
+    const sliderParticipaSteps = root.querySelector(".slider_participa_steps") as HTMLElement | null;
+    const navPrev = root.querySelector(".nav-prev") as HTMLButtonElement | null;
+    const navNext = root.querySelector(".nav-next") as HTMLButtonElement | null;
+
+    if (!cards.length || !sliderParticipaSteps) return;
+
+    let currentIndex = 0;
+    let draggableInstance: Draggable[] = [];
+    let hoverListeners: Array<{ element: HTMLElement; enter: () => void; leave: () => void }> = [];
+    let buttonListeners: Array<{ element: HTMLElement; handler: () => void }> = [];
+    let currentMode: "mobile" | "desktop" | null = null;
+
+    const updateStep = (index: number, isMobile: boolean) => {
+      if (!sliderParticipaSteps) return;
+
+      if (!isMobile) {
+        sliderParticipaSteps.querySelectorAll("[data-step]").forEach((step) => {
+          step.classList.remove("hidden");
+        });
+        return;
+      }
+
+      sliderParticipaSteps.querySelectorAll("[data-step]").forEach((step) => {
+        step.classList.add("hidden");
+      });
+      const activeStep = sliderParticipaSteps.querySelector(`[data-step="${index + 1}"]`);
+      activeStep?.classList.remove("hidden");
+
+      if (navPrev) {
+        navPrev.disabled = index === 0;
+      }
+      if (navNext) {
+        navNext.disabled = index === cards.length - 1;
+      }
+    };
+
+    const cleanup = () => {
+      if (draggableInstance.length > 0) {
+        draggableInstance.forEach((d) => d.kill());
+        draggableInstance = [];
+      }
+
+      hoverListeners.forEach(({ element, enter, leave }) => {
+        element.removeEventListener("mouseenter", enter);
+        element.removeEventListener("mouseleave", leave);
+      });
+      hoverListeners = [];
+
+      buttonListeners.forEach(({ element, handler }) => {
+        element.removeEventListener("click", handler);
+      });
+      buttonListeners = [];
+
+      cards.forEach((card) => {
+        gsap.killTweensOf(card);
+        gsap.set(card, { clearProps: "all" });
+      });
+    };
+
+    const initMobile = () => {
+      const cardPositions = [
+        { x: 0, y: 0, rotation: 0, scale: 1, zIndex: 30, opacity: 1 },
+        { x: 8, y: 12, rotation: 8, scale: 0.94, zIndex: 20, opacity: 0.9 },
+        { x: -8, y: -12, rotation: -9, scale: 0.95, zIndex: 10, opacity: 0.9 },
+      ];
+
+      cards.forEach((card, i) => {
+        const posIndex = (i - currentIndex + cards.length) % cards.length;
+        const pos = cardPositions[Math.min(posIndex, 2)];
+
+        gsap.set(card, {
+          x: pos.x,
+          y: pos.y,
+          rotation: pos.rotation,
+          scale: pos.scale,
+          zIndex: pos.zIndex,
+          opacity: posIndex < 3 ? pos.opacity : 0,
+        });
+      });
+
+      let localDraggableInstance: Draggable[] | undefined;
+
+      const animateToIndex = (newIndex: number) => {
+        if (newIndex < 0 || newIndex >= cards.length) return;
+
+        currentIndex = newIndex;
+
+        cards.forEach((card, i) => {
+          const posIndex = (i - currentIndex + cards.length) % cards.length;
+          const pos = cardPositions[Math.min(posIndex, 2)];
+
+          gsap.to(card, {
+            x: pos.x,
+            y: pos.y,
+            rotation: pos.rotation,
+            scale: pos.scale,
+            zIndex: pos.zIndex,
+            opacity: posIndex < 3 ? pos.opacity : 0,
+            duration: 0.4,
+            ease: "power2.inOut",
+          });
+        });
+
+        updateStep(currentIndex, true);
+      };
+
+      const updateDraggable = () => {
+        if (localDraggableInstance) {
+          localDraggableInstance.forEach((d) => d.kill());
+        }
+
+        localDraggableInstance = Draggable.create(cards[currentIndex], {
+          type: "x",
+          bounds: { minX: -150, maxX: 150 },
+          inertia: true,
+          onDrag: function () {
+            const dragPercent = Math.abs(this.x) / 150;
+            gsap.to(cards[currentIndex], {
+              rotation: this.x * 0.05,
+              scale: 1 - dragPercent * 0.05,
+              duration: 0.1,
+            });
+          },
+          onDragEnd: function () {
+            const dragDistance = this.x;
+
+            if (dragDistance < -50 && currentIndex < cards.length - 1) {
+              animateToIndex(currentIndex + 1);
+              setTimeout(updateDraggable, 400);
+            } else if (dragDistance > 50 && currentIndex > 0) {
+              animateToIndex(currentIndex - 1);
+              setTimeout(updateDraggable, 400);
+            } else {
+              gsap.to(cards[currentIndex], {
+                x: 0,
+                rotation: 0,
+                scale: 1,
+                duration: 0.4,
+                ease: "back.out(1.2)",
+              });
+            }
+          },
+        });
+
+        draggableInstance = localDraggableInstance;
+      };
+
+      updateDraggable();
+
+      const prevHandler = () => {
+        if (currentIndex > 0) {
+          animateToIndex(currentIndex - 1);
+          setTimeout(updateDraggable, 400);
+        }
+      };
+
+      const nextHandler = () => {
+        if (currentIndex < cards.length - 1) {
+          animateToIndex(currentIndex + 1);
+          setTimeout(updateDraggable, 400);
+        }
+      };
+
+      if (navPrev) {
+        navPrev.addEventListener("click", prevHandler);
+        buttonListeners.push({ element: navPrev, handler: prevHandler });
+      }
+      if (navNext) {
+        navNext.addEventListener("click", nextHandler);
+        buttonListeners.push({ element: navNext, handler: nextHandler });
+      }
+
+      updateStep(currentIndex, true);
+    };
+
+    const initDesktop = () => {
+      cards.forEach((card, i) => {
+        const rotations = [-6, 0, 6];
+        const xOffsets = [56, 0, -56];
+        const originalZIndex = i === 1 ? 10 : 1;
+
+        gsap.set(card, {
+          rotation: rotations[i],
+          x: xOffsets[i],
+          zIndex: originalZIndex,
+        });
+
+        const enterHandler = () => {
+          gsap.to(card, {
+            rotation: 0,
+            scale: 1.08,
+            duration: 0.3,
+            zIndex: 20,
+            ease: "power2.out",
+          });
+        };
+
+        const leaveHandler = () => {
+          gsap.to(card, {
+            rotation: rotations[i],
+            scale: 1,
+            duration: 0.3,
+            zIndex: originalZIndex,
+            ease: "power2.out",
+          });
+        };
+
+        card.addEventListener("mouseenter", enterHandler);
+        card.addEventListener("mouseleave", leaveHandler);
+
+        hoverListeners.push({ element: card, enter: enterHandler, leave: leaveHandler });
+      });
+
+      updateStep(0, false);
+    };
+
+    const init = () => {
+      const isMobile = window.innerWidth < 1024;
+      const nextMode: "mobile" | "desktop" = isMobile ? "mobile" : "desktop";
+
+      if (currentMode === nextMode) return;
+
+      cleanup();
+      currentMode = nextMode;
+
+      if (isMobile) {
+        initMobile();
+      } else {
+        initDesktop();
+      }
+    };
+
+    init();
+
+    let resizeTimeout: number | undefined;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = window.setTimeout(() => {
+        init();
+      }, 250);
+    });
+  };
+
+  const sliders = document.querySelectorAll<HTMLElement>(".card-slider");
+  sliders.forEach((root) => initSlider(root));
+</script>
