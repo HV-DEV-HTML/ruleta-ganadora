@@ -15,11 +15,11 @@ import Icon05 from "@components/Banner/Icon05.astro"
 import Icon06 from "@components/Banner/Icon06.astro"
 ---
 
-<section class="p-0 relative banner_sorteo h-[530px] md:h-auto lg:h-[720px] xl:h-[740px] 2xl:h-[900px]" data-current-step="1">
+<section class="p-0 relative banner_sorteo bg-transparent h-[530px] md:h-auto lg:h-[720px] xl:h-[740px] 2xl:h-[900px]" data-current-step="1">
   <picture class="w-full h-full relative z-0 bg-claro">
     <source srcset={bg_desktop.src} media="(min-width: 1280px)">
     <source srcset={bg_tablet.src} media="(min-width: 768px)">
-    <img class="w-full h-full object-cover object-top" src={bg_mobile.src} alt="¡Gira la ruleta y gana premios al instante!">
+    <img class="w-full h-full object-cover object-bottom" src={bg_mobile.src} alt="¡Gira la ruleta y gana premios al instante!">
   </picture>
   <button class="absolute w-full top-3 xl:top-5 left-0 z-2 btn_back_step hidden cursor-pointer" data-prev-step="1">
     <div class="container flex items-center gap-2">
@@ -32,16 +32,16 @@ import Icon06 from "@components/Banner/Icon06.astro"
     </div>
   </button>
   <div class="w-full h-full absolute top-0 left-0">
-    <div class="flex flex-col items-center mx-auto md:max-w-[620px] xl:max-w-[1040px] max-h-[310px] md:max-h-[290px] 2xl:max-h-[390px] h-full px-4 mt-16 2xl:mt-30 rela">
+    <div class="flex flex-col items-center mx-auto md:max-w-[620px] xl:max-w-[1040px] max-h-[310px] md:max-h-[290px] 2xl:max-h-[390px] h-full px-4 mt-16 2xl:mt-30 relative">
       <div class="w-full h-full bg-white rounded-4xl relative">
         <img class="w-full h-full object-cover absolute top-0 left-0 z-0 rounded-4xl overflow-hidden" src={bg_content_mobile.src} alt="Banner Ruleta Ganadora">
-        <Icon04/>
-        <Icon05/>
-        <Icon06/>
         <Paso01 />
         <Paso02 />
         <Paso03 />
       </div>
+      <Icon04/>
+      <Icon05/>
+      <Icon06/>
       <Icon01/>
       <Icon02/>
       <Icon03/>

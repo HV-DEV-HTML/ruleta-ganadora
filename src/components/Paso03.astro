@@ -17,6 +17,7 @@ import Button from "@UI/Button.astro"
 
 <script>
   import JustValidate from 'just-validate';
+  import { togglePreloadAnimation } from "@/utils/animations";
 
   // Restricciones de entrada en los campos
   const restrictInput = (selector, allowedRegex) => {
@@ -70,8 +71,7 @@ import Button from "@UI/Button.astro"
       .onSuccess((event) => {
         event.preventDefault();
         // Aquí puedes agregar la lógica para validar el código con el backend
-        box_preload.classList.remove('opacity-0', 'invisible');
-        document.body.classList.add('overflow-hidden');
+        togglePreloadAnimation(true);
       });
     
     // #codeClaro solo se permiten numeros

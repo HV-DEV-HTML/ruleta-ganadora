@@ -128,3 +128,130 @@ export function applyFloatWithParallax(element, floatOptions = {}, parallaxOptio
 
   return { animation, cleanup };
 }
+
+let preloadTimeline = null;
+
+export function togglePreloadAnimation(show, options = {}) {
+  const { selector = ".box_preload" } = options;
+
+  const overlay = typeof selector === "string"
+    ? document.querySelector(selector)
+    : selector;
+
+  if (!overlay) {
+    console.warn("Preload animation: overlay element not found");
+    return;
+  }
+
+  if (show) {
+    overlay.classList.remove("opacity-0", "invisible");
+
+    const maskCircle = overlay.querySelector('svg [data-mask-circle]');
+    const shapeFirst = overlay.querySelector('svg [data-shape="first"]');
+    const shapeMedium = overlay.querySelector('svg [data-shape="medium"]');
+    const shapeLast = overlay.querySelector('svg [data-shape="last"]');
+
+    if (!maskCircle || typeof maskCircle.getTotalLength !== "function") {
+      return;
+    }
+
+    const length = maskCircle.getTotalLength();
+
+    gsap.set(maskCircle, {
+      strokeDasharray: length + 1,
+      strokeDashoffset: length,
+    });
+
+    if (shapeFirst) {
+      gsap.set(shapeFirst, {
+        scaleY: 0.1,
+        opacity: 0,
+        transformOrigin: "50% 100%",
+      });
+    }
+    if (shapeMedium) {
+      gsap.set(shapeMedium, {
+        scaleY: 0.1,
+        opacity: 0,
+        transformOrigin: "50% 100%",
+      });
+    }
+    if (shapeLast) {
+      gsap.set(shapeLast, {
+        scaleX: 0.1,
+        opacity: 0,
+        transformOrigin: "0% 50%",
+      });
+    }
+
+    preloadTimeline = gsap.timeline({ repeat: -1, repeatDelay: 0.4 });
+
+    preloadTimeline.fromTo(
+      maskCircle,
+      { strokeDashoffset: length },
+      {
+        strokeDashoffset: 0,
+        duration: 0.9,
+        ease: "power2.inOut",
+      }
+    );
+
+    if (shapeFirst) {
+      preloadTimeline.to(
+        shapeFirst,
+        {
+          scaleY: 1,
+          opacity: 1,
+          duration: 0.35,
+          ease: "back.out(1.4)",
+        },
+        0.6
+      );
+    }
+
+    if (shapeMedium) {
+      preloadTimeline.to(
+        shapeMedium,
+        {
+          scaleY: 1,
+          opacity: 1,
+          duration: 0.35,
+          ease: "back.out(1.4)",
+        },
+        ">-0.25"
+      );
+    }
+
+    if (shapeLast) {
+      preloadTimeline.to(
+        shapeLast,
+        {
+          scaleX: 1,
+          opacity: 1,
+          duration: 0.35,
+          ease: "back.out(1.4)",
+        },
+        ">-0.2"
+      );
+    }
+    document.body.classList.add('overflow-hidden');
+  } else {
+    overlay.classList.add("opacity-0", "invisible");
+
+    if (preloadTimeline) {
+      preloadTimeline.kill();
+      preloadTimeline = null;
+    }
+
+    const maskCircle = overlay.querySelector('svg [data-mask-circle]');
+    const shapeFirst = overlay.querySelector('svg [data-shape="first"]');
+    const shapeMedium = overlay.querySelector('svg [data-shape="medium"]');
+    const shapeLast = overlay.querySelector('svg [data-shape="last"]');
+
+    const elements = [maskCircle, shapeFirst, shapeMedium, shapeLast].filter(Boolean);
+    if (elements.length) {
+      gsap.killTweensOf(elements);
+    }
+    document.body.classList.remove('overflow-hidden');
+  }
+}

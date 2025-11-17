@@ -31,28 +31,27 @@ const postpagoCards = [
     image: card_01_postpago.src,
     alt: "Paso 1 Postpago",
     step: 1,
-    title: "Adquiere un paquete de alta, portabilidad o renovación para participar.",
+    title: "Ingresa tus datos y valida tu línea Claro.",
   },
   {
     image: card_02.src,
     alt: "Paso 2 Postpago",
     step: 2,
-    title: "Ingresa tus datos y valida tu línea Claro.",
+    title: "¡Gira la ruleta y participa por grandes premios!.",
   },
   {
     image: card_03.src,
     alt: "Paso 3 Postpago",
     step: 3,
-    title: "¡Gira la ruleta y gana premios al instante!",
+    title: "Si eres uno de los ganadores, te contactaremos a tu línea Claro registrada.",
   },
 ];
 ---
 
 <section class="relative pt-10 md:pt-0 bg-transparent z-10 text-white">
   <div class="container">
-    <h2 class="text-center font-amx-bold text-3xl xl:text-4xl">¡Participar es muy fácil!</h2>
-
-    <div class="tabs-container flex justify-center gap-4 pt-8 pb-8 md:max-w-[500px] mx-auto" role="tablist" aria-label="Tipo de plan">
+    <h2 class="text-center font-amx-bold text-3xl xl:text-4xl pb-6 md:pb-8">¡Participar es muy fácil!</h2>
+    <div class="tabs-container hidden justify-center gap-4 pt-8 pb-8 md:max-w-[500px] mx-auto" role="tablist" aria-label="Tipo de plan">
       <button
         class="tab-btn w-full px-6 py-3 rounded-full font-amx-bold text-lg transition-all duration-300 bg-transparent text-primary border-2 border-white shadow-lg cursor-pointer"
         data-tab="prepago"
@@ -71,11 +70,7 @@ const postpagoCards = [
       </button>
     </div>
 
-    <div class="tab-content" data-content="prepago" role="tabpanel">
-      <CardSlider cards={prepagoCards} tabId="prepago" />
-    </div>
-
-    <div class="tab-content hidden" data-content="postpago" role="tabpanel" aria-hidden="true">
+    <div class="tab-content" data-content="postpago" role="tabpanel">
       <CardSlider cards={postpagoCards} tabId="postpago" />
     </div>
   </div>
@@ -108,6 +103,14 @@ const postpagoCards = [
         const isTarget = content.getAttribute("data-content") === tabName;
         content.classList.toggle("hidden", !isTarget);
         content.setAttribute("aria-hidden", isTarget ? "false" : "true");
+
+        // Cuando un tab pasa a ser visible, disparar animación de entrada de cards en desktop
+        if (isTarget) {
+          const slider = content.querySelector(".card-slider");
+          if (slider) {
+            slider.dispatchEvent(new CustomEvent("cards:enter"));
+          }
+        }
       });
     });
   });

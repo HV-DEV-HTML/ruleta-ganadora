@@ -17,7 +17,7 @@ const { cards, tabId } = Astro.props;
   <div class="cards-container relative w-full h-[450px] xl:h-auto py-10 flex justify-center items-center">
     {cards.map((card, index) => (
       <div
-        class="card w-[250px] lg:w-[280px] xl:w-[320px] h-[400px] lg:h-[400px] xl:h-[450px] rounded-4xl overflow-hidden shadow-card-claro absolute lg:relative cursor-grab active:cursor-grabbing"
+        class="card w-full max-w-[260px] rounded-4xl overflow-hidden shadow-card-claro absolute lg:relative cursor-grab active:cursor-grabbing"
         data-index={index}
       >
         <img class="w-full h-full object-cover" src={card.image} alt={card.alt} />
@@ -36,15 +36,15 @@ const { cards, tabId } = Astro.props;
     </button>
   </div>
 
-  <div class="flex flex-col md:flex-row justify-center xl:justify-between items-start gap-4 lg:gap-10 px-4 slider_participa_steps">
+  <div class="flex flex-col md:flex-row justify-center items-start gap-4 lg:gap-6 px-4 py-4 slider_participa_steps">
     {cards.map((card) => (
       <div
-        class="flex flex-col gap-1 hidden md:flex w-full md:max-w-[210px] xl:max-w-[320px]"
+        class="flex flex-col gap-1 hidden md:flex w-full md:max-w-[210px] xl:max-w-[340px] xl:opacity-50 transition-opacity duration-300"
         data-step={card.step}
       >
         <p class="text-center font-amx-black text-3xl">Paso {card.step}</p>
         {card.title && (
-          <p class="text-center md:text-xs xl:text-lg leading-tight font-amx-regular text-balance">
+          <p class="text-center md:text-xs xl:text-lg leading-tight font-amx-regular text-balance xl:text-wrap">
             {card.title}
           </p>
         )}
@@ -242,9 +242,11 @@ const { cards, tabId } = Astro.props;
     };
 
     const initDesktop = () => {
+      const rotations = [-6, 0, 6];
+      const xOffsets = [56, 0, -56];
+
+      // Posición base de las cards
       cards.forEach((card, i) => {
-        const rotations = [-6, 0, 6];
-        const xOffsets = [56, 0, -56];
         const originalZIndex = i === 1 ? 10 : 1;
 
         gsap.set(card, {
@@ -254,6 +256,8 @@ const { cards, tabId } = Astro.props;
         });
 
         const enterHandler = () => {
+          const getStep = Number(card.getAttribute("data-index")) + 1;
+          sliderParticipaSteps.querySelector(`[data-step="${getStep}"]`).classList.remove("xl:opacity-50");
           gsap.to(card, {
             rotation: 0,
             scale: 1.08,
@@ -264,6 +268,8 @@ const { cards, tabId } = Astro.props;
         };
 
         const leaveHandler = () => {
+          const getStep = Number(card.getAttribute("data-index")) + 1;
+          sliderParticipaSteps.querySelector(`[data-step="${getStep}"]`).classList.add("xl:opacity-50");
           gsap.to(card, {
             rotation: rotations[i],
             scale: 1,
@@ -278,6 +284,49 @@ const { cards, tabId } = Astro.props;
 
         hoverListeners.push({ element: card, enter: enterHandler, leave: leaveHandler });
       });
+
+      // Animación de entrada tipo baraja (más desordenada)
+      const deckIntro = () => {
+        if (currentMode !== "desktop") return;
+
+        cards.forEach((card, i) => {
+          // Offsets aleatorios suaves para que el efecto se sienta más caótico
+          const randomX = (Math.random() - 0.5) * 320; // -40 a 40
+          const randomY = (Math.random() - 0.5) * 100; // -20 a 20
+          const randomRot = (Math.random() - 0.5) * 20; // -7 a 7
+
+          const fromX = xOffsets[i] - 200 + randomX;
+          const fromY = - 50 + randomY;
+          const fromRotation = rotations[i] - 20 + randomRot;
+
+          gsap.fromTo(
+            card,
+            {
+              x: fromX,
+              y: fromY,
+              rotation: fromRotation,
+              opacity: 0,
+              scale: 0.85,
+            },
+            {
+              x: xOffsets[i],
+              y: 0,
+              rotation: rotations[i],
+              opacity: 1,
+              scale: 1,
+              duration: 0.7,
+              delay: i * 0.12,
+              ease: "power3.out",
+            }
+          );
+        });
+      };
+
+      // Llamar una vez al entrar en desktop
+      deckIntro();
+
+      // Permitir re-disparar la animación desde fuera (por ejemplo, al cambiar de tab)
+      root.addEventListener("cards:enter", deckIntro);      
 
       updateStep(0, false);
     };

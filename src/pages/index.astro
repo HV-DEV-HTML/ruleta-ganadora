@@ -3,40 +3,25 @@ import "aos/dist/aos.css";
 import Layout from "@layouts/Layout.astro";
 import Banner from "@components/Banner.astro";
 import Participa from "@components/Participa.astro";
-import Button from "@UI/Button.astro";
 import bg_circle from "@/assets/images/bg_transparent_circle.png"
 import ModalTratamientos from "@components/Modal/Tratamientos.astro"
 import ModalPromociones from "@components/Modal/Promociones.astro"
 import Preaload from "@UI/Preaload.astro"
+import Premios from "@components/Premios.astro"
+import Ruleta from "@components/Ruleta.astro"
 ---
 
 <Layout title="Ruleta Ganadora">
 	<Banner />
 	<div class="relative md:-mt-20 xl:-mt-40">
-		<img class="absolute object-contain -top-14 md:-top-3/12 xl:-top-3/12 2xl:-top-3/12 left-0 inset-0 backdrop-blur-[2px]" src={bg_circle.src} alt="">
+		<img class="absolute object-contain w-full -top-14 md:-top-1/12 xl:-top-2/12 2xl:-top-2/12 left-0 inset-0 backdrop-blur-[2px]" src={bg_circle.src} alt="">
 		<Participa />
+		<Premios />
 	</div>
-	<section class="relative z-10">
-		<div class="container text-center flex flex-col gap-2">
-			<h2>Conoce los premios que puedes ganar</h2>
-			<p>Cada giro te da la oportunidad de ganar beneficios instantáneos:</p>
-			<Button classes="min-w-fit px-10 py-3 xl:py-3.5 mx-auto" >¡Quiero participar!</Button>
-			<div class="flex gap-4 justify-center py-4">
-				<picture>
-					<img src="https://placehold.co/270x400?text=Image+1" alt="">
-				</picture>
-				<picture>
-					<img src="https://placehold.co/270x400?text=Image+2" alt="">
-				</picture>
-				<picture>
-					<img src="https://placehold.co/270x400?text=Image+3" alt="">
-				</picture>
-			</div>
-		</div>
-	</section>
 	<ModalTratamientos />
 	<ModalPromociones />
 	<Preaload />
+	<Ruleta />
 </Layout>
 
 <script>

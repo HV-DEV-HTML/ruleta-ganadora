@@ -1,0 +1,191 @@
+---
+import premio_01 from '@/assets/images/premio_01.png'
+import premio_02 from '@/assets/images/premio_02.png'
+import premio_03 from '@/assets/images/premio_03.png'
+---
+
+<section class="relative bg-transparent">
+  <div class="container flex flex-col gap-2 lg:gap-4 xl:gap-6">
+    <div class="flex flex-col md:flex-row md:justify-between gap-4">
+      <hgroup class="flex flex-col gap-2 md:max-w-[340px] lg:max-w-fit text-center md:text-left">
+        <h2 class="text-white font-amx-bold text-3xl xl:text-4xl 2xl:text-5xl leading-none">Conoce los premios que puedes ganar</h2>
+        <p class="text-white font-amx-regular text-base xl:text-lg 2xl:text-xl leading-tight">Cada giro te da la oportunidad de ganar beneficios instantáneos:</p>
+      </hgroup>
+      <button class="w-fit mx-auto md:mx-0 cursor-pointer font-amx-bold flex xl:gap-1 items-center group goToForm" data-next-step="2">
+        <span class="leading-none bg-claro text-white md:text-lg rounded-full px-5 py-2.5 md:py-3 xl:py-3.5 transition-all duration-300 group-hover:bg-claro-dark group-hover:text-white">
+            ¡Quiero participar!
+        </span>
+        <span class="bg-white text-claro rounded-full size-8 flex items-center justify-center translate-x-0 transition-all duration-300 group-hover:translate-x-1.5">
+          <svg width="22" height="17" viewBox="0 0 22 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M0 8.3474C-1.07226e-08 8.10209 0.097447 7.86683 0.270904 7.69338C0.444361 7.51992 0.67962 7.42247 0.924925 7.42247L18.4245 7.42247L12.6036 1.60161C12.5128 1.51693 12.4399 1.41482 12.3893 1.30137C12.3388 1.18791 12.3116 1.06543 12.3094 0.94124C12.3072 0.817051 12.3301 0.693692 12.3766 0.578523C12.4231 0.463353 12.4923 0.358733 12.5802 0.270904C12.668 0.183074 12.7726 0.113835 12.8878 0.067317C13.003 0.0207968 13.1263 -0.00204755 13.2505 0.000143993C13.3747 0.00233553 13.4972 0.0295171 13.6106 0.0800695C13.7241 0.130622 13.8262 0.203509 13.9109 0.294381L21.3103 7.69378C21.4835 7.86721 21.5808 8.10229 21.5808 8.3474C21.5808 8.5925 21.4835 8.82759 21.3103 9.00101L13.9109 16.4004C13.8262 16.4913 13.7241 16.5642 13.6106 16.6147C13.4972 16.6653 13.3747 16.6925 13.2505 16.6946C13.1263 16.6968 13.003 16.674 12.8878 16.6275C12.7726 16.581 12.668 16.5117 12.5802 16.4239C12.4923 16.3361 12.4231 16.2314 12.3766 16.1163C12.3301 16.0011 12.3072 15.8777 12.3094 15.7536C12.3116 15.6294 12.3388 15.5069 12.3893 15.3934C12.4399 15.28 12.5128 15.1779 12.6036 15.0932L18.4245 9.27232L0.924925 9.27232C0.67962 9.27232 0.444361 9.17487 0.270904 9.00142C0.0974471 8.82796 1.07227e-08 8.5927 0 8.3474Z" fill="currentColor"/>
+          </svg>
+        </span>
+      </button>
+    </div>
+    <div
+      class="relative flex flex-col items-center justify-center mt-4 md:mt-30 lg:mt-36 pt-10 pb-30 md:pb-10 max-w-[800px] mx-auto"
+      data-premios-carousel
+    >
+      <button class="premios-prev absolute -left-2 md:-left-30 top-1/3 -translate-y-1/2 -translate-x-3 z-50 w-10 h-10 rounded-full text-[#FFC5C1] flex items-center justify-center shadow-lg cursor-pointer transition-opacity duration-300 disabled:opacity-30 disabled:cursor-not-allowed">
+        <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+      </button>
+
+      <button class="premios-next absolute -right-2 md:-right-30 top-1/3 -translate-y-1/2 translate-x-3 z-50 w-10 h-10 rounded-full text-[#FFC5C1] flex items-center justify-center shadow-lg cursor-pointer transition-opacity duration-300 disabled:opacity-30 disabled:cursor-not-allowed">
+        <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+      </button>
+
+      <div class="relative items-center justify-center">
+        <div class="relative premios-orbita mx-auto">
+          <picture
+            class="premio-item max-w-[240px] md:max-w-[280px] xl:max-w-[320px] w-full block scale-100"
+            data-angle="210"
+          >
+            <img
+              src={premio_01.src}
+              alt="Premio 1"
+              class="w-full h-auto object-contain"
+            />
+          </picture>
+
+          <picture
+            class="premio-item max-w-[240px] md:max-w-[280px] xl:max-w-[320px] w-full block"
+            data-angle="270"
+          >
+            <img
+              src={premio_02.src}
+              alt="Premio principal"
+              class="w-full h-auto object-contain"
+            />
+          </picture>
+
+          <picture
+            class="premio-item max-w-[240px] md:max-w-[280px] xl:max-w-[320px] w-full block"
+            data-angle="330"
+          >
+            <img
+              src={premio_03.src}
+              alt="Premio 3"
+              class="w-full h-auto object-contain"
+            />
+          </picture>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+
+  const submitBtn = document.querySelector(".goToForm") as HTMLButtonElement;
+  submitBtn?.addEventListener("click", () => {
+    const nextStep = Number(submitBtn.dataset.nextStep);
+    //Animate scrollTop
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+    setTimeout(() => {
+      if ((window as any).bannerStepTransition) {
+        const currentStep = (window as any).bannerStepTransition.getCurrentStep();
+        (window as any).bannerStepTransition.nextToStep(currentStep, nextStep);
+      }
+    }, 200);    
+  });
+
+  // Contenedor circular de los premios (órbita)
+  const orbitContainer = document.querySelector(".premios-orbita") as HTMLElement | null;
+  if (orbitContainer) {
+    // Elementos que orbitan alrededor del centro (tarjetas de premio)
+    const premioItems = orbitContainer.querySelectorAll(".premio-item") as NodeListOf<HTMLElement>;
+
+    // Desplazamiento de la órbita en pasos de un elemento.
+    // Cambia cuando se hace clic en los botones prev/next para simular la rotación.
+    let orbitOffset = 0;
+
+    // Calcula la posición de cada premio en la órbita.
+    // Si animate = true, interpola con GSAP para lograr un movimiento suave.
+    const layoutOrbit = (animate = false) => {
+      const count = premioItems.length;
+      if (!count) return;
+
+      const size = Math.min(orbitContainer.clientWidth || 320, orbitContainer.clientHeight || 320);
+      const radius = size / 2.2;
+
+      // Índice del elemento que debe quedar centrado visualmente.
+      // Con la fórmula del ángulo, el elemento centrado es aquel cuyo
+      // (index + orbitOffset) % count === 0.
+      const centerIndex = (count - (orbitOffset % count) + count) % count;
+
+      premioItems.forEach((item, index) => {
+        // Se distribuyen los premios proporcionalmente en 360°.
+        // El offset desplaza la órbita hacia adelante/atrás.
+        const angleDeg = (360 / count) * ((index + orbitOffset) % count) - 90;
+        const angleRad = (angleDeg * Math.PI) / 180;
+
+        const x = radius * Math.cos(angleRad);
+        const y = radius * Math.sin(angleRad);
+
+        // Se fija el origen en el centro de la órbita (50%, 50%).
+        item.style.position = "absolute";
+        item.style.top = "50%";
+        item.style.left = "50%";
+        item.style.transform = "translate(-50%, -50%)";
+
+        // Marca cuál de los premios está en el centro de la órbita.
+        // Esto permite aplicar estilos especiales o leer fácilmente qué premio
+        // está activo en cada momento.
+        const isCenter = index === centerIndex;
+        if (isCenter) {
+          item.classList.add("is-center");
+        } else {
+          item.classList.remove("is-center");
+        }
+
+        console.log({isCenter})
+
+        // GSAP anima el desplazamiento en x/y desde el centro y la escala.
+        // Este patrón se puede reutilizar para labels u otros elementos
+        // que deban orbitar sincronizados con estas tarjetas.
+        gsap.to(item, {
+          x,
+          y,
+          scale: isCenter ? 1.2 : 0.8,
+          transformOrigin: "50% 50%",
+          duration: animate ? 0.45 : 0,
+          opacity: isCenter ? 1 : 0.4,
+          ease: "power2.inOut"
+        });
+      });
+    };
+
+    // Layout inicial sin animación (estado base)
+    layoutOrbit(false);
+
+    // Botones de navegación que "rotan" la órbita un paso
+    // hacia atrás o hacia adelante.
+    const prevBtn = document.querySelector(".premios-prev") as HTMLButtonElement | null;
+    const nextBtn = document.querySelector(".premios-next") as HTMLButtonElement | null;
+
+    // Al hacer clic en el botón "prev", se decrementa el offset
+    // para desplazar la órbita hacia atrás.
+    prevBtn?.addEventListener("click", () => {
+      orbitOffset = (orbitOffset - 1 + premioItems.length) % premioItems.length;
+      layoutOrbit(true);
+    });
+
+    // Al hacer clic en el botón "next", se incrementa el offset
+    // para desplazar la órbita hacia adelante.
+    nextBtn?.addEventListener("click", () => {
+      orbitOffset = (orbitOffset + 1) % premioItems.length;
+      layoutOrbit(true);
+    });
+
+    // Recalcula posiciones en resize sin animación para evitar saltos.
+    window.addEventListener("resize", () => layoutOrbit(false));
+  }
+</script>
