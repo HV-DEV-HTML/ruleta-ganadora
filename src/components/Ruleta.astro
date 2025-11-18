@@ -1,158 +1,580 @@
 ---
+import icon_frecha from "@/assets/images/ruleta/icon_flecha.png";
+import icon_claro from "@/assets/images/ruleta/icon_claro_ruleta.png";
+import ruleta from "@/assets/images/ruleta/ruletav3.png";
+import item1 from "@/assets/images/ruleta/item1.png";
+import item2 from "@/assets/images/ruleta/item2.png";
+import item3 from "@/assets/images/ruleta/item3.png";
+import item4 from "@/assets/images/ruleta/item4.png";
+import item5 from "@/assets/images/ruleta/item5.png";
+import item6 from "@/assets/images/ruleta/item6.png";
 ---
 
+<section class="ruletaGanadora">
+  <div class="container">
+    <p>¡Felicitaciones! Tienes <b>1 oportunidad</b> para girar la ruleta</p>
+    <h2>¡Es hora de girar y ganar!</h2>
+    <span>Haz clic en el botón de abajo y deja que la suerte decida tu premio.</span>
+    <button id="btnGirar">Gira la ruleta</button>
+    <div class="contentRuleta">
+      <img src={icon_frecha.src} alt="" class="flecha">
+      <img src={icon_claro.src} alt="" class="claro">
+      <div class="ruleta">
+        <img src={ruleta.src} alt="" class="imgRuleta">
+        <div class="item item1" data-nombre="Moto edge"><img src={item1.src} alt=""></div>
+        <div class="item" data-nombre="+5gb adicionales"><img src={item2.src} alt=""></div>
+        <div class="item" data-nombre="Moto Watch FIT"><img src={item3.src} alt=""></div>
+        <div class="item" data-nombre="iPhone 17"><img src={item4.src} alt=""></div>
+        <div class="item" data-nombre="+10gb adicionales"><img src={item5.src} alt=""></div>
+        <div class="item" data-nombre="Sigue intentando"><img src={item6.src} alt=""></div>
+      </div>
+    </div>
+    <p class="legal">*Imágenes referenciales. Aplican cambios según disponibilidad de stock.</p>
+  </div>
+</section>
+
+<style>
+  section.ruletaGanadora {
+    background-color: #000;
+    p {
+      color: #fff;
+      text-align: center;
+      font-family: "AMX Regular";
+      font-size: 30px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 100%;
+      letter-spacing: 0.6px;
+
+      b {
+        font-family: AMX;
+        font-weight: 700;
+      }
+    }
+
+    h2 {
+      color: #fff;
+      font-family: AMX;
+      font-size: 50px;
+      font-style: normal;
+      font-weight: 800;
+      line-height: normal;
+      text-align: center;
+      margin-top: 7px;
+    }
+
+    span {
+      display: block;
+      color: #fff;
+      text-align: center;
+      font-family: AMX;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      margin-top: 10px;
+    }
+
+    button {
+      color: #fff;
+      text-align: center;
+      font-family: AMX;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+      border-radius: 110px;
+      background: #da291c;
+      width: 204px;
+      height: 55px;
+      border: none;
+      margin: 0 auto;
+      display: block;
+      margin-top: 18px;
+
+      &.disabled {
+        opacity: 0.4;
+        pointer-events: none;
+      }
+    }
+
+    .contentRuleta {
+      pointer-events: none;
+      position: relative;
+      margin-bottom: 50px;
+
+      .flecha {
+        position: absolute;
+        top: 3px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 2;
+      }
+
+      .claro {
+        position: absolute;
+        top: 49.5%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        z-index: 2;
+        width: 100px;
+      }
+    }
+
+    .ruleta {
+      margin: 0 auto;
+      margin-top: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      max-width: 665px;
+      .imgRuleta {
+        width: 100%;
+        max-width: 665px;
+      }
+
+      .item {
+        position: absolute;
+
+        &:nth-of-type(1) {
+          top: 95px;
+          left: 49%;
+          transform: translateX(-50%);
+
+          img {
+            width: 140px;
+          }
+        }
+
+        &:nth-of-type(2) {
+          top: 222px;
+          right: 139px;
+          transform: rotate(64deg);
+
+          img {
+            width: 100px;
+          }
+        }
+
+        &:nth-of-type(3) {
+          bottom: 149px;
+          right: 99px;
+          transform: rotate(123deg);
+
+          img {
+            width: 180px;
+          }
+        }
+
+        &:nth-of-type(4) {
+          bottom: 94px;
+          left: 49%;
+          transform: translateX(-50%) rotate(-180deg);
+
+          img {
+            width: 110px;
+          }
+        }
+
+        &:nth-of-type(5) {
+          bottom: 223px;
+          left: 133px;
+          transform: rotate(238deg);
+
+          img {
+            width: 100px;
+          }
+        }
+
+        &:nth-of-type(6) {
+          top: 221px;
+          left: 140px;
+          transform: rotate(305deg);
+
+          img {
+            width: 100px;
+          }
+        }
+      }
+    }
+
+    .legal {
+      color: #fff;
+      text-align: center;
+      font-family: Roboto;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+  }
+
+  .modalPremio {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+
+    &.active {
+      display: flex;
+    }
+
+    .modalContent {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 350px;
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 1280px) {
+    section.ruletaGanadora p {
+      font-size: 28px;
+    }
+
+    section.ruletaGanadora h2 {
+      font-size: 46px;
+    }
+
+    section.ruletaGanadora span {
+      font-size: 18px;
+    }
+  }
+
+  @media (max-width: 900px) {
+    section.ruletaGanadora p {
+      font-size: 25px;
+    }
+
+    section.ruletaGanadora h2 {
+      font-size: 42px;
+    }
+
+    section.ruletaGanadora span {
+      font-size: 18px;
+    }
+  }
+
+  @media (max-width: 740px) {
+    section.ruletaGanadora .ruleta {
+      max-width: 600px;
+    }
+
+    section.ruletaGanadora .contentRuleta .flecha {
+      width: 80px;
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(1) {
+      top: 83px;
+      left: 49.5%;
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(1) img {
+      width: 121px;
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(2) img {
+      width: 87px;
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(2) {
+      top: 200px;
+      right: 122px;
+      transform: rotate(67deg);
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(3) {
+      bottom: 135px;
+      right: 96px;
+      transform: rotate(123deg);
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(3) img {
+      width: 157px;
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(4) {
+      bottom: 93px;
+      left: 49.5%;
+      transform: translateX(-50%) rotate(-180deg);
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(4) img {
+      width: 88px;
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(5) {
+      bottom: 207px;
+      left: 127px;
+      transform: rotate(242deg);
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(5) img {
+      width: 87px;
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(6) {
+      top: 195px;
+      left: 121px;
+      transform: rotate(300deg);
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(6) img {
+      width: 85px;
+    }
+  }
+
+  @media (max-width: 750px) {
+    section.ruletaGanadora p {
+      font-size: 20px;
+    }
+
+    section.ruletaGanadora h2 {
+      font-size: 35px;
+    }
+
+    section.ruletaGanadora span {
+      font-size: 16px;
+    }
+
+    section.ruletaGanadora button {
+      font-size: 18px;
+      width: 183px;
+      height: 48px;
+    }
+  }
+
+  @media (max-width: 660px) {
+    section.ruletaGanadora .ruleta {
+      max-width: 500px;
+      margin-top: 30px;
+    }
+
+    section.ruletaGanadora .contentRuleta .flecha {
+      width: 64px;
+      top: 6px;
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(1) {
+      top: 79px;
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(1) img {
+      width: 96px;
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(2) {
+      top: 162px;
+      right: 104px;
+      transform: rotate(66deg);
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(2) img {
+      width: 77px;
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(3) {
+      bottom: 117px;
+      right: 81px;
+      transform: rotate(121deg);
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(3) img {
+      width: 129px;
+    }
+
+    section.ruletaGanadora .contentRuleta .claro {
+      width: 74px;
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(4) {
+      bottom: 78px;
+      left: 49.5%;
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(4) img {
+      width: 75px;
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(5) {
+      bottom: 174px;
+      left: 106px;
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(5) img {
+      width: 75px;
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(6) {
+      top: 166px;
+      left: 105px;
+      transform: rotate(298deg);
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(6) img {
+      width: 75px;
+    }
+  }
+
+  @media (max-width: 500px) {
+    section.ruletaGanadora .ruleta {
+      margin-top: 20px;
+    }
+
+    section.ruletaGanadora {
+      overflow: hidden;
+    }
+
+    section.ruletaGanadora .contentRuleta {
+      margin-bottom: 20px;
+    }
+
+    section.ruletaGanadora .ruleta {
+      height: 400px;
+    }
+
+    section.ruletaGanadora .ruleta .imgRuleta {
+      width: 363px;
+      position: absolute;
+      max-width: 363px;
+    }
+
+    section.ruletaGanadora .contentRuleta .flecha {
+      width: 60px;
+      top: 19px;
+    }
+
+    section.ruletaGanadora p {
+      font-size: 16px;
+    }
+
+    section.ruletaGanadora h2 {
+      font-size: 30px;
+    }
+
+    section.ruletaGanadora span {
+      font-size: 14px;
+    }
+
+    section.ruletaGanadora button {
+      font-size: 16px;
+      width: 160px;
+      height: 41px;
+    }
+
+    section.ruletaGanadora .legal {
+      font-size: 12px;
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(1) {
+      top: 67px;
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(1) img {
+      width: 72px;
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(2) {
+      top: 139px;
+      right: 48%;
+      transform: translateX(171%) rotate(62deg);
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(2) img {
+      width: 60px;
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(3) {
+      bottom: 101px;
+      right: 50%;
+      transform: translateX(131%) rotate(121deg);
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(3) img {
+      width: 94px;
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(4) {
+      bottom: 72px;
+      left: 49.5%;
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(4) img {
+      width: 60px;
+    }
+
+    section.ruletaGanadora .contentRuleta .claro {
+      width: 56px;
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(5) {
+      bottom: 142px;
+      left: 51%;
+      transform: translateX(-200%) rotate(242deg);
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(5) img {
+      width: 55px;
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(6) {
+      top: 137px;
+      left: 51%;
+      transform: translateX(-196%) rotate(298deg);
+    }
+
+    section.ruletaGanadora .ruleta .item:nth-of-type(6) img {
+      width: 57px;
+    }
+  }
+</style>
+
 <script>
-  import icon_no_cumple from '@/assets/icons/icon_no_cumple.svg'
-  import icon_gano_premio from '@/assets/icons/icon_gano_premio.svg'
-  import icon_no_gano from '@/assets/icons/icon_no_gano.svg'
   
-  import Swal from "sweetalert2";
-  const openModalNoCumple = () => {
-    const swalWithBootstrapButtons = Swal.mixin({
-      customClass: {
-        popup: 'rounded-[20px] max-w-[640px] w-full pb-8 lg:p-4 lg:pb-8',
-        actions: "gap-2",
-        icon: 'rounded-[0px] border-0',
-        title: "font-amx-bold text-2xl xl:text-3xl text-black pt-0 text-balance",
-        htmlContainer: 'font-roboto text-base text-black !flex flex-col gap-2 xl:gap-3 px-10',
-        cancelButton: "",
-        confirmButton: "font-amx-bold min-w-[124px] max-w-fit cursor-pointer outline-none py-3 px-6 font-medium text-base rounded-[40px] transition duration-300 flex items-center justify-center gap-1 leading-none h-fit bg-claro hover:bg-claro-dark text-white",
-      },
-      buttonsStyling: false
-    });      
-    swalWithBootstrapButtons.fire({
-      iconHtml: "<img src='" + icon_no_cumple.src + "'>",
-      title: "Lo sentimos, no puedes participar en estos momentos 👇",
-      html: "<p>Para participar debes realizar una recarga desde s/7 soles en Mi Claro App, activar una línea , renovar o migrar a Claro.</p>",
-      showCancelButton: false,
-      showConfirmButton: true,
-      confirmButtonText: "Volver al inicio",
-      cancelButtonText: "",
-      reverseButtons: false,
-      showCloseButton: true,
-      preConfirm: async () => {
-        Swal.showLoading();
-      },
-    })
+  const btn = document.querySelector("#btnGirar") as HTMLElement;
+  const ruleta = document.querySelector(".ruleta") as HTMLElement;
+  const items = document.querySelectorAll(".ruleta .item");
+
+  let yaGiro = false;
+  let gradosActuales = 0;
+
+  btn.addEventListener("click", girarRuleta);
+
+  function girarRuleta() {
+    if (yaGiro) return;
+    yaGiro = true;
+
+    btn.classList.add("disabled");
+
+    const cantidadItems = items.length;
+    const gradosPorItem = 318 / cantidadItems;
+
+    const indiceGanador = Math.floor(Math.random() * cantidadItems);
+    const itemGanador = items[indiceGanador];
+    const nombreGanador = itemGanador.getAttribute("data-nombre");
+
+    console.log("Ganador:", nombreGanador);
+
+    const anguloObjetivo = 360 - (gradosPorItem * indiceGanador) - gradosPorItem / 2;
+
+    const vueltasExtras = 360 * 5;
+    const anguloFinal = gradosActuales + vueltasExtras + anguloObjetivo;
+
+    ruleta.style.transition = "transform 5s cubic-bezier(0.1, 0.1, 0.1, 1)";
+    ruleta.style.transform = `rotate(${anguloFinal}deg)`;
+
+    gradosActuales = anguloFinal;
+
+    // Después del giro mostrar modal
+    setTimeout(() => {
+      console.log({nombreGanador})
+    }, 2000);
   }
-
-  const openModalYaGanoAntes = () => {
-    const swalWithBootstrapButtons = Swal.mixin({
-      customClass: {
-        popup: 'rounded-[20px] max-w-[640px] w-full pb-8 lg:p-4 lg:pb-8',
-        actions: "gap-2",
-        icon: 'rounded-[0px] border-0',
-        title: "font-amx-bold text-2xl xl:text-3xl text-black pt-0 text-balance",
-        htmlContainer: 'font-roboto text-base text-black !flex flex-col gap-2 xl:gap-3 px-10',
-        cancelButton: "",
-        confirmButton: "font-amx-bold min-w-[124px] max-w-fit cursor-pointer outline-none py-3 px-6 font-medium text-base rounded-[40px] transition duration-300 flex items-center justify-center gap-1 leading-none h-fit bg-claro hover:bg-claro-dark text-white",
-      },
-      buttonsStyling: false
-    });      
-    swalWithBootstrapButtons.fire({
-      iconHtml: "<img src='" + icon_no_cumple.src + "'>",
-      title: "¡Ya participaste! Gracias por ser parte de la ruleta ganadora 💫",
-      html: "",
-      showCancelButton: false,
-      showConfirmButton: true,
-      confirmButtonText: "Volver al inicio",
-      cancelButtonText: "",
-      reverseButtons: false,
-      showCloseButton: true,
-      preConfirm: async () => {
-        Swal.showLoading();
-      },
-    })
-  }
-
-  const openModalGanoFisico = () => {
-    const swalWithBootstrapButtons = Swal.mixin({
-      customClass: {
-        popup: 'rounded-[20px] max-w-[640px] w-full pb-8 lg:p-4 lg:pb-8',
-        actions: "gap-2",
-        icon: 'rounded-[0px] border-0',
-        title: "font-amx-bold text-2xl xl:text-3xl text-black pt-0 text-balance",
-        htmlContainer: 'font-roboto text-base text-black !flex flex-col gap-2 xl:gap-3 px-10',
-        cancelButton: "",
-        confirmButton: "font-amx-bold min-w-[124px] max-w-fit cursor-pointer outline-none py-3 px-6 font-medium text-base rounded-[40px] transition duration-300 flex items-center justify-center gap-1 leading-none h-fit bg-claro hover:bg-claro-dark text-white",
-      },
-      buttonsStyling: false
-    });      
-    swalWithBootstrapButtons.fire({
-      iconHtml: "<img src='" + icon_gano_premio.src + "'>",
-      title: "🎁 ¡Felicitaciones! Ganaste unos (nombre de premio)",
-      html: "<p>Te contactaremos por correo en los próximos días para coordinar la entrega.</p>",
-      showCancelButton: false,
-      showConfirmButton: true,
-      confirmButtonText: "Volver al inicio",
-      cancelButtonText: "",
-      reverseButtons: false,
-      showCloseButton: true,
-      preConfirm: async () => {
-        Swal.showLoading();
-      },
-    })
-  }
-
-  const openModalGanoVirtual = () => {
-    const swalWithBootstrapButtons = Swal.mixin({
-      customClass: {
-        popup: 'rounded-[20px] max-w-[640px] w-full pb-8 lg:p-4 lg:pb-8',
-        actions: "gap-2",
-        icon: 'rounded-[0px] border-0',
-        title: "font-amx-bold text-2xl xl:text-3xl text-black pt-0 text-balance",
-        htmlContainer: 'font-roboto text-base text-black !flex flex-col gap-2 xl:gap-3 px-10',
-        cancelButton: "",
-        confirmButton: "font-amx-bold min-w-[124px] max-w-fit cursor-pointer outline-none py-3 px-6 font-medium text-base rounded-[40px] transition duration-300 flex items-center justify-center gap-1 leading-none h-fit bg-claro hover:bg-claro-dark text-white",
-      },
-      buttonsStyling: false
-    });      
-    swalWithBootstrapButtons.fire({
-      iconHtml: "<img src='" + icon_gano_premio.src + "'>",
-      title: "🎉 ¡Felicidades! Ganaste 5 GB para seguir disfrutando de tu conexión",
-      html: "<p>Se activarán en un máximo de <strong>72 horas</strong>.</p>",
-      showCancelButton: false,
-      showConfirmButton: true,
-      confirmButtonText: "Volver al inicio",
-      cancelButtonText: "",
-      reverseButtons: false,
-      showCloseButton: true,
-      preConfirm: async () => {
-        Swal.showLoading();
-      },
-    })
-  }
-
-  const openModalNoGano = () => {
-    const swalWithBootstrapButtons = Swal.mixin({
-      customClass: {
-        popup: 'rounded-[20px] max-w-[640px] w-full pb-8 lg:p-4 lg:pb-8',
-        actions: "gap-2",
-        icon: 'rounded-[0px] border-0',
-        title: "font-amx-bold text-2xl xl:text-3xl text-black pt-0 text-balance",
-        htmlContainer: 'font-roboto text-base text-black !flex flex-col gap-2 xl:gap-3 px-10',
-        cancelButton: "",
-        confirmButton: "font-amx-bold min-w-[124px] max-w-fit cursor-pointer outline-none py-3 px-6 font-medium text-base rounded-[40px] transition duration-300 flex items-center justify-center gap-1 leading-none h-fit bg-claro hover:bg-claro-dark text-white",
-      },
-      buttonsStyling: false
-    });      
-    swalWithBootstrapButtons.fire({
-      iconHtml: "<img src='" + icon_no_gano.src + "'>",
-      title: "¡Sigue participando y deja que la suerte siga girando a tu favor! 🍀🎁",
-      html: "<p>Recuerda que por cada recarga, compra o activación, obtienes una nueva oportunidad para girar la ruleta.</p>",
-      showCancelButton: false,
-      showConfirmButton: true,
-      confirmButtonText: "Volver al inicio",
-      cancelButtonText: "",
-      reverseButtons: false,
-      showCloseButton: true,
-      preConfirm: async () => {
-        Swal.showLoading();
-      },
-    })
-  }
-
-
-//openModalGanoVirtual();
-  
 </script>
