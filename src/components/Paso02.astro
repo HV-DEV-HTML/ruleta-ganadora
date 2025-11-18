@@ -39,6 +39,11 @@ import Button from "@UI/Button.astro"
 <script>
   import JustValidate from 'just-validate';
   import {autoSuggestEmail} from '@/utils/autosuggestEmail';
+  import icon_no_cumple from "@/assets/icons/icon_no_cumple.svg";
+  import { showCustomModal } from "@/utils/modalHelper";
+  import {preCheck, registerUser} from '@/utils/endpoints';
+  import { userStore } from '@/store/userStore';
+  import { togglePreloadAnimation } from "@/utils/animations";
 
   const handleModal = (btnsOpenSelector, modalsSelector, closesSubSelector, closesBtnSelector) => {
     const modals = document.querySelectorAll(modalsSelector);
@@ -49,7 +54,7 @@ import Button from "@UI/Button.astro"
     btnsOpen.forEach((btn, i) => {
       btn.onclick = () => {
         modals[i].classList.add('active');
-        console.log("CLICK");
+        //console.log("CLICK");
         window.onclick = (event) => {
           if (event.target === modals[i]) {
             modals.forEach(modal => modal.classList.remove('active'));
@@ -139,24 +144,66 @@ import Button from "@UI/Button.astro"
         submitBtn.disabled = !isValid;
       }
     })
-    .onSuccess((event) => {
+    .onSuccess(async (event) => {
       event.preventDefault();
-      
+      const dataForm = new FormData(form);
+      const fieldPhone = dataForm.get('phone');
+      const fieldName = dataForm.get('name');
       // Obtener el paso siguiente del botón
       const nextStep = Number(submitBtn.dataset.nextStep);
-      
-      // Usar las funciones globales de transición
-      if ((window as any).bannerStepTransition) {
-        const currentStep = (window as any).bannerStepTransition.getCurrentStep();
-        (window as any).bannerStepTransition.nextToStep(currentStep, nextStep);
+      submitBtn.disabled = true;
+      togglePreloadAnimation(true);
+      try {
+        const preCheckResponse = await preCheck(fieldEmail.value, fieldPhone);
+        const {allowed, reason, user} = preCheckResponse;
+        if (!allowed || !user) {
+          showCustomModal({
+            iconSrc: icon_no_cumple.src,
+            title: "Lo sentimos, no puedes participar en estos momentos 👇",
+            html: "<p>Para participar debes realizar una recarga desde s/7 soles en Mi Claro App, activar una línea , renovar o migrar a Claro.</p",
+            confirmButtonText: "Volver al inicio",
+            showCloseButton: true,
+            onConfirm: () => {
+              // aquí haces el callback que quieras, por ejemplo:
+              resetForm();
+            },
+          });
+          togglePreloadAnimation(false);
+          return;
+        }
+        const {email, phone, docType, docNumber } = user;
+        //seteamos los datos del user en el store
+        userStore.setState({ user });
+        //Register user
+        const registerUserResponse = await registerUser(fieldName, email, phone, docType, docNumber);
+        if (registerUserResponse?.success) {
+          // Usar las funciones globales de transición para psar al siguiente step
+          if ((window as any).bannerStepTransition) {
+            const currentStep = (window as any).bannerStepTransition.getCurrentStep();
+            (window as any).bannerStepTransition.nextToStep(currentStep, nextStep);
+          }
+        }
+        // Aquí puedes agregar la lógica para enviar el formulario (API call, etc.)
+        submitBtn.disabled = false;
+        // Resetear el formulario después de la transición
+        resetForm();
+        togglePreloadAnimation(false);
+      } catch (error) {
+        togglePreloadAnimation(false);
+        //alert('No hemos podido validar tus datos. Por favor, inténtalo nuevamente.');
+        showCustomModal({
+          iconSrc: icon_no_cumple.src,
+          title: "Error en la validación",
+          html: "",
+          confirmButtonText: "Volver al inicio",
+          showCloseButton: true,
+          onConfirm: () => {
+            resetForm();
+          },
+        });
       }
       
-      // Aquí puedes agregar la lógica para enviar el formulario (API call, etc.)
       
-      // Resetear el formulario después de la transición
-      setTimeout(() => {
-        resetForm();
-      }, 500);
     });
 
   //Crea una funcion para restear el formulario y poder usarlo en onSuccess

@@ -8,15 +8,23 @@ import item3 from "@/assets/images/ruleta/item3.png";
 import item4 from "@/assets/images/ruleta/item4.png";
 import item5 from "@/assets/images/ruleta/item5.png";
 import item6 from "@/assets/images/ruleta/item6.png";
+import bg_mobile from "@/assets/images/banner_mobile.png"
+import bg_tablet from "@/assets/images/banner_tablet.jpg"
+import bg_desktop from "@/assets/images/banner_desktop.jpg"
 ---
 
-<section class="ruletaGanadora">
-  <div class="container">
-    <p>¡Felicitaciones! Tienes <b>1 oportunidad</b> para girar la ruleta</p>
-    <h2>¡Es hora de girar y ganar!</h2>
-    <span>Haz clic en el botón de abajo y deja que la suerte decida tu premio.</span>
-    <button id="btnGirar">Gira la ruleta</button>
-    <div class="contentRuleta">
+<section class="ruletaGanadora relative hidden">
+  <picture class="w-full h-full absolute top-0 left-0 z-0">
+    <source srcset={bg_desktop.src} media="(min-width: 1280px)">
+    <source srcset={bg_tablet.src} media="(min-width: 768px)">
+    <img class="w-full h-full object-cover" src={bg_mobile.src} alt="¡Gira la ruleta y gana premios al instante!">
+  </picture>
+  <div class="container relative z-1">
+    <p data-aos="zoom-in-up">¡Felicitaciones! Tienes <b>1 oportunidad</b> para girar la ruleta</p>
+    <h2 data-aos="zoom-in-up">¡Es hora de girar y ganar!</h2>
+    <span data-aos="zoom-in-up">Haz clic en el botón de abajo y deja que la suerte decida tu premio.</span>
+    <button data-aos="zoom-in-up" class="cursor-pointer" id="btnGirar">Gira la ruleta</button>
+    <div class="contentRuleta" data-aos="zoom-in-down" data-aos-delay="100">
       <img src={icon_frecha.src} alt="" class="flecha">
       <img src={icon_claro.src} alt="" class="claro">
       <div class="ruleta">
@@ -537,13 +545,19 @@ import item6 from "@/assets/images/ruleta/item6.png";
 </style>
 
 <script>
-  
+  import { gsap } from "gsap";
+
   const btn = document.querySelector("#btnGirar") as HTMLElement;
   const ruleta = document.querySelector(".ruleta") as HTMLElement;
   const items = document.querySelectorAll(".ruleta .item");
 
   let yaGiro = false;
   let gradosActuales = 0;
+
+  function elegirIndiceGanador(cantidadItems: number): number {
+    // Aquí se puede reemplazar por una lógica de probabilidades con pesos
+    return Math.floor(Math.random() * cantidadItems);
+  }
 
   btn.addEventListener("click", girarRuleta);
 
@@ -556,25 +570,28 @@ import item6 from "@/assets/images/ruleta/item6.png";
     const cantidadItems = items.length;
     const gradosPorItem = 318 / cantidadItems;
 
-    const indiceGanador = Math.floor(Math.random() * cantidadItems);
-    const itemGanador = items[indiceGanador];
-    const nombreGanador = itemGanador.getAttribute("data-nombre");
-
-    console.log("Ganador:", nombreGanador);
-
-    const anguloObjetivo = 360 - (gradosPorItem * indiceGanador) - gradosPorItem / 2;
+    const indiceGanador = elegirIndiceGanador(cantidadItems);
 
     const vueltasExtras = 360 * 5;
+    const offsetFlecha = 5;
+    const anguloObjetivo = 360 - gradosPorItem * indiceGanador - gradosPorItem / 2 + offsetFlecha;
     const anguloFinal = gradosActuales + vueltasExtras + anguloObjetivo;
 
-    ruleta.style.transition = "transform 5s cubic-bezier(0.1, 0.1, 0.1, 1)";
-    ruleta.style.transform = `rotate(${anguloFinal}deg)`;
+    const itemGanador = items[indiceGanador];
+
+    gsap.to(ruleta, {
+      rotation: anguloFinal,
+      duration: 5,
+      ease: "power3.out",
+      onComplete: () => {
+        const nombreGanador = itemGanador.getAttribute("data-nombre");
+        console.log("Ganador:", nombreGanador);
+
+        // Después del giro mostrar modal
+        console.log({ nombreGanador });
+      },
+    });
 
     gradosActuales = anguloFinal;
-
-    // Después del giro mostrar modal
-    setTimeout(() => {
-      console.log({nombreGanador})
-    }, 2000);
   }
 </script>

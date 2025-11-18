@@ -8,7 +8,7 @@ import Button from "@UI/Button.astro"
     <p class="font-amx-regular text-sm text-balance text-center leading-tight">Se te ha enviado un código de validación al correo electrónico ingresado. Revisa tu bandeja de entrada o spam.</p>
     <fieldset>
       <label for="codeClaro" class="text-xs md:text-sm font-bold">Código de validación</label>
-      <input type="text" name="codeClaro" id="codeClaro" maxlength="5" inputmode="numeric" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-base focus:outline-none" placeholder="Ingrese código (Ejm: 10935)" required>
+      <input type="text" name="codeClaro" id="codeClaro" maxlength="8" inputmode="numeric" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-base focus:outline-none" placeholder="Ingrese código (Ejm: 10935)" required>
     </fieldset>
     
     <Button id="btn-submit-code" data-aos="zoom-in-up" data-aos-delay="100" type="submit" disabled href="https://www.claro.com.pe/personas/app/claro-musica/" classes="min-w-fit bg-white px-12 py-2.5 xl:py-3.5 border border-claro text-claro cursor-pointer hover:bg-claro hover:text-white disabled:bg-gray-200 disabled:border-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed mx-auto" >Validar y girar la ruleta</Button>
@@ -18,6 +18,11 @@ import Button from "@UI/Button.astro"
 <script>
   import JustValidate from 'just-validate';
   import { togglePreloadAnimation } from "@/utils/animations";
+  import { userStore } from '@/store/userStore';
+  import { verifyCode, validUserEnabled } from '@/utils/endpoints';
+  import { showCustomModal } from '@/utils/modalHelper';
+  import icon_no_cumple from "@/assets/icons/icon_no_cumple.svg";
+
 
   // Restricciones de entrada en los campos
   const restrictInput = (selector, allowedRegex) => {
@@ -31,7 +36,6 @@ import Button from "@UI/Button.astro"
   };
 
   document.addEventListener('DOMContentLoaded', () => {
-    const box_preload = document.querySelector('.box_preload') as HTMLDivElement;
     const form = document.querySelector('#form-code') as HTMLFormElement;
     const submitBtn = document.querySelector('#btn-submit-code') as HTMLButtonElement;
     
@@ -57,8 +61,8 @@ import Button from "@UI/Button.astro"
         },
         {
           rule: 'maxLength',
-          value: 5,
-          errorMessage: 'El código debe tener máximo 5 caracteres',
+          value: 8,
+          errorMessage: 'El código debe tener máximo 8 caracteres',
         },
       ])
       .onValidate(({ isValid, isSubmitted, fields, errors, failedRules, failedRulesCount }) => {     
@@ -68,12 +72,83 @@ import Button from "@UI/Button.astro"
           submitBtn.disabled = !isValid;
         }
       })
-      .onSuccess((event) => {
+      .onSuccess( async(event) => {
         event.preventDefault();
+        submitBtn.disabled = true;
+        const code = event.target.codeClaro.value;
+        //Obten el store de store de zustand
+        const { user } = userStore.getState();
+        if (!user) return;
         // Aquí puedes agregar la lógica para validar el código con el backend
         togglePreloadAnimation(true);
+        try {
+          const verifyCodeResponse = await verifyCode(user.email, code);
+          const { verified, message, status } = verifyCodeResponse || {};
+          if (verified) {
+            document.querySelectorAll(".section_hidden").forEach(section => section.classList.add("hidden"));
+            document.querySelector(".ruletaGanadora").classList.remove("hidden");
+          } else {
+            showCustomModal({
+              title: "Código inválido",
+              html: message || "El código ingresado no es válido",
+              iconSrc: icon_no_cumple.src,
+              confirmButtonText: "Aceptar",
+              showCloseButton: false,
+              onConfirm: () => {
+                resetForm();
+              },
+            });
+          }
+        } catch (error) {
+          console.error(error);
+          
+          showCustomModal({
+            title: "Error al validar el código",
+            html: "Ocurrió un problema al validar tu código. Por favor, inténtalo nuevamente.",
+            iconSrc: icon_no_cumple.src,
+            confirmButtonText: "Aceptar",
+            showCloseButton: false,
+            onConfirm: () => {
+              resetForm();
+            },
+          });
+        } finally {
+          togglePreloadAnimation(false);
+          submitBtn.disabled = false;
+          document.querySelectorAll(".section_hidden").forEach(section => section.classList.add("hidden"));
+          document.querySelector(".ruletaGanadora").classList.remove("hidden");
+          const userEnabledResponse = await validUserEnabled(user.id);
+          try {
+            const { canSpin, remainingPlays, playsAllowed, playsUsed, reason } = userEnabledResponse || {};
+            console.log({canSpin, remainingPlays, playsAllowed, playsUsed, reason})
+            if (canSpin) {
+              
+            }else{
+              setTimeout(() => {
+                showCustomModal({
+                  title: "Lo sentimos, no puedes participar en estos momentos 👇",
+                  html: `<p>${reason}</p>`,
+                  iconSrc: icon_no_cumple.src,
+                  confirmButtonText: "Volver al inicio",
+                  showCloseButton: false,
+                  onConfirm: () => {
+                    resetForm();
+                  },
+                });
+              }, 2500);
+            }
+          } catch (error) {
+            console.error(error);
+          }
+        }
       });
     
+    //Crea una funcion para restear el formulario y poder usarlo en onSuccess
+    const resetForm = () => {
+      form.reset();
+      validator.refresh();
+      submitBtn.disabled = true;
+    };
     // #codeClaro solo se permiten numeros
     restrictInput("#codeClaro", /[^0-9]/g);
   });
