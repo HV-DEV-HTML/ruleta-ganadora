@@ -8,14 +8,15 @@ import Button from "@UI/Button.astro"
     <p class="font-amx-regular text-sm text-balance text-center leading-tight">Se te ha enviado un código de validación al correo electrónico ingresado. Revisa tu bandeja de entrada o spam.</p>
     <fieldset>
       <label for="codeClaro" class="text-xs md:text-sm font-bold">Código de validación</label>
-      <input type="text" name="codeClaro" id="codeClaro" maxlength="8" inputmode="numeric" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-base focus:outline-none" placeholder="Ingrese código (Ejm: 10935)" required>
+      <input type="text" name="codeClaro" id="codeClaro" maxlength="6" inputmode="numeric" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-base focus:outline-none" placeholder="Ingrese código (Ejm: 10935)" required>
     </fieldset>
     
-    <Button id="btn-submit-code" data-aos="zoom-in-up" data-aos-delay="100" type="submit" disabled href="https://www.claro.com.pe/personas/app/claro-musica/" classes="min-w-fit bg-white px-12 py-2.5 xl:py-3.5 border border-claro text-claro cursor-pointer hover:bg-claro hover:text-white disabled:bg-gray-200 disabled:border-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed mx-auto" >Validar y girar la ruleta</Button>
+    <Button id="btn-submit-code" data-next-step="4" data-aos="zoom-in-up" data-aos-delay="100" type="submit" disabled href="https://www.claro.com.pe/personas/app/claro-musica/" classes="min-w-fit bg-white px-12 py-2.5 xl:py-3.5 border border-claro text-claro cursor-pointer hover:bg-claro hover:text-white disabled:bg-gray-200 disabled:border-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed mx-auto" >Validar y girar la ruleta</Button>
   </form>
 </div>
 
 <script>
+  import AOS from "aos";
   import JustValidate from 'just-validate';
   import { togglePreloadAnimation } from "@/utils/animations";
   import { userStore } from '@/store/userStore';
@@ -40,6 +41,14 @@ import Button from "@UI/Button.astro"
     const submitBtn = document.querySelector('#btn-submit-code') as HTMLButtonElement;
     
     if (!form || !submitBtn) return;
+
+    // Funciones de utilidad para animaciones AOS
+    const resetAosAnimations = (element: Element) => {
+      const aosElements = element.querySelectorAll('[data-aos]');
+      aosElements.forEach(el => {
+        el.classList.remove('aos-animate', 'aos-init');
+      });
+    };
     
     const validator = new JustValidate('#form-code', {
       errorFieldCssClass: 'border-red-500',
@@ -61,8 +70,8 @@ import Button from "@UI/Button.astro"
         },
         {
           rule: 'maxLength',
-          value: 8,
-          errorMessage: 'El código debe tener máximo 8 caracteres',
+          value: 6,
+          errorMessage: 'El código debe tener máximo 6 caracteres',
         },
       ])
       .onValidate(({ isValid, isSubmitted, fields, errors, failedRules, failedRulesCount }) => {     
@@ -75,9 +84,11 @@ import Button from "@UI/Button.astro"
       .onSuccess( async(event) => {
         event.preventDefault();
         submitBtn.disabled = true;
+        const ruleta = document.querySelector(".ruletaGanadora") as HTMLElement;
         const code = event.target.codeClaro.value;
         //Obten el store de store de zustand
         const { user } = userStore.getState();
+        console.log("user", userStore.getState(), user);
         if (!user) return;
         // Aquí puedes agregar la lógica para validar el código con el backend
         togglePreloadAnimation(true);
@@ -86,7 +97,7 @@ import Button from "@UI/Button.astro"
           const { verified, message, status } = verifyCodeResponse || {};
           if (verified) {
             document.querySelectorAll(".section_hidden").forEach(section => section.classList.add("hidden"));
-            document.querySelector(".ruletaGanadora").classList.remove("hidden");
+            ruleta.classList.remove("hidden");
           } else {
             showCustomModal({
               title: "Código inválido",

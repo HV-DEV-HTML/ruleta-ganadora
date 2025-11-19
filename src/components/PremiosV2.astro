@@ -1,0 +1,151 @@
+---
+import "swiper/css/bundle";
+import product_01 from '@/assets/images/products/01.png'
+import product_02 from '@/assets/images/products/02.png'
+import product_03 from '@/assets/images/products/03.png'
+import product_04 from '@/assets/images/products/04.png'
+import product_05 from '@/assets/images/products/05.png'
+import product_06 from '@/assets/images/products/06.png'
+import product_07 from '@/assets/images/products/07.png'
+import product_08 from '@/assets/images/products/08.png'
+
+---
+
+<section class="relative bg-transparent">
+  <div class="container flex flex-col gap-2 lg:gap-4 xl:gap-6">
+    <div class="flex flex-col md:flex-row md:justify-between gap-4">
+      <hgroup class="flex flex-col gap-2 md:max-w-[340px] lg:max-w-fit text-center md:text-left">
+        <h2 class="text-white font-amx-bold text-3xl xl:text-4xl 2xl:text-5xl leading-none">Conoce los premios que puedes ganar</h2>
+        <p class="text-white font-amx-regular text-base xl:text-lg 2xl:text-xl leading-tight">Cada giro te da la oportunidad de ganar beneficios instantáneos:</p>
+      </hgroup>
+      <button class="w-fit mx-auto md:mx-0 cursor-pointer font-amx-bold flex xl:gap-1 items-center group goToForm" data-next-step="2">
+        <span class="leading-none bg-claro text-white md:text-lg rounded-full px-5 py-2.5 md:py-3 xl:py-3.5 transition-all duration-300 group-hover:bg-claro-dark group-hover:text-white">
+            ¡Quiero participar!
+        </span>
+        <span class="bg-white text-claro rounded-full size-8 flex items-center justify-center translate-x-0 transition-all duration-300 group-hover:translate-x-1.5">
+          <svg width="22" height="17" viewBox="0 0 22 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M0 8.3474C-1.07226e-08 8.10209 0.097447 7.86683 0.270904 7.69338C0.444361 7.51992 0.67962 7.42247 0.924925 7.42247L18.4245 7.42247L12.6036 1.60161C12.5128 1.51693 12.4399 1.41482 12.3893 1.30137C12.3388 1.18791 12.3116 1.06543 12.3094 0.94124C12.3072 0.817051 12.3301 0.693692 12.3766 0.578523C12.4231 0.463353 12.4923 0.358733 12.5802 0.270904C12.668 0.183074 12.7726 0.113835 12.8878 0.067317C13.003 0.0207968 13.1263 -0.00204755 13.2505 0.000143993C13.3747 0.00233553 13.4972 0.0295171 13.6106 0.0800695C13.7241 0.130622 13.8262 0.203509 13.9109 0.294381L21.3103 7.69378C21.4835 7.86721 21.5808 8.10229 21.5808 8.3474C21.5808 8.5925 21.4835 8.82759 21.3103 9.00101L13.9109 16.4004C13.8262 16.4913 13.7241 16.5642 13.6106 16.6147C13.4972 16.6653 13.3747 16.6925 13.2505 16.6946C13.1263 16.6968 13.003 16.674 12.8878 16.6275C12.7726 16.581 12.668 16.5117 12.5802 16.4239C12.4923 16.3361 12.4231 16.2314 12.3766 16.1163C12.3301 16.0011 12.3072 15.8777 12.3094 15.7536C12.3116 15.6294 12.3388 15.5069 12.3893 15.3934C12.4399 15.28 12.5128 15.1779 12.6036 15.0932L18.4245 9.27232L0.924925 9.27232C0.67962 9.27232 0.444361 9.17487 0.270904 9.00142C0.0974471 8.82796 1.07227e-08 8.5927 0 8.3474Z" fill="currentColor"/>
+          </svg>
+        </span>
+      </button>
+    </div>
+    <div class="relative py-8 xl:pb-14">
+      <div class="swiper swiperPremios w-full">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <div class="max-w-[254px] xl:max-w-[280px] mx-auto">
+              <img src={product_01.src} alt="Premio 1" class="max-w-full h-auto object-contain" />
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="max-w-[254px] xl:max-w-[280px] mx-auto">
+              <img src={product_02.src} alt="Premio 2" class="max-w-full h-auto object-contain" />
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="max-w-[254px] xl:max-w-[280px] mx-auto">
+              <img src={product_03.src} alt="Premio 3" class="max-w-full h-auto object-contain" />
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="max-w-[254px] xl:max-w-[280px] mx-auto">
+              <img src={product_04.src} alt="Premio 4" class="max-w-full h-auto object-contain" />
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="max-w-[254px] xl:max-w-[280px] mx-auto">
+            
+              <img src={product_05.src} alt="Premio 5" class="max-w-full h-auto object-contain" />
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="max-w-[254px] xl:max-w-[280px] mx-auto">
+              <img src={product_06.src} alt="Premio 6" class="max-w-full h-auto object-contain" />
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="max-w-[254px] xl:max-w-[280px] mx-auto">
+              <img src={product_07.src} alt="Premio 7" class="max-w-full h-auto object-contain" />
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="max-w-[254px] xl:max-w-[280px] mx-auto">
+              <img src={product_08.src} alt="Premio 8" class="max-w-full h-auto object-contain" />
+            </div>
+          </div>
+        </div>
+        
+        <div class="flex justify-center items-center gap-4 mt-4 md:mt-6">
+          <button class="swiper-button-prev relative mt-0 text-white before:hidden after:hidden border-2 w-[30px] h-[30px] rounded-full">
+            <svg class="size-4" width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5.35 10.71C5.11 10.71 4.88333 10.6167 4.71 10.4433L0.27 6.00333C-0.09 5.64333 -0.09 5.07 0.27 4.71L4.71 0.27C5.07 -0.09 5.64333 -0.09 6.00333 0.27C6.36333 0.63 6.36333 1.20333 6.00333 1.56333L2.21667 5.35L6.00333 9.13667C6.36333 9.49667 6.36333 10.07 6.00333 10.43C5.83 10.6033 5.59 10.6967 5.36333 10.6967L5.35 10.71Z" fill="white"/>
+              <path d="M9.79042 6.27037H0.923756C0.41709 6.27037 0.0170898 5.85703 0.0170898 5.3637C0.0170898 4.87036 0.430423 4.45703 0.923756 4.45703H9.79042C10.2971 4.45703 10.6971 4.87036 10.6971 5.3637C10.6971 5.85703 10.2838 6.27037 9.79042 6.27037Z" fill="white"/>
+            </svg>
+          </button>
+          <div class="swiper-pagination relative top-0 w-fit" style="--swiper-pagination-color:#DA291C;--swiper-pagination-bullet-inactive-color:white;--swiper-pagination-bullet-inactive-opacity:1"></div>
+          <button class="swiper-button-next relative mt-0 text-white before:hidden after:hidden border-2 border-white w-[30px] h-[30px] rounded-full">
+            <svg class="size-4" width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5.34707 0.000937315C5.58707 0.000937336 5.81373 0.0942704 5.98707 0.267604L10.4271 4.70761C10.7871 5.06761 10.7871 5.64094 10.4271 6.00094L5.98707 10.4409C5.62707 10.8009 5.05373 10.8009 4.69373 10.4409C4.33373 10.0809 4.33373 9.5076 4.69373 9.1476L8.4804 5.36094L4.69374 1.57427C4.33374 1.21427 4.33374 0.640937 4.69374 0.280937C4.86707 0.107604 5.10707 0.0142709 5.33374 0.014271L5.34707 0.000937315Z" fill="white"/>
+              <path d="M0.906644 4.44057L9.77331 4.44057C10.28 4.44057 10.68 4.85391 10.68 5.34724C10.68 5.84057 10.2666 6.25391 9.77331 6.25391L0.906644 6.25391C0.399977 6.25391 -2.31703e-05 5.84057 -2.31272e-05 5.34724C-2.30841e-05 4.8539 0.413311 4.44057 0.906644 4.44057Z" fill="white"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import Swiper from "swiper/bundle";
+  import {getListProducts} from '@/utils/endpoints';
+
+  // const listProducts = await getListProducts();
+
+  const goToForm = document.querySelector(".goToForm") as HTMLButtonElement;
+  goToForm?.addEventListener("click", () => {
+    const nextStep = Number(goToForm.dataset.nextStep);
+    //Animate scrollTop
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+    setTimeout(() => {
+      if ((window as any).bannerStepTransition) {
+        const currentStep = (window as any).bannerStepTransition.getCurrentStep();
+        (window as any).bannerStepTransition.nextToStep(currentStep, nextStep);
+      }
+    }, 200);    
+  });
+
+  const swiperPremios = new Swiper('.swiperPremios', {
+    slidesPerView: 1,
+    spaceBetween: 10,
+    loop: true,
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+    },
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    breakpoints: {
+      768: {
+        slidesPerView: 2,
+        spaceBetween: 20,
+        slidesPerGroup: 2,
+      },
+      820: {
+        slidesPerView: 3,
+        spaceBetween: 20,
+        slidesPerGroup: 2,
+      },
+      1024: {
+        slidesPerView: 4,
+        spaceBetween: 40,
+        slidesPerGroup: 4,
+      },
+    },
+  });
+
+</script>

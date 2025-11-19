@@ -14,6 +14,10 @@ import Button from "@UI/Button.astro"
       <input type="text" name="name" id="name" inputmode="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-base focus:outline-none" placeholder="Nombres y apellidos" required>
     </fieldset>
     <fieldset>
+      <label for="dni" class="text-xs md:text-sm font-bold">Número de DNI</label>
+      <input type="text" name="dni" id="dni" maxlength="8" inputmode="numeric" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-base focus:outline-none" placeholder="Ingrese su DNI" required>
+    </fieldset>
+    <fieldset>
       <label for="email" class="text-xs md:text-sm font-bold">Correo electrónico</label>
       <input type="email" name="email" id="email" inputmode="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-base focus:outline-none" placeholder="Ingrese correo electrónico" required>
       <div id="email-errors"></div>
@@ -108,6 +112,22 @@ import Button from "@UI/Button.astro"
           errorMessage: "Solo se permiten letras.",
         }
     ])
+    .addField('#dni',[
+      {
+        rule: 'required',
+        errorMessage: 'El DNI es obligatorio',
+      },
+      {
+        rule: 'minLength',
+        value: 8,
+        errorMessage: 'El DNI debe tener al menos 8 caracteres',
+      },
+      {
+        rule: 'maxLength',
+        value: 8,
+        errorMessage: 'El DNI no puede tener más de 8 caracteres',
+      }
+    ])
     .addField('#phone', [
       {
         rule: 'required',
@@ -147,35 +167,44 @@ import Button from "@UI/Button.astro"
     .onSuccess(async (event) => {
       event.preventDefault();
       const dataForm = new FormData(form);
-      const fieldPhone = dataForm.get('phone');
-      const fieldName = dataForm.get('name');
+      const fieldPhone = dataForm.get('phone') as string;
+      const fieldName = dataForm.get('name') as string;
+      const fieldDni = dataForm.get('dni') as string;
+      const fieldEmail = dataForm.get('email') as string;
+      const userData = {
+        id: Date.now().toString(),
+        phone: fieldPhone,
+        name: fieldName,
+        dni: fieldDni,
+        email: fieldEmail
+      };
       // Obtener el paso siguiente del botón
       const nextStep = Number(submitBtn.dataset.nextStep);
       submitBtn.disabled = true;
       togglePreloadAnimation(true);
       try {
-        const preCheckResponse = await preCheck(fieldEmail.value, fieldPhone);
-        const {allowed, reason, user} = preCheckResponse;
-        if (!allowed || !user) {
-          showCustomModal({
-            iconSrc: icon_no_cumple.src,
-            title: "Lo sentimos, no puedes participar en estos momentos 👇",
-            html: "<p>Para participar debes realizar una recarga desde s/7 soles en Mi Claro App, activar una línea , renovar o migrar a Claro.</p",
-            confirmButtonText: "Volver al inicio",
-            showCloseButton: true,
-            onConfirm: () => {
-              // aquí haces el callback que quieras, por ejemplo:
-              resetForm();
-            },
-          });
-          togglePreloadAnimation(false);
-          return;
-        }
-        const {email, phone, docType, docNumber } = user;
+        // const preCheckResponse = await preCheck(fieldEmail.value, fieldPhone);
+        // const {allowed, reason, user} = preCheckResponse;
+        // if (!allowed || !user) {
+        //   showCustomModal({
+        //     iconSrc: icon_no_cumple.src,
+        //     title: "Lo sentimos, no puedes participar en estos momentos 👇",
+        //     html: "<p>Para participar debes realizar una recarga desde s/7 soles en Mi Claro App, activar una línea , renovar o migrar a Claro.</p",
+        //     confirmButtonText: "Volver al inicio",
+        //     showCloseButton: true,
+        //     onConfirm: () => {
+        //       // aquí haces el callback que quieras, por ejemplo:
+        //       resetForm();
+        //     },
+        //   });
+        //   togglePreloadAnimation(false);
+        //   return;
+        // }
+        // const {email, phone, docType, docNumber } = user;
         //seteamos los datos del user en el store
-        userStore.setState({ user });
+        userStore.setState({ user: userData });
         //Register user
-        const registerUserResponse = await registerUser(fieldName, email, phone, docType, docNumber);
+        const registerUserResponse = await registerUser(fieldName, fieldEmail, fieldPhone, 'DNI', fieldDni);
         if (registerUserResponse?.success) {
           // Usar las funciones globales de transición para psar al siguiente step
           if ((window as any).bannerStepTransition) {
@@ -219,6 +248,8 @@ import Button from "@UI/Button.astro"
   restrictInput("#email", /[^a-zA-Z0-9@.]/g);
   // #phone solo se permiten numeros
   restrictInput("#phone", /[^0-9]/g);
+  // #dni solo se permiten números
+  restrictInput("#dni", /[^0-9]/g);
 
   // Inicializar autoSuggestEmail para sugerencias de correo
   new autoSuggestEmail(fieldEmail, {
