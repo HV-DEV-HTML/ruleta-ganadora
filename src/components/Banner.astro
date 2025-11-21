@@ -15,7 +15,7 @@ import Icon05 from "@components/Banner/Icon05.astro"
 import Icon06 from "@components/Banner/Icon06.astro"
 ---
 
-<section class="p-0 relative banner_sorteo section_hidden bg-transparent h-[530px] md:h-auto lg:h-[720px] xl:h-[740px] 2xl:h-[900px]" data-current-step="1">
+<section class="p-0 relative banner_sorteo section_hidden bg-transparent h-[800px] md:h-[1000px] lg:h-[1200px] xl:h-[740px] 2xl:h-[900px]" data-current-step="2">
   <picture class="w-full h-full relative z-0 bg-claro">
     <source srcset={bg_desktop.src} media="(min-width: 1280px)">
     <source srcset={bg_tablet.src} media="(min-width: 768px)">
@@ -32,10 +32,9 @@ import Icon06 from "@components/Banner/Icon06.astro"
     </div>
   </button>
   <div class="w-full h-full absolute top-0 left-0">
-    <div class="flex flex-col items-center mx-auto md:max-w-[620px] xl:max-w-[1040px] max-h-[310px] md:max-h-[290px] 2xl:max-h-[390px] h-full px-4 mt-16 2xl:mt-30 relative">
+    <div class="flex flex-col items-center mx-auto md:max-w-[620px] xl:max-w-[1040px] 2xl:max-w-[1410px] max-h-[360px] md:max-h-[360px] lg:max-h-[560px] xl:max-h-[390px] h-full px-4 mt-16 2xl:mt-30 relative">
       <div class="w-full h-full bg-white rounded-4xl relative">
         <img class="w-full h-full object-cover absolute top-0 left-0 z-0 rounded-4xl overflow-hidden" src={bg_content_mobile.src} alt="Banner Ruleta Ganadora">
-        <Paso01 />
         <Paso02 />
         <Paso03 />
       </div>
@@ -90,7 +89,7 @@ import Icon06 from "@components/Banner/Icon06.astro"
 
     btnBackStep.dataset.prevStep = (nextStep - 1).toString();
     
-    currentStepEl.classList.add("hidden");
+    currentStepEl.classList.add("hidden", "xl:hidden");
     preserveAosState(currentStepEl);
     
     nextStepEl.classList.remove("hidden");

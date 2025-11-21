@@ -82,7 +82,7 @@ import premio_03 from '@/assets/images/premio_03.png'
   import { gsap } from "gsap";
   import {getListProducts} from '@/utils/endpoints';
 
-  // const listProducts = await getListProducts();
+  const listProducts = await getListProducts();
 
   const submitBtn = document.querySelector(".goToForm") as HTMLButtonElement;
   submitBtn?.addEventListener("click", () => {

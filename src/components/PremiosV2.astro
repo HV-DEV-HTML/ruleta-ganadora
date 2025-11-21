@@ -97,10 +97,7 @@ import product_08 from '@/assets/images/products/08.png'
 
 <script>
   import Swiper from "swiper/bundle";
-  import {getListProducts} from '@/utils/endpoints';
-
-  // const listProducts = await getListProducts();
-
+  
   const goToForm = document.querySelector(".goToForm") as HTMLButtonElement;
   goToForm?.addEventListener("click", () => {
     const nextStep = Number(goToForm.dataset.nextStep);

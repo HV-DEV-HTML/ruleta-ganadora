@@ -18,7 +18,7 @@ export function showCustomModal({
   title,
   html = "",
   iconSrc,
-  confirmButtonText = "Volver al inicio",
+  confirmButtonText = "Entiendo",
   showCloseButton = true,
   onConfirm,
   fireOptions = {},

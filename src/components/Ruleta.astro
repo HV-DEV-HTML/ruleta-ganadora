@@ -13,8 +13,8 @@ import bg_tablet from "@/assets/images/banner_tablet.jpg"
 import bg_desktop from "@/assets/images/banner_desktop.jpg"
 ---
 
-<button class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer entry_ruleta">Entra ruleta</button>
-<section class="ruletaGanadora relative" data-step="4">
+<button class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer entry_ruleta hidden">Entra ruleta</button>
+<section class="ruletaGanadora relative hidden" data-step="4">
   <picture class="w-full h-full absolute top-0 left-0 z-0">
     <source srcset={bg_desktop.src} media="(min-width: 1280px)">
     <source srcset={bg_tablet.src} media="(min-width: 768px)">

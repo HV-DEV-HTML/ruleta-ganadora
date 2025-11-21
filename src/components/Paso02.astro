@@ -2,42 +2,71 @@
 import Button from "@UI/Button.astro"
 ---
 
-<div class="w-full h-full hidden" data-step="2">
-  <form id="form-registro" data-aos="zoom-in-up" class="bg-white px-4 md:px-10 py-8 md:py-10 xl:py-9 2xl:py-10 w-full rounded-2xl font-roboto flex flex-col gap-3 md:gap-4 md:max-w-[540px] mx-auto relative xl:-top-7 xl:-right-14 z-10" action="">
-    <h3 class="text-center font-amx-bold text-xl md:text-3xl leading-none">Valida tus datos para participar</h3>
-    <fieldset>
-      <label for="phone" class="text-xs md:text-sm font-bold">Número celular Claro</label>
-      <input type="text" name="phone" id="phone" maxlength="9" inputmode="numeric" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-base focus:outline-none" placeholder="Ingrese numero de celular" required>
+<div class="w-full h-full relative z-10 xl:grid xl:grid-cols-2 items-start" data-step="2">
+  <div class="flex flex-col items-center justify-center py-8 w-full relative xl:top-4">
+    <h1 data-aos="zoom-in-right"  class="font-amx-regular text-xl md:text-3xl xl:text-2xl 2xl:text-3xl leading-none italic xl:leading-[0.5] text-center text-claro">REGÍSTRATE Y PARTICIPA EN <strong class="block leading-none font-amx-black text-3xl md:text-5xl xl:text-4xl 2xl:text-5xl">RULETA GANADORA</strong></h1>
+    <p data-aos="zoom-in-right" data-aos-delay="50" class="font-amx-bold italic text-[11px] md:text-sm text-center bg-claro text-white leading-none rounded-full px-2 md:px-3 py-1.5 md:py-2">¡Gira y gana más gigas, accesorios, equipos y muchos premios más!</p>
+  </div>
+  <form id="form-registro" data-aos="zoom-in-up" class="bg-white px-4 md:px-10 xl:px-7 2xl:px-10 mt-40 lg:mt-62 xl:mt-0 py-8 2xl:py-10 w-full rounded-2xl font-roboto flex flex-col gap-3 md:gap-4 md:max-w-[500px] xl:max-w-[430px] 2xl:max-w-[540px] mx-auto relative xl:-top-7 xl:right-12 2xl:right-16 z-10" action="">
+    <h3 class="text-center font-amx-bold text-xl md:text-3xl xl:text-2xl 2xl:text-3xl leading-none">Valida tus datos para participar</h3>
+    <fieldset class="grid grid-cols-2 gap-4">
+      <div class="flex flex-col text-black">
+        <label for="typeDoc" class="text-xs md:text-sm font-bold">Tipo de documento</label>
+        <div class="grid grid-cols-1 text-black">
+          <select id="typeDoc" name="typeDoc" autocomplete="type-document-name" class="col-start-1 row-start-1 appearance-none w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none h-[40px]" required>
+            <option value="" selected>Tipo de doc.</option>
+            <option value="DNI">DNI</option>
+            <option value="PASAPORTE">PASAPORTE</option>
+          </select>
+          <svg viewBox="0 0 16 16" fill="currentColor" data-slot="icon" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-900 sm:size-4 z-1">
+            <path d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+          </svg>
+        </div>
+      </div>
+      <div class="flex flex-col text-black">
+        <label for="dni" class="text-xs md:text-sm font-bold">Número de documento</label>
+        <input type="text" name="dni" id="dni" maxlength="8" inputmode="numeric" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none" placeholder="Número de documento" required>
+      </div>
     </fieldset>
     <fieldset>
       <label for="name" class="text-xs md:text-sm font-bold">Nombres y Apellidos</label>
-      <input type="text" name="name" id="name" inputmode="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-base focus:outline-none" placeholder="Nombres y apellidos" required>
+      <input type="text" name="name" id="name" inputmode="text" minlength="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none" placeholder="Nombres y apellidos" required disabled>
     </fieldset>
     <fieldset>
-      <label for="dni" class="text-xs md:text-sm font-bold">Número de DNI</label>
-      <input type="text" name="dni" id="dni" maxlength="8" inputmode="numeric" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-base focus:outline-none" placeholder="Ingrese su DNI" required>
+      <label for="phone" class="text-xs md:text-sm font-bold">Servicio asociado</label>
+      <div class="grid grid-cols-1 text-black">
+        <select id="phone" name="phone" autocomplete="phone-name" class="col-start-1 row-start-1 appearance-none w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none h-[40px] disabled:text-gray-500" required disabled>
+          <option value="" selected>Selecciona tu servicio</option>
+        </select>
+        <svg viewBox="0 0 16 16" fill="currentColor" data-slot="icon" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-900 sm:size-4 z-1">
+          <path d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+        </svg>
+      </div>
     </fieldset>
     <fieldset>
       <label for="email" class="text-xs md:text-sm font-bold">Correo electrónico</label>
-      <input type="email" name="email" id="email" inputmode="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-base focus:outline-none" placeholder="Ingrese correo electrónico" required>
+      <input type="email" name="email" id="email" inputmode="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none" placeholder="Ingrese correo electrónico" required disabled>
       <div id="email-errors"></div>
     </fieldset>
     <fieldset class="flex flex-col gap-1.5">
       <label class="flex items-center space-x-2">
         <input type="checkbox" name="terms" id="terms" class="accent-claro" checked="" required/>
-        <div class="text-xs md:text-sm xl:text-base text-gray-900">
+        <div class="text-xs md:text-sm 2xl:text-base text-gray-900">
           Acepto los <strong class="underline cursor-pointer openModalTratamiento">términos y condiciones</strong>
         </div>
       </label>
       <label class="flex items-center space-x-2">
         <input type="checkbox" name="comunicacion" id="comunicacion" class="accent-claro" checked=""/>
-        <div class="text-xs md:text-sm xl:text-base text-gray-900">
+        <div class="text-xs md:text-sm 2xl:text-base text-gray-900">
           Acepto recibir <strong class="underline cursor-pointer openModalPromociones">comunicación publicitaria de Claro.</strong>
         </div>
       </label>
     </fieldset>
     <Button id="btn-submit-form" data-next-step="3" data-aos="zoom-in-up" data-aos-delay="100" type="submit" disabled href="https://www.claro.com.pe/personas/app/claro-musica/" classes="min-w-fit bg-white px-12 py-2.5 xl:py-3.5 border border-claro text-claro cursor-pointer hover:bg-claro hover:text-white disabled:bg-gray-200 disabled:border-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed mx-auto" >Continuar</Button>
   </form>
+  <div class="col-span-2 pt-3 xl:pt-0 xl:-mt-2">
+    <p class="text-[11px] text-white text-center xl:text-left leading-none mx-auto xl:mr-0 xl:ml-auto md:max-w-[500px] xl:max-w-[430px] 2xl:max-w-[540px] relative xl:right-20 2xl:right-32 2xl:px-2">Lorem ipsum dolor sit amet consectetur. Eu molestie sit mus vulputate lacus volutpat blandit. Adipiscing diam sed mi vitae vel vitae massa. Interdum tempor tincidunt varius sit viverra massa amet lacus malesuada. Tempus id porttitor faucibus amet quam. Lacus id interdum vitae feugiat quam.</p>
+  </div>
 </div>
 
 <script>
@@ -48,6 +77,14 @@ import Button from "@UI/Button.astro"
   import {preCheck, registerUser} from '@/utils/endpoints';
   import { userStore } from '@/store/userStore';
   import { togglePreloadAnimation } from "@/utils/animations";
+
+  const form = document.querySelector('#form-registro') as HTMLFormElement;
+  const submitBtn = document.querySelector('#btn-submit-form') as HTMLButtonElement;
+  const fieldName = document.querySelector('#name') as HTMLInputElement;
+  const fieldEmail = document.querySelector('#email') as HTMLInputElement;
+  const fieldDni = document.querySelector('#dni') as HTMLInputElement;
+  const fieldPhone = document.querySelector('#phone') as HTMLInputElement;
+  const fieldTypeDoc = document.querySelector('#typeDoc') as HTMLInputElement;
 
   const handleModal = (btnsOpenSelector, modalsSelector, closesSubSelector, closesBtnSelector) => {
     const modals = document.querySelectorAll(modalsSelector);
@@ -91,10 +128,150 @@ import Button from "@UI/Button.astro"
     }
   };
 
-  const form = document.querySelector('#form-registro') as HTMLFormElement;
-  const submitBtn = document.querySelector('#btn-submit-form') as HTMLButtonElement;
-  const fieldEmail = document.querySelector('#email') as HTMLInputElement;
+  const errorFindUser = (message = "") => {
+    togglePreloadAnimation(false);
+    console.log({message})
+    const messageDefault = `<p>Para participar debes realizar una recarga desde s/7 soles en Mi Claro App, activar una línea , renovar o migrar a Claro.</p>`
+    const messageShow = message === "Ya estás registrado y verificado." ? `<p>${message}</p>` : messageDefault;
+    showCustomModal({
+      iconSrc: icon_no_cumple.src,
+      title: "Lo sentimos, no puedes participar en estos momentos 👇",
+      html: messageShow,
+      confirmButtonText: "Volver al inicio",
+      showCloseButton: true,
+      onConfirm: () => {
+        // aquí haces el callback que quieras, por ejemplo:
+        resetForm();
+      },
+    });
+  };
+
+  const setValuesForm = (user) => {
+    fieldName.value = user.fullName;
+    fieldName.disabled = false;
+    fieldEmail.value = user.email;
+    fieldEmail.disabled = false;
+    fieldPhone.innerHTML = `<option value="">Selecciona tu servicio</option>`;
+    if (Array.isArray(user.phones) && user.phones.length > 0) {
+      user.phones.forEach((phone) => {
+        const option = document.createElement('option');
+        option.value = phone;
+        option.textContent = phone;
+        fieldPhone.appendChild(option);
+      });
+      //fieldPhone.value = user.phones[0];
+    }
+    fieldPhone.disabled = false;
+    //submitBtn.disabled = false;
+  };
+
+
+  const debounce = (fn, delay = 600) => {
+    let timeoutId: number | undefined;
+    return (...args: any[]) => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+      timeoutId = window.setTimeout(() => {
+        fn(...args);
+      }, delay);
+    };
+  };
   
+
+  const handlePreCheckByDni = async () => {
+    if (!fieldDni || !fieldTypeDoc) return;
+    console.log({fieldTypeDoc})
+    if (fieldTypeDoc.value === "") {
+      fieldTypeDoc.dispatchEvent(new Event('change'));
+      return;
+    }
+    const typeDocument = fieldTypeDoc.value;
+    const dniValue = fieldDni.value.trim();
+    if (typeDocument === "DNI") {
+      if (dniValue.length !== 8) return;
+    } else if (typeDocument === "PASAPORTE") {
+      if (dniValue.length < 9) return;
+    }
+    togglePreloadAnimation(true);
+    try {
+      const {allowed, reason, user} = await preCheck(dniValue);
+      if (!allowed || !user) {
+        errorFindUser(reason);
+        return;
+      }
+      setValuesForm(user);
+      //seteamos los datos del user en el store
+      userStore.setState({ user });
+      console.log('Respuesta preCheck desde DNI:', {allowed, reason, user});
+    } catch (error) {
+      console.error('Error en preCheck desde DNI:', error);
+    }finally{
+      togglePreloadAnimation(false);
+    }
+  };
+
+  if (fieldDni) {
+    const debouncedPreCheck = debounce(handlePreCheckByDni, 600);
+    fieldDni.addEventListener('input', () => {
+      debouncedPreCheck();
+    });
+  }
+
+  // Validación dinámica para el campo de documento
+  let dniFieldRegistered = false;
+
+  const updateDocumentValidation = (typeDocument) => {
+    if (dniFieldRegistered) {
+      validator.removeField("#dni");
+    }
+    if (typeDocument === "DNI") {
+      fieldDni.setAttribute("maxlength", "8");
+      
+      validator.addField("#dni", [
+        { rule: "required", errorMessage: "El documento es obligatorio." },
+        { rule: "minLength", value: 8, errorMessage: "El DNI debe tener 8 dígitos." },
+        { rule: "maxLength", value: 8, errorMessage: "El DNI debe tener 8 dígitos." },
+        {
+          validator: (value) => /^\d+$/.test(value),
+          errorMessage: "Solo se permiten números.",
+        },
+      ]);
+      dniFieldRegistered = true;
+    } else if (typeDocument === "PASAPORTE") {
+      fieldDni.setAttribute("maxlength", "20");
+      validator.addField("#dni", [
+        { rule: "required", errorMessage: "El documento es obligatorio." },
+        { rule: "minLength", value: 9, errorMessage: "El PASAPORTE debe tener mínimo 9 dígitos." },
+        { rule: "maxLength", value: 20, errorMessage: "El PASAPORTE debe tener máximo 20 dígitos." },
+        {
+          validator: (value) => /^\d+$/.test(value),
+          errorMessage: "Solo se permiten números.",
+        },
+      ]);
+      dniFieldRegistered = true;
+    }
+    restrictInput("#dni", /[^0-9]/g); // Solo permite números
+  };
+
+  if (fieldTypeDoc) {
+    fieldTypeDoc.addEventListener('change', () => {
+      updateDocumentValidation(fieldTypeDoc.value);
+    });
+  }
+
+  if(fieldPhone){
+    fieldPhone.addEventListener("change", () => {
+      if (validator) {
+        validator.revalidateField('#phone');
+        validator.revalidateField('#name');
+        validator.revalidateField('#email');
+        validator.revalidateField('#dni');
+        validator.revalidateField('#typeDoc');
+      }
+    });
+  }
+
   const validator = new JustValidate('#form-registro', {
     errorFieldCssClass: 'border-red-500',
     errorLabelCssClass: 'text-red-500 text-xs mt-1',
@@ -112,31 +289,22 @@ import Button from "@UI/Button.astro"
           errorMessage: "Solo se permiten letras.",
         }
     ])
-    .addField('#dni',[
+    .addField('#typeDoc', [
       {
         rule: 'required',
-        errorMessage: 'El DNI es obligatorio',
-      },
-      {
-        rule: 'minLength',
-        value: 8,
-        errorMessage: 'El DNI debe tener al menos 8 caracteres',
-      },
-      {
-        rule: 'maxLength',
-        value: 8,
-        errorMessage: 'El DNI no puede tener más de 8 caracteres',
+        errorMessage: 'El tipo de documento es obligatorio',
       }
     ])
     .addField('#phone', [
       {
-        rule: 'required',
-        errorMessage: 'El número celular es obligatorio',
-      },
-      {
-        rule: 'customRegexp',
-        value: /^9\d{8}$/,
-        errorMessage: 'Ingrese un número celular válido (9 dígitos que inicie con 9)',
+        validator: () => {
+          if (!fieldPhone) return true;
+          // Si está deshabilitado, no lo consideramos para la validación
+          if (fieldPhone.disabled) return true;
+          // Cuando está habilitado, debe tener un valor distinto de ""
+          return fieldPhone.value !== '';
+        },
+        errorMessage: 'El servicio asociado es obligatorio',
       },
     ])
     .addField('#email', [
@@ -167,72 +335,54 @@ import Button from "@UI/Button.astro"
     .onSuccess(async (event) => {
       event.preventDefault();
       const dataForm = new FormData(form);
-      const fieldPhone = dataForm.get('phone') as string;
-      const fieldName = dataForm.get('name') as string;
-      const fieldDni = dataForm.get('dni') as string;
-      const fieldEmail = dataForm.get('email') as string;
-      const userData = {
-        id: Date.now().toString(),
-        phone: fieldPhone,
-        name: fieldName,
-        dni: fieldDni,
-        email: fieldEmail
-      };
-      // Obtener el paso siguiente del botón
+      const fieldPhoneForm = dataForm.get('phone') as string;
+      const fieldNameForm = dataForm.get('name') as string
       const nextStep = Number(submitBtn.dataset.nextStep);
       submitBtn.disabled = true;
       togglePreloadAnimation(true);
+
       try {
-        // const preCheckResponse = await preCheck(fieldEmail.value, fieldPhone);
-        // const {allowed, reason, user} = preCheckResponse;
-        // if (!allowed || !user) {
-        //   showCustomModal({
-        //     iconSrc: icon_no_cumple.src,
-        //     title: "Lo sentimos, no puedes participar en estos momentos 👇",
-        //     html: "<p>Para participar debes realizar una recarga desde s/7 soles en Mi Claro App, activar una línea , renovar o migrar a Claro.</p",
-        //     confirmButtonText: "Volver al inicio",
-        //     showCloseButton: true,
-        //     onConfirm: () => {
-        //       // aquí haces el callback que quieras, por ejemplo:
-        //       resetForm();
-        //     },
-        //   });
-        //   togglePreloadAnimation(false);
-        //   return;
-        // }
-        // const {email, phone, docType, docNumber } = user;
-        //seteamos los datos del user en el store
-        userStore.setState({ user: userData });
-        //Register user
-        const registerUserResponse = await registerUser(fieldName, fieldEmail, fieldPhone, 'DNI', fieldDni);
+        const { user } = userStore.getState();
+        console.log('user en onSuccess Paso02:', user);
+
+        if (!user) {
+          throw new Error('User no está definido en el store antes de registerUser');
+        }
+
+        const { fullName, email, docType, docNumber } = user;
+        const registerUserResponse = await registerUser(
+          fieldNameForm,
+          email,
+          fieldPhoneForm,
+          docType,
+          docNumber
+        );
+        console.log('registerUserResponse:', registerUserResponse);
+
         if (registerUserResponse?.success) {
-          // Usar las funciones globales de transición para psar al siguiente step
           if ((window as any).bannerStepTransition) {
             const currentStep = (window as any).bannerStepTransition.getCurrentStep();
             (window as any).bannerStepTransition.nextToStep(currentStep, nextStep);
           }
         }
-        // Aquí puedes agregar la lógica para enviar el formulario (API call, etc.)
+
         submitBtn.disabled = false;
-        // Resetear el formulario después de la transición
         resetForm();
         togglePreloadAnimation(false);
       } catch (error) {
+        console.error('Error en onSuccess Paso02:', error);
         togglePreloadAnimation(false);
-        //alert('No hemos podido validar tus datos. Por favor, inténtalo nuevamente.');
         showCustomModal({
           iconSrc: icon_no_cumple.src,
-          title: "Error en la validación",
-          html: "",
-          confirmButtonText: "Volver al inicio",
+          title: 'Error en la validación',
+          html: '',
+          confirmButtonText: 'Volver al inicio',
           showCloseButton: true,
           onConfirm: () => {
             resetForm();
           },
         });
       }
-      
-      
     });
 
   //Crea una funcion para restear el formulario y poder usarlo en onSuccess
@@ -246,10 +396,10 @@ import Button from "@UI/Button.astro"
   restrictInput("#name", /[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g);
   //#email solo se permiten caracteres validos
   restrictInput("#email", /[^a-zA-Z0-9@.]/g);
-  // #phone solo se permiten numeros
-  restrictInput("#phone", /[^0-9]/g);
   // #dni solo se permiten números
   restrictInput("#dni", /[^0-9]/g);
+
+  //Agrega una función debounde para el input fieldDNi para cuando el usuario termine de escribir llamar al api preCheck
 
   // Inicializar autoSuggestEmail para sugerencias de correo
   new autoSuggestEmail(fieldEmail, {

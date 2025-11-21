@@ -1,7 +1,7 @@
 const URL_API = 'https://api-ruleta.dev-limprod.com/api'
 
 
-export async function preCheck(email, phone){
+export async function preCheck(phone){
   try {
     const response = await fetch(`${URL_API}/Auth/precheck`, {
       method: 'POST',
@@ -9,8 +9,7 @@ export async function preCheck(email, phone){
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        email,
-        phone
+        "docNumber" : phone
       })
     });
 
@@ -95,6 +94,7 @@ export async function getListProducts(){
   try {
     const response = await fetch(`${URL_API}/Productos/Lista_Productos_Ruleta`, {
       method: 'GET',
+      credentials: 'include', 
       headers: {
         'Content-Type': 'application/json'
       }

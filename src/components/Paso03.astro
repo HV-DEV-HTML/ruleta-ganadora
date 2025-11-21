@@ -23,7 +23,7 @@ import Button from "@UI/Button.astro"
   import { verifyCode, validUserEnabled } from '@/utils/endpoints';
   import { showCustomModal } from '@/utils/modalHelper';
   import icon_no_cumple from "@/assets/icons/icon_no_cumple.svg";
-
+  import {getListProducts} from '@/utils/endpoints';
 
   // Restricciones de entrada en los campos
   const restrictInput = (selector, allowedRegex) => {
@@ -98,6 +98,7 @@ import Button from "@UI/Button.astro"
           if (verified) {
             document.querySelectorAll(".section_hidden").forEach(section => section.classList.add("hidden"));
             ruleta.classList.remove("hidden");
+            const listProducts = await getListProducts();
           } else {
             showCustomModal({
               title: "Código inválido",
