@@ -92,9 +92,9 @@ export async function verifyCode(email, code){
   }
 }
 
-export async function getListProducts(){
+export async function getListProducts(serviceId){
   try {
-    const response = await fetch(`${URL_API}/Productos/Lista_Productos_Ruleta`, {
+    const response = await fetch(`${URL_API}/admin/prizes/available?serviceId=${serviceId}`, {
       method: 'GET',
       credentials: 'include', 
       headers: {
@@ -116,9 +116,9 @@ export async function getListProducts(){
   }
 }
 
-export async function validUserEnabled(id){
+export async function validUserEnabled(serviceId){
   try {
-    const response = await fetch(`${URL_API}/Spin/eligibility?userId=${id}`, {
+    const response = await fetch(`${URL_API}/Spin/eligibility?serviceId=${serviceId}`, {
       method: 'GET',
       credentials: 'include', 
       headers: {

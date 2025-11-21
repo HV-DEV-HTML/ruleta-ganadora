@@ -4,16 +4,16 @@ import icon_claro from "@/assets/images/ruleta/icon_claro_ruleta.png";
 import ruleta from "@/assets/images/ruleta/ruletav3.png";
 import item1 from "@/assets/images/ruleta/item1.png";
 import item2 from "@/assets/images/ruleta/item2.png";
-import item3 from "@/assets/images/ruleta/item3.png";
-import item4 from "@/assets/images/ruleta/item4.png";
-import item5 from "@/assets/images/ruleta/item5.png";
+import item3 from "@/assets/images/ruleta/item1.png";
+import item4 from "@/assets/images/ruleta/item5.png";
+import item5 from "@/assets/images/ruleta/item4.png";
 import item6 from "@/assets/images/ruleta/item6.png";
 import bg_mobile from "@/assets/images/banner_mobile.png"
 import bg_tablet from "@/assets/images/banner_tablet.jpg"
 import bg_desktop from "@/assets/images/banner_desktop.jpg"
 ---
 
-<button class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer entry_ruleta">Entra ruleta</button>
+<button class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer entry_ruleta hidden">Entra ruleta</button>
 <section class="ruletaGanadora relative hidden" data-step="4">
   <picture class="w-full h-full absolute top-0 left-0 z-0">
     <source srcset={bg_desktop.src} media="(min-width: 1280px)">
@@ -23,11 +23,11 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
   <div class="container relative z-1">
     <p data-aos="zoom-in-up">¡Felicitaciones! Tienes <b>1 oportunidad</b> para girar la ruleta</p>
     <h2 data-aos="zoom-in-up">¡Es hora de girar y ganar!</h2>
-    <span data-aos="zoom-in-up">Haz clic en el botón de abajo y deja que la suerte decida tu premio.</span>
+    <h4 data-aos="zoom-in-up">Haz clic en el botón de abajo y deja que la suerte decida tu premio.</h4>
     <button data-aos="zoom-in-up" class="cursor-pointer" id="btnGirar">Gira la ruleta</button>
     <div class="contentRuleta" data-aos="zoom-in-down" data-aos-delay="100">
       <img src={icon_frecha.src} alt="" class="flecha">
-      <div class="size-10 bg-logo-claro-gradient isotipo_claro rounded-full p-[9px] absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-20">
+      <div class="size-10 bg-logo-claro-gradient isotipo_claro rounded-full p-[8px] absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-20">
         <svg class="w-full h-full relative bg-logo-claro-gradient rounded-full" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M27.4407 22.1073L42.8203 7.00478L38.7367 3.04688L23.3572 18.1494L27.4407 22.1073Z" fill="white"/>
           <path d="M17.1317 0H11.6813V16.0108H17.1317V0Z" fill="white"/>
@@ -36,14 +36,22 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
         </svg>
       </div>
       <!-- <img src={icon_claro.src} alt="" class="claro"> -->
-      <div class="ruleta">
+      <div class="ruleta opacity-0 transition-opacity duration-300">
         <img src={ruleta.src} alt="" class="imgRuleta">
+        <div class="ruleta-lights">
+          <span class="ruleta-light ruleta-light-1"></span>
+          <span class="ruleta-light ruleta-light-2"></span>
+          <span class="ruleta-light ruleta-light-3"></span>
+          <span class="ruleta-light ruleta-light-4"></span>
+          <span class="ruleta-light ruleta-light-5"></span>
+          <span class="ruleta-light ruleta-light-6"></span>
+        </div>
         <div class="item item1" data-nombre="Moto edge"><img src={item1.src} alt=""></div>
-        <div class="item" data-nombre="+5gb adicionales"><img src={item2.src} alt=""></div>
-        <div class="item" data-nombre="Moto Watch FIT"><img src={item3.src} alt=""></div>
-        <div class="item" data-nombre="iPhone 17"><img src={item4.src} alt=""></div>
-        <div class="item" data-nombre="+10gb adicionales"><img src={item5.src} alt=""></div>
-        <div class="item" data-nombre="Sigue intentando"><img src={item6.src} alt=""></div>
+        <div class="item item2" data-nombre="+5gb adicionales"><img src={item2.src} alt=""></div>
+        <div class="item item3" data-nombre="Moto Watch FIT"><img src={item3.src} alt=""></div>
+        <div class="item item4" data-nombre="iPhone 17"><img src={item4.src} alt=""></div>
+        <div class="item item5" data-nombre="+10gb adicionales"><img src={item5.src} alt=""></div>
+        <div class="item item6" data-nombre="Sigue intentando"><img src={item6.src} alt=""></div>
       </div>
     </div>
     <p class="legal">*Imágenes referenciales. Aplican cambios según disponibilidad de stock.</p>
@@ -51,6 +59,67 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
 </section>
 
 <style>
+  .ruleta-lights {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    top: -30px;
+    left: -26px;
+    rotate: 6deg;
+    @media (min-width: 768px){
+      top: -50px;
+      left: -40px;
+    }
+  }
+  .ruleta-light {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--ruleta-light-size);
+    height: var(--ruleta-light-size);
+    border-radius: 999px;
+    opacity: 0.6;
+    /* filter: blur(2px); */
+    mix-blend-mode: soft-light;
+    background: radial-gradient(circle, #ffe9b8 0%, #ffc35a 45%, #e78b25 100%);
+    box-shadow: 0 0 10px rgba(255, 195, 90, 0.9), 0 0 18px rgba(255, 195, 90, 0.8);
+    transform-origin: center center;
+    transform: translate(-50%, -50%);
+    --flash-scale: 1;
+    animation: ruleta-light-flash 1.3s ease-in-out infinite alternate;
+  }
+  .ruleta-light-1 { transform: rotate(  0deg) translate(var(--ruleta-radius)) translate(-50%, -50%) scale(var(--flash-scale)); }
+  .ruleta-light-2 { transform: rotate( 60deg) translate(var(--ruleta-radius)) translate(-50%, -50%) scale(var(--flash-scale)); }
+  .ruleta-light-3 { transform: rotate(120deg) translate(var(--ruleta-radius)) translate(-50%, -50%) scale(var(--flash-scale)); }
+  .ruleta-light-4 { transform: rotate(180deg) translate(var(--ruleta-radius)) translate(-50%, -50%) scale(var(--flash-scale)); }
+  .ruleta-light-5 { transform: rotate(240deg) translate(var(--ruleta-radius)) translate(-50%, -50%) scale(var(--flash-scale)); }
+  .ruleta-light-6 { transform: rotate(300deg) translate(var(--ruleta-radius)) translate(-50%, -50%) scale(var(--flash-scale)); }
+
+  /* Escalonar el destello para que no todas las luces parpadeen al mismo tiempo */
+  .ruleta-light-1 { animation-delay: 0s; }
+  .ruleta-light-2 { animation-delay: 0.15s; }
+  .ruleta-light-3 { animation-delay: 0.3s; }
+  .ruleta-light-4 { animation-delay: 0.45s; }
+  .ruleta-light-5 { animation-delay: 0.6s; }
+  .ruleta-light-6 { animation-delay: 0.75s; }
+
+  @keyframes ruleta-light-flash {
+    0% {
+      opacity: 0.35;
+      --flash-scale: 0.85;
+      box-shadow: 0 0 6px rgba(255, 195, 90, 0.5), 0 0 10px rgba(255, 195, 90, 0.4);
+    }
+    50% {
+      opacity: 0.9;
+      --flash-scale: 1.05;
+      box-shadow: 0 0 14px rgba(255, 210, 120, 0.9), 0 0 20px rgba(255, 210, 120, 0.8);
+    }
+    100% {
+      opacity: 0.6;
+      --flash-scale: 1.15;
+      box-shadow: 0 0 20px rgba(255, 230, 150, 1), 0 0 30px rgba(255, 230, 150, 0.9);
+    }
+  }
   section.ruletaGanadora {
     background-color: #000;
     p {
@@ -80,7 +149,7 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
       margin-top: 7px;
     }
 
-    span {
+    h4 {
       display: block;
       color: #fff;
       text-align: center;
@@ -146,15 +215,24 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
       justify-content: center;
       position: relative;
       max-width: 665px;
+      --ruleta-radius: calc(50% + 162px); /* radio relativo al ancho del contenedor */
+      --ruleta-light-size: 24px;
       .imgRuleta {
         width: 100%;
         max-width: 665px;
+      }
+      @media (min-width: 768px){
+        --ruleta-radius: calc(50% + 290px);
+        --ruleta-light-size: 36px;
+      }
+      @media (min-width: 1200px){
+        --ruleta-light-size: 44px;
       }
 
       .item {
         position: absolute;
 
-        &:nth-of-type(1) {
+        &.item1 {
           top: 95px;
           left: 49%;
           transform: translateX(-50%);
@@ -164,7 +242,7 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
           }
         }
 
-        &:nth-of-type(2) {
+        &.item2 {
           top: 222px;
           right: 139px;
           transform: rotate(64deg);
@@ -174,37 +252,35 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
           }
         }
 
-        &:nth-of-type(3) {
-          bottom: 149px;
-          right: 99px;
-          transform: rotate(123deg);
-
+        &.item3 {
+          bottom: 175px;
+          right: 119px;
+          transform: rotate(116deg);
           img {
-            width: 180px;
+            width: 140px;
           }
         }
 
-        &:nth-of-type(4) {
-          bottom: 94px;
-          left: 49%;
+        &.item4 {
+          bottom: 150px;
+          left: 50%;
           transform: translateX(-50%) rotate(-180deg);
-
           img {
-            width: 110px;
+            width: 120px;
           }
         }
 
-        &:nth-of-type(5) {
-          bottom: 223px;
-          left: 133px;
+        &.item5 {
+          bottom: 170px;
+          left: 120px;
           transform: rotate(238deg);
 
           img {
-            width: 100px;
+            width: 150px;
           }
         }
 
-        &:nth-of-type(6) {
+        &.item6 {
           top: 221px;
           left: 140px;
           transform: rotate(305deg);
@@ -287,62 +363,62 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
       width: 80px;
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(1) {
+    section.ruletaGanadora .ruleta .item.item1 {
       top: 83px;
       left: 49.5%;
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(1) img {
+    section.ruletaGanadora .ruleta .item.item1 img {
       width: 121px;
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(2) img {
+    section.ruletaGanadora .ruleta .item.item2 img {
       width: 87px;
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(2) {
+    section.ruletaGanadora .ruleta .item.item2 {
       top: 200px;
       right: 122px;
       transform: rotate(67deg);
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(3) {
+    section.ruletaGanadora .ruleta .item.item3 {
       bottom: 135px;
       right: 96px;
       transform: rotate(123deg);
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(3) img {
+    section.ruletaGanadora .ruleta .item.item3 img {
       width: 157px;
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(4) {
+    section.ruletaGanadora .ruleta .item.item4 {
       bottom: 93px;
       left: 49.5%;
       transform: translateX(-50%) rotate(-180deg);
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(4) img {
+    section.ruletaGanadora .ruleta .item.item4 img {
       width: 88px;
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(5) {
+    section.ruletaGanadora .ruleta .item.item5 {
       bottom: 207px;
       left: 127px;
       transform: rotate(242deg);
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(5) img {
+    section.ruletaGanadora .ruleta .item.item5 img {
       width: 87px;
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(6) {
+    section.ruletaGanadora .ruleta .item.item6 {
       top: 195px;
       left: 121px;
       transform: rotate(300deg);
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(6) img {
+    section.ruletaGanadora .ruleta .item.item6 img {
       width: 85px;
     }
   }
@@ -378,31 +454,31 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
       top: 6px;
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(1) {
+    section.ruletaGanadora .ruleta .item.item1 {
       top: 79px;
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(1) img {
+    section.ruletaGanadora .ruleta .item.item1 img {
       width: 96px;
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(2) {
+    section.ruletaGanadora .ruleta .item.item2 {
       top: 162px;
       right: 104px;
       transform: rotate(66deg);
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(2) img {
+    section.ruletaGanadora .ruleta .item.item2 img {
       width: 77px;
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(3) {
+    section.ruletaGanadora .ruleta .item.item3 {
       bottom: 117px;
       right: 81px;
       transform: rotate(121deg);
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(3) img {
+    section.ruletaGanadora .ruleta .item.item3 img {
       width: 129px;
     }
 
@@ -410,31 +486,31 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
       width: 74px;
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(4) {
+    section.ruletaGanadora .ruleta .item.item4 {
       bottom: 78px;
       left: 49.5%;
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(4) img {
+    section.ruletaGanadora .ruleta .item.item4 img {
       width: 75px;
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(5) {
+    section.ruletaGanadora .ruleta .item.item5 {
       bottom: 174px;
       left: 106px;
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(5) img {
+    section.ruletaGanadora .ruleta .item.item5 img {
       width: 75px;
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(6) {
+    section.ruletaGanadora .ruleta .item.item6 {
       top: 166px;
       left: 105px;
       transform: rotate(298deg);
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(6) img {
+    section.ruletaGanadora .ruleta .item.item6 img {
       width: 75px;
     }
   }
@@ -443,10 +519,6 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
     section.ruletaGanadora .ruleta {
       margin-top: 20px;
     }
-
-    /* section.ruletaGanadora {
-      overflow: hidden;
-    } */
 
     section.ruletaGanadora .contentRuleta {
       margin-bottom: 20px;
@@ -489,64 +561,64 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
       font-size: 12px;
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(1) {
+    section.ruletaGanadora .ruleta .item.item1 {
       top: 67px;
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(1) img {
+    section.ruletaGanadora .ruleta .item.item1 img {
       width: 72px;
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(2) {
+    section.ruletaGanadora .ruleta .item.item2 {
       top: 139px;
       right: 48%;
       transform: translateX(171%) rotate(62deg);
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(2) img {
+    section.ruletaGanadora .ruleta .item.item2 img {
       width: 60px;
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(3) {
-      bottom: 101px;
+    section.ruletaGanadora .ruleta .item.item3 {
+      bottom: 105px;
       right: 50%;
-      transform: translateX(131%) rotate(121deg);
+      transform: translateX(161%) rotate(121deg);
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(3) img {
-      width: 94px;
+    section.ruletaGanadora .ruleta .item.item3 img {
+      width: 74px;
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(4) {
-      bottom: 72px;
+    section.ruletaGanadora .ruleta .item.item4 {
+      bottom: 102px;
       left: 49.5%;
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(4) img {
-      width: 60px;
+    section.ruletaGanadora .ruleta .item.item4 img {
+      width: 64px;
     }
 
     section.ruletaGanadora .contentRuleta .claro {
       width: 56px;
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(5) {
-      bottom: 142px;
-      left: 51%;
+    section.ruletaGanadora .ruleta .item.item5 {
+      top: 264px;
+      left: 48%;
       transform: translateX(-200%) rotate(242deg);
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(5) img {
-      width: 55px;
+    section.ruletaGanadora .ruleta .item.item5 img {
+      width: 70px;
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(6) {
-      top: 137px;
+    section.ruletaGanadora .ruleta .item.item6 {
+      top: 143px;
       left: 51%;
       transform: translateX(-196%) rotate(298deg);
     }
 
-    section.ruletaGanadora .ruleta .item:nth-of-type(6) img {
+    section.ruletaGanadora .ruleta .item.item6 img {
       width: 57px;
     }
   }
@@ -554,6 +626,11 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
 
 <script>
   import { gsap } from "gsap";
+  import { togglePreloadAnimation } from "@/utils/animations";
+  import {getListProducts, validUserEnabled} from '@/utils/endpoints';
+  import { userStore } from '@/store/userStore';
+  import { showCustomModal } from '@/utils/modalHelper';
+  import icon_no_cumple from "@/assets/icons/icon_no_cumple.svg";
 
   const btnGirar = document.querySelector("#btnGirar") as HTMLElement;
   const ruletaTable = document.querySelector(".ruleta") as HTMLElement;
@@ -566,8 +643,6 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
     // Aquí se puede reemplazar por una lógica de probabilidades con pesos
     return Math.floor(Math.random() * cantidadItems);
   }
-
-  btnGirar.addEventListener("click", girarRuleta);
 
   function girarRuleta() {
     if (yaGiro) return;
@@ -589,7 +664,7 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
 
     gsap.to(ruletaTable, {
       rotation: anguloFinal,
-      duration: 5,
+      duration: 3.5,
       ease: "power3.out",
       onComplete: () => {
         const nombreGanador = itemGanador.getAttribute("data-nombre");
@@ -603,49 +678,81 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
   }
 
   const eventInitRuleta = new CustomEvent("ruleta:enter");
-  
-
   const entry_btn = document.querySelector(".entry_ruleta");
   entry_btn.addEventListener("click", () => {
     document.dispatchEvent(eventInitRuleta);
   });
   
-  document.addEventListener("ruleta:enter", () => {
-    console.log("Ruleta entrando");
-    const mainRuleta = document.querySelector(".main_ruleta");
-    mainRuleta.classList.remove("overflow-hidden");
-    document.querySelectorAll(".section_hidden").forEach(section => section.classList.add("hidden"));
-    document.querySelector(".ruletaGanadora").classList.remove("hidden");
-    //Botón para animacion de entrada de ruleta
-    const isotipoWrapper = document.querySelector(".isotipo_claro");
-    const isotipo = isotipoWrapper?.querySelector("svg");
-    // Animar el isotipo cuando se hace clic en el botón de entrada
-    if (isotipo) {
-      const rotacion = gsap.to(isotipo, {
-        rotation: "+=360",
-        repeat: -1,
-        ease: "linear",
-        duration: 0.3,
-      });
-
-      const ruletaIntro = gsap.to(ruletaTable, {
-        rotation: "+=" + 360 * 50,
-        duration: 1.5,
-        ease: "power3.out",
-      });
-
-      gsap.from(isotipo, {
-        scale: 600,
-        transformOrigin: "50% 50%",
-        duration: 1,
-        ease: "power3.out",
-        onComplete: () => {
-          rotacion.kill();
-          gsap.set(isotipo, { rotation: 0 });
-          isotipo.classList.remove("bg-logo-claro-gradient");
-          mainRuleta.classList.add("overflow-hidden");
-        },
-      });
+  document.addEventListener("ruleta:enter", async () => {
+    const { user  } = userStore.getState();
+    console.log('user en ruleta:', user);
+    try {
+      const userEnabledResponse = await validUserEnabled(user.serviceId);
+      const { canSpin, remainingPlays, playsAllowed, playsUsed, reason } = userEnabledResponse || {};
+      console.log({canSpin, remainingPlays, playsAllowed, playsUsed, reason})
+      const mainRuleta = document.querySelector(".main_ruleta");
+      document.querySelectorAll(".section_hidden").forEach(section => section.classList.add("hidden"));
+      document.querySelector(".ruletaGanadora").classList.remove("hidden");
+      if (window.innerWidth >= 1200){
+        mainRuleta.classList.remove("overflow-hidden");
+      }else{
+        // mainRuleta.classList.add("h-full");
+      }
+      //Botón para animacion de entrada de ruleta
+      const isotipoWrapper = document.querySelector(".isotipo_claro");
+      const isotipo = isotipoWrapper?.querySelector("svg");
+      // Animar el isotipo cuando se hace clic en el botón de entrada
+      const forseCanSpin = false;
+      if (canSpin) {
+        const listProductsResponse = await getListProducts(user.serviceId);
+        console.log("listProductsResponse", listProductsResponse);
+        ruletaTable.classList.remove("opacity-0");
+        const rotacion = gsap.to(isotipo, {
+          rotation: "+=360",
+          repeat: -1,
+          ease: "linear",
+          duration: 0.3,
+          opacity: 0,
+        });
+  
+        const ruletaIntro = gsap.to(ruletaTable, {
+          rotation: "+=" + 360 * 50,
+          duration: 1.5,
+          ease: "power3.out",
+        });
+        
+        gsap.from(isotipo, {
+          scale: 600,
+          transformOrigin: "50% 50%",
+          duration: 1,
+          opacity: 1,
+          ease: "power3.out",
+          onComplete: () => {
+            rotacion.kill();
+            gsap.set(isotipo, { rotation: 0 });
+            isotipo.classList.remove("bg-logo-claro-gradient", "rounded-full");
+            mainRuleta.classList.add("overflow-hidden");
+            mainRuleta.classList.remove("h-full");
+          },
+        });
+        btnGirar.addEventListener("click", girarRuleta);
+      }else{
+        showCustomModal({
+          title: "Lo sentimos, no puedes participar en estos momentos 👇",
+          html: `<p>${reason}</p>`,
+          iconSrc: icon_no_cumple.src,
+          confirmButtonText: "Entendido",
+          showCloseButton: false,
+          onConfirm: () => {
+            document.querySelectorAll(".section_hidden").forEach(section => section.classList.remove("hidden"));
+            document.querySelector(".ruletaGanadora").classList.add("hidden");
+          },
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }finally{
+      togglePreloadAnimation(false);
     }
   });
   

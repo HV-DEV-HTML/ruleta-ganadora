@@ -3,7 +3,7 @@ import Button from "@UI/Button.astro"
 ---
 
 <div class="w-full h-full hidden" data-step="3">
-  <form id="form-code" data-aos="zoom-in-up" class="bg-white px-4 md:px-10 py-8 md:py-10 xl:py-9 2xl:py-10 w-full rounded-2xl font-roboto flex flex-col gap-3 md:gap-4 md:max-w-[540px] mx-auto relative top-5 md:top-0 2xl:top-8 xl:-right-16 z-10 shadow-lg" action="">
+  <form id="form-code" data-aos="zoom-in-up" class="bg-white px-4 md:px-10 py-8 md:py-10 xl:py-9 2xl:py-10 w-full rounded-2xl font-roboto flex flex-col gap-3 md:gap-4 md:max-w-[540px] mx-auto relative top-5 md:top-0 xl:top-8 xl:-right-30 z-10 shadow-lg" action="">
     <h3 class="text-center font-amx-bold text-xl md:text-3xl leading-none">Ingresa tu código de validación</h3>
     <p class="font-amx-regular text-sm text-balance text-center leading-tight">Se te ha enviado un código de validación al correo electrónico ingresado. Revisa tu bandeja de entrada o spam.</p>
     <fieldset>
@@ -98,56 +98,56 @@ import Button from "@UI/Button.astro"
           if (verified) {
             document.querySelectorAll(".section_hidden").forEach(section => section.classList.add("hidden"));
             ruleta.classList.remove("hidden");
-            const listProducts = await getListProducts();
           } else {
-            showCustomModal({
-              title: "Código inválido",
-              html: message || "El código ingresado no es válido",
-              iconSrc: icon_no_cumple.src,
-              confirmButtonText: "Aceptar",
-              showCloseButton: false,
-              onConfirm: () => {
-                resetForm();
-              },
-            });
+            // showCustomModal({
+            //   title: "Código inválido",
+            //   html: message || "El código ingresado no es válido",
+            //   iconSrc: icon_no_cumple.src,
+            //   confirmButtonText: "Aceptar",
+            //   showCloseButton: false,
+            //   onConfirm: () => {
+            //     resetForm();
+            //   },
+            // });
           }
         } catch (error) {
           console.error(error);
-          
-          showCustomModal({
-            title: "Error al validar el código",
-            html: "Ocurrió un problema al validar tu código. Por favor, inténtalo nuevamente.",
-            iconSrc: icon_no_cumple.src,
-            confirmButtonText: "Aceptar",
-            showCloseButton: false,
-            onConfirm: () => {
-              resetForm();
-            },
-          });
+          // showCustomModal({
+          //   title: "Error al validar el código",
+          //   html: "Ocurrió un problema al validar tu código. Por favor, inténtalo nuevamente.",
+          //   iconSrc: icon_no_cumple.src,
+          //   confirmButtonText: "Aceptar",
+          //   showCloseButton: false,
+          //   onConfirm: () => {
+          //     resetForm();
+          //   },
+          // });
         } finally {
           togglePreloadAnimation(false);
           submitBtn.disabled = false;
           document.querySelectorAll(".section_hidden").forEach(section => section.classList.add("hidden"));
           document.querySelector(".ruletaGanadora").classList.remove("hidden");
-          const userEnabledResponse = await validUserEnabled(user.id);
+          const eventInitRuleta = new CustomEvent("ruleta:enter");
+          document.dispatchEvent(eventInitRuleta);
           try {
+            const userEnabledResponse = await validUserEnabled(user.id);
             const { canSpin, remainingPlays, playsAllowed, playsUsed, reason } = userEnabledResponse || {};
             console.log({canSpin, remainingPlays, playsAllowed, playsUsed, reason})
             if (canSpin) {
               
             }else{
-              setTimeout(() => {
-                showCustomModal({
-                  title: "Lo sentimos, no puedes participar en estos momentos 👇",
-                  html: `<p>${reason}</p>`,
-                  iconSrc: icon_no_cumple.src,
-                  confirmButtonText: "Volver al inicio",
-                  showCloseButton: false,
-                  onConfirm: () => {
-                    resetForm();
-                  },
-                });
-              }, 2500);
+              // setTimeout(() => {
+              //   showCustomModal({
+              //     title: "Lo sentimos, no puedes participar en estos momentos 👇",
+              //     html: `<p>${reason}</p>`,
+              //     iconSrc: icon_no_cumple.src,
+              //     confirmButtonText: "Volver al inicio",
+              //     showCloseButton: false,
+              //     onConfirm: () => {
+              //       resetForm();
+              //     },
+              //   });
+              // }, 2500);
             }
           } catch (error) {
             console.error(error);

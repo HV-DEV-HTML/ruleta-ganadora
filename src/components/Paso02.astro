@@ -137,7 +137,7 @@ import Button from "@UI/Button.astro"
       iconSrc: icon_no_cumple.src,
       title: "Lo sentimos, no puedes participar en estos momentos 👇",
       html: messageShow,
-      confirmButtonText: "Volver al inicio",
+      confirmButtonText: "Entendido",
       showCloseButton: true,
       onConfirm: () => {
         // aquí haces el callback que quieras, por ejemplo:
@@ -163,6 +163,15 @@ import Button from "@UI/Button.astro"
     }
     fieldPhone.disabled = false;
     //submitBtn.disabled = false;
+    if (validator) {
+      validator.revalidateField('#name');
+      validator.revalidateField('#email');
+      validator.revalidateField('#phone');
+      validator.revalidateField('#dni');
+      validator.revalidateField('#typeDoc');
+      validator.revalidateField('#terms');
+    }
+    
   };
 
 
@@ -181,7 +190,6 @@ import Button from "@UI/Button.astro"
 
   const handlePreCheckByDni = async () => {
     if (!fieldDni || !fieldTypeDoc) return;
-    console.log({fieldTypeDoc})
     if (fieldTypeDoc.value === "") {
       fieldTypeDoc.dispatchEvent(new Event('change'));
       return;
@@ -196,14 +204,13 @@ import Button from "@UI/Button.astro"
     togglePreloadAnimation(true);
     try {
       const {allowed, reason, user} = await preCheck(dniValue);
-      if (!allowed || !user) {
+      if ( (!allowed || !user) && reason !== "Ya estás registrado y verificado.") {
         errorFindUser(reason);
         return;
       }
       setValuesForm(user);
       //seteamos los datos del user en el store
       userStore.setState({ user });
-      console.log('Respuesta preCheck desde DNI:', {allowed, reason, user});
     } catch (error) {
       console.error('Error en preCheck desde DNI:', error);
     }finally{
@@ -310,7 +317,7 @@ import Button from "@UI/Button.astro"
           // Cuando está habilitado, debe tener un valor distinto de ""
           return fieldPhone.value !== '';
         },
-        errorMessage: 'El servicio asociado es obligatorio',
+        errorMessage: '*Selecciona tu servicio asociado.',
       },
     ])
     .addField('#email', [
@@ -350,8 +357,7 @@ import Button from "@UI/Button.astro"
 
       try {
         const { user } = userStore.getState();
-        console.log('user en onSuccess Paso02:', user);
-
+        userStore.setState({ user: { ...user, serviceId: fieldPhoneIDForm } });
         if (!user) {
           throw new Error('User no está definido en el store antes de registerUser');
         }
@@ -365,18 +371,23 @@ import Button from "@UI/Button.astro"
           docType,
           docNumber
         );
-        console.log('registerUserResponse:', registerUserResponse);
+        //console.log('registerUserResponse:', registerUserResponse);
 
         if (registerUserResponse?.success) {
-          if ((window as any).bannerStepTransition) {
-            const currentStep = (window as any).bannerStepTransition.getCurrentStep();
-            (window as any).bannerStepTransition.nextToStep(currentStep, nextStep);
+          if (registerUserResponse?.message === 'Ya estás registrado y verificado. Puedes jugar ahora.') {
+            const eventInitRuleta = new CustomEvent("ruleta:enter");
+            document.dispatchEvent(eventInitRuleta);
+          }else{
+            if ((window as any).bannerStepTransition) {
+              const currentStep = (window as any).bannerStepTransition.getCurrentStep();
+              (window as any).bannerStepTransition.nextToStep(currentStep, nextStep);
+            }
+            submitBtn.disabled = false;
+            resetForm();
+            togglePreloadAnimation(false);
           }
         }
 
-        submitBtn.disabled = false;
-        resetForm();
-        togglePreloadAnimation(false);
       } catch (error) {
         console.error('Error en onSuccess Paso02:', error);
         togglePreloadAnimation(false);
@@ -384,7 +395,7 @@ import Button from "@UI/Button.astro"
           iconSrc: icon_no_cumple.src,
           title: 'Error en la validación',
           html: '',
-          confirmButtonText: 'Volver al inicio',
+          confirmButtonText: 'Entendido',
           showCloseButton: true,
           onConfirm: () => {
             resetForm();
