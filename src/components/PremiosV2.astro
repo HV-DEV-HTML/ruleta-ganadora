@@ -106,12 +106,12 @@ import product_08 from '@/assets/images/products/08.png'
       top: 0,
       behavior: "smooth"
     });
-    setTimeout(() => {
-      if ((window as any).bannerStepTransition) {
-        const currentStep = (window as any).bannerStepTransition.getCurrentStep();
-        (window as any).bannerStepTransition.nextToStep(currentStep, nextStep);
-      }
-    }, 200);    
+    // setTimeout(() => {
+    //   if ((window as any).bannerStepTransition) {
+    //     const currentStep = (window as any).bannerStepTransition.getCurrentStep();
+    //     (window as any).bannerStepTransition.nextToStep(currentStep, nextStep);
+    //   }
+    // }, 200);    
   });
 
   const swiperPremios = new Swiper('.swiperPremios', {

@@ -7,7 +7,7 @@ import Button from "@UI/Button.astro"
     <h1 data-aos="zoom-in-right"  class="font-amx-regular text-xl md:text-3xl xl:text-2xl 2xl:text-3xl leading-none italic xl:leading-[0.5] text-center text-claro">REGÍSTRATE Y PARTICIPA EN <strong class="block leading-none font-amx-black text-3xl md:text-5xl xl:text-4xl 2xl:text-5xl">RULETA GANADORA</strong></h1>
     <p data-aos="zoom-in-right" data-aos-delay="50" class="font-amx-bold italic text-[11px] md:text-sm text-center bg-claro text-white leading-none rounded-full px-2 md:px-3 py-1.5 md:py-2">¡Gira y gana más gigas, accesorios, equipos y muchos premios más!</p>
   </div>
-  <form id="form-registro" data-aos="zoom-in-up" class="bg-white px-4 md:px-10 xl:px-7 2xl:px-10 mt-40 lg:mt-62 xl:mt-0 py-8 2xl:py-10 w-full rounded-2xl font-roboto flex flex-col gap-3 md:gap-4 md:max-w-[500px] xl:max-w-[430px] 2xl:max-w-[540px] mx-auto relative xl:-top-7 xl:right-12 2xl:right-16 z-10" action="">
+  <form id="form-registro" data-aos="zoom-in-up" class="bg-white px-4 md:px-10 xl:px-7 2xl:px-10 mt-40 lg:mt-62 xl:mt-0 py-8 2xl:py-10 w-full rounded-2xl font-roboto flex flex-col gap-3 md:gap-4 md:max-w-[500px] xl:max-w-[430px] 2xl:max-w-[540px] mx-auto relative xl:-top-7 xl:right-12 2xl:right-16 z-10 shadow-xl/20" action="">
     <h3 class="text-center font-amx-bold text-xl md:text-3xl xl:text-2xl 2xl:text-3xl leading-none">Valida tus datos para participar</h3>
     <fieldset class="grid grid-cols-2 gap-4">
       <div class="flex flex-col text-black">
@@ -16,7 +16,7 @@ import Button from "@UI/Button.astro"
           <select id="typeDoc" name="typeDoc" autocomplete="type-document-name" class="col-start-1 row-start-1 appearance-none w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none h-[40px]" required>
             <option value="" selected>Tipo de doc.</option>
             <option value="DNI">DNI</option>
-            <option value="PASAPORTE">PASAPORTE</option>
+            <option value="CEX">CEX</option>
           </select>
           <svg viewBox="0 0 16 16" fill="currentColor" data-slot="icon" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-900 sm:size-4 z-1">
             <path d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
@@ -25,7 +25,7 @@ import Button from "@UI/Button.astro"
       </div>
       <div class="flex flex-col text-black">
         <label for="dni" class="text-xs md:text-sm font-bold">Número de documento</label>
-        <input type="text" name="dni" id="dni" maxlength="8" inputmode="numeric" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none" placeholder="Número de documento" required>
+        <input type="text" name="dni" id="dni" maxlength="8" inputmode="numeric" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none" placeholder="Número de documento" required disabled>
       </div>
     </fieldset>
     <fieldset>
@@ -83,7 +83,7 @@ import Button from "@UI/Button.astro"
   const fieldName = document.querySelector('#name') as HTMLInputElement;
   const fieldEmail = document.querySelector('#email') as HTMLInputElement;
   const fieldDni = document.querySelector('#dni') as HTMLInputElement;
-  const fieldPhone = document.querySelector('#phone') as HTMLInputElement;
+  const fieldPhone = document.querySelector('#phone') as HTMLSelectElement;
   const fieldTypeDoc = document.querySelector('#typeDoc') as HTMLInputElement;
 
   const handleModal = (btnsOpenSelector, modalsSelector, closesSubSelector, closesBtnSelector) => {
@@ -152,10 +152,10 @@ import Button from "@UI/Button.astro"
     fieldEmail.value = user.email;
     fieldEmail.disabled = false;
     fieldPhone.innerHTML = `<option value="">Selecciona tu servicio</option>`;
-    if (Array.isArray(user.phones) && user.phones.length > 0) {
-      user.phones.forEach((phone) => {
+    if (Array.isArray(user.services) && user.services.length > 0) {
+      user.services.forEach(({id, phone}) => {
         const option = document.createElement('option');
-        option.value = phone;
+        option.value = id;
         option.textContent = phone;
         fieldPhone.appendChild(option);
       });
@@ -190,7 +190,7 @@ import Button from "@UI/Button.astro"
     const dniValue = fieldDni.value.trim();
     if (typeDocument === "DNI") {
       if (dniValue.length !== 8) return;
-    } else if (typeDocument === "PASAPORTE") {
+    } else if (typeDocument === "CEX") {
       if (dniValue.length < 9) return;
     }
     togglePreloadAnimation(true);
@@ -229,7 +229,7 @@ import Button from "@UI/Button.astro"
       fieldDni.setAttribute("maxlength", "8");
       
       validator.addField("#dni", [
-        { rule: "required", errorMessage: "El documento es obligatorio." },
+        { rule: "required", errorMessage: "*Ingresa el número de documento." },
         { rule: "minLength", value: 8, errorMessage: "El DNI debe tener 8 dígitos." },
         { rule: "maxLength", value: 8, errorMessage: "El DNI debe tener 8 dígitos." },
         {
@@ -238,24 +238,30 @@ import Button from "@UI/Button.astro"
         },
       ]);
       dniFieldRegistered = true;
-    } else if (typeDocument === "PASAPORTE") {
+      restrictInput("#dni", /[^0-9]/g); // Solo permite números
+    } else if (typeDocument === "CEX") {
       fieldDni.setAttribute("maxlength", "20");
       validator.addField("#dni", [
-        { rule: "required", errorMessage: "El documento es obligatorio." },
-        { rule: "minLength", value: 9, errorMessage: "El PASAPORTE debe tener mínimo 9 dígitos." },
-        { rule: "maxLength", value: 20, errorMessage: "El PASAPORTE debe tener máximo 20 dígitos." },
+        { rule: "required", errorMessage: "*Ingresa el número de documento." },
+        { rule: "minLength", value: 9, errorMessage: "El CEX debe tener mínimo 9 dígitos." },
+        { rule: "maxLength", value: 20, errorMessage: "El CEX debe tener máximo 20 dígitos." },
         {
-          validator: (value) => /^\d+$/.test(value),
-          errorMessage: "Solo se permiten números.",
+          validator: (value) => /^[a-zA-Z0-9]+$/.test(value),
+          errorMessage: "Solo se permiten caracteres alfanuméricos.",
         },
       ]);
       dniFieldRegistered = true;
+      restrictInput("#dni", /[^a-zA-Z0-9]/g); // Solo permite alfanumericos
     }
-    restrictInput("#dni", /[^0-9]/g); // Solo permite números
   };
 
   if (fieldTypeDoc) {
     fieldTypeDoc.addEventListener('change', () => {
+      if(fieldTypeDoc.value === ""){
+        fieldDni.disabled = true;
+        return;
+      }
+      fieldDni.disabled = false;
       updateDocumentValidation(fieldTypeDoc.value);
     });
   }
@@ -281,8 +287,8 @@ import Button from "@UI/Button.astro"
 
   validator
     .addField('#name', [
-      { rule: "required", errorMessage: "El nombre es obligatorio." },
-        { rule: "minLength", value: 3, errorMessage: "El nombre debe tener al menos 3 caracteres." },
+      { rule: "required", errorMessage: "*Ingresa el nombre." },
+        { rule: "minLength", value: 3, errorMessage: "*Ingresa como mínimo 3 caracteres." },
         { rule: "maxLength", value: 60, errorMessage: "El nombre no puede superar los 60 caracteres." },
         {
           validator: (value) => /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value),
@@ -292,7 +298,7 @@ import Button from "@UI/Button.astro"
     .addField('#typeDoc', [
       {
         rule: 'required',
-        errorMessage: 'El tipo de documento es obligatorio',
+        errorMessage: '*Selecciona el tipo de documento.',
       }
     ])
     .addField('#phone', [
@@ -322,7 +328,7 @@ import Button from "@UI/Button.astro"
     .addField('#terms', [
       {
         rule: 'required',
-        errorMessage: 'Debe aceptar los términos y condiciones',
+        errorMessage: '*Acepta los términos y condiciones para participar.',
       },
     ])
     .onValidate(({ isValid, isSubmitted, fields, errors, failedRules, failedRulesCount }) => {     
@@ -335,7 +341,8 @@ import Button from "@UI/Button.astro"
     .onSuccess(async (event) => {
       event.preventDefault();
       const dataForm = new FormData(form);
-      const fieldPhoneForm = dataForm.get('phone') as string;
+      const fieldPhoneIDForm = dataForm.get('phone') as string;
+      const fieldPhoneNameForm = fieldPhone.options[fieldPhone.selectedIndex].text;
       const fieldNameForm = dataForm.get('name') as string
       const nextStep = Number(submitBtn.dataset.nextStep);
       submitBtn.disabled = true;
@@ -349,11 +356,12 @@ import Button from "@UI/Button.astro"
           throw new Error('User no está definido en el store antes de registerUser');
         }
 
-        const { fullName, email, docType, docNumber } = user;
+        const {email, docType, docNumber } = user;
         const registerUserResponse = await registerUser(
           fieldNameForm,
           email,
-          fieldPhoneForm,
+          fieldPhoneNameForm,
+          fieldPhoneIDForm,
           docType,
           docNumber
         );
@@ -389,6 +397,10 @@ import Button from "@UI/Button.astro"
   const resetForm = () => {
     form.reset();
     validator.refresh();
+    fieldPhone.disabled = true;
+    fieldName.disabled = true;
+    fieldEmail.disabled = true;
+    fieldDni.disabled = true;
     submitBtn.disabled = true;
   };
   
@@ -396,8 +408,6 @@ import Button from "@UI/Button.astro"
   restrictInput("#name", /[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g);
   //#email solo se permiten caracteres validos
   restrictInput("#email", /[^a-zA-Z0-9@.]/g);
-  // #dni solo se permiten números
-  restrictInput("#dni", /[^0-9]/g);
 
   //Agrega una función debounde para el input fieldDNi para cuando el usuario termine de escribir llamar al api preCheck
 

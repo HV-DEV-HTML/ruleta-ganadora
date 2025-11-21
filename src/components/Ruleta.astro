@@ -13,7 +13,7 @@ import bg_tablet from "@/assets/images/banner_tablet.jpg"
 import bg_desktop from "@/assets/images/banner_desktop.jpg"
 ---
 
-<button class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer entry_ruleta hidden">Entra ruleta</button>
+<button class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer entry_ruleta">Entra ruleta</button>
 <section class="ruletaGanadora relative hidden" data-step="4">
   <picture class="w-full h-full absolute top-0 left-0 z-0">
     <source srcset={bg_desktop.src} media="(min-width: 1280px)">
@@ -116,7 +116,7 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
     }
 
     .contentRuleta {
-      pointer-events: none;
+      /* pointer-events: none; */
       position: relative;
       margin-bottom: 50px;
 
@@ -555,8 +555,8 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
 <script>
   import { gsap } from "gsap";
 
-  const btn = document.querySelector("#btnGirar") as HTMLElement;
-  const ruleta = document.querySelector(".ruleta") as HTMLElement;
+  const btnGirar = document.querySelector("#btnGirar") as HTMLElement;
+  const ruletaTable = document.querySelector(".ruleta") as HTMLElement;
   const items = document.querySelectorAll(".ruleta .item");
 
   let yaGiro = false;
@@ -567,13 +567,13 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
     return Math.floor(Math.random() * cantidadItems);
   }
 
-  btn.addEventListener("click", girarRuleta);
+  btnGirar.addEventListener("click", girarRuleta);
 
   function girarRuleta() {
     if (yaGiro) return;
     yaGiro = true;
 
-    btn.classList.add("disabled");
+    btnGirar.classList.add("disabled");
 
     const cantidadItems = items.length;
     const gradosPorItem = 318 / cantidadItems;
@@ -587,14 +587,13 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
 
     const itemGanador = items[indiceGanador];
 
-    gsap.to(ruleta, {
+    gsap.to(ruletaTable, {
       rotation: anguloFinal,
       duration: 5,
       ease: "power3.out",
       onComplete: () => {
         const nombreGanador = itemGanador.getAttribute("data-nombre");
         console.log("Ganador:", nombreGanador);
-
         // Después del giro mostrar modal
         console.log({ nombreGanador });
       },
@@ -603,11 +602,23 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
     gradosActuales = anguloFinal;
   }
 
-  //Botón para animacion de entrada de ruleta
+  const eventInitRuleta = new CustomEvent("ruleta:enter");
+  
+
   const entry_btn = document.querySelector(".entry_ruleta");
-  const isotipoWrapper = document.querySelector(".isotipo_claro");
-  const isotipo = isotipoWrapper?.querySelector("svg");
   entry_btn.addEventListener("click", () => {
+    document.dispatchEvent(eventInitRuleta);
+  });
+  
+  document.addEventListener("ruleta:enter", () => {
+    console.log("Ruleta entrando");
+    const mainRuleta = document.querySelector(".main_ruleta");
+    mainRuleta.classList.remove("overflow-hidden");
+    document.querySelectorAll(".section_hidden").forEach(section => section.classList.add("hidden"));
+    document.querySelector(".ruletaGanadora").classList.remove("hidden");
+    //Botón para animacion de entrada de ruleta
+    const isotipoWrapper = document.querySelector(".isotipo_claro");
+    const isotipo = isotipoWrapper?.querySelector("svg");
     // Animar el isotipo cuando se hace clic en el botón de entrada
     if (isotipo) {
       const rotacion = gsap.to(isotipo, {
@@ -615,6 +626,12 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
         repeat: -1,
         ease: "linear",
         duration: 0.3,
+      });
+
+      const ruletaIntro = gsap.to(ruletaTable, {
+        rotation: "+=" + 360 * 50,
+        duration: 1.5,
+        ease: "power3.out",
       });
 
       gsap.from(isotipo, {
@@ -626,6 +643,7 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
           rotacion.kill();
           gsap.set(isotipo, { rotation: 0 });
           isotipo.classList.remove("bg-logo-claro-gradient");
+          mainRuleta.classList.add("overflow-hidden");
         },
       });
     }

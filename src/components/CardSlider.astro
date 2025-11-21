@@ -14,7 +14,7 @@ const { cards, tabId } = Astro.props;
 ---
 
 <div class="card-slider" data-tab-id={tabId}>
-  <div class="cards-container relative w-full h-[450px] xl:h-auto py-10 flex justify-center items-center">
+  <div class="cards-container relative w-full h-[450px] lg:h-auto py-4 lg:py-14 xl:py-16 flex justify-center items-center">
     {cards.map((card, index) => (
       <div
         class="card w-full max-w-[260px] rounded-4xl overflow-hidden shadow-card-claro absolute lg:relative cursor-grab active:cursor-grabbing"
@@ -39,7 +39,7 @@ const { cards, tabId } = Astro.props;
   <div class="flex flex-col md:flex-row justify-center items-start gap-4 lg:gap-6 px-4 py-4 slider_participa_steps">
     {cards.map((card) => (
       <div
-        class="flex flex-col gap-1 hidden md:flex w-full md:max-w-[210px] xl:max-w-[340px] xl:opacity-50 transition-opacity duration-300"
+        class="flex flex-col gap-1 hidden md:flex w-full md:max-w-[210px] xl:max-w-[340px] duration-300"
         data-step={card.step}
       >
         <p class="text-center font-amx-black text-3xl">Paso {card.step}</p>
@@ -242,39 +242,43 @@ const { cards, tabId } = Astro.props;
     };
 
     const initDesktop = () => {
-      const rotations = [-6, 0, 6];
-      const xOffsets = [56, 0, -56];
+      const rotations = [-10, 5, 10];
+      const xOffsets = [20, 0, -20];
+      const yOffsets = [-20, 30, 10];
 
       // Posición base de las cards
       cards.forEach((card, i) => {
         const originalZIndex = i === 1 ? 10 : 1;
+        const ZIndexArr = [10, 5, 2];
 
         gsap.set(card, {
           rotation: rotations[i],
           x: xOffsets[i],
-          zIndex: originalZIndex,
+          zIndex: ZIndexArr[i],
         });
 
         const enterHandler = () => {
           const getStep = Number(card.getAttribute("data-index")) + 1;
-          sliderParticipaSteps.querySelector(`[data-step="${getStep}"]`).classList.remove("xl:opacity-50");
+          //sliderParticipaSteps.querySelector(`[data-step="${getStep}"]`).classList.remove("xl:opacity-50");
           gsap.to(card, {
             rotation: 0,
             scale: 1.08,
             duration: 0.3,
             zIndex: 20,
+            y: 0,
             ease: "power2.out",
           });
         };
 
         const leaveHandler = () => {
           const getStep = Number(card.getAttribute("data-index")) + 1;
-          sliderParticipaSteps.querySelector(`[data-step="${getStep}"]`).classList.add("xl:opacity-50");
+          //sliderParticipaSteps.querySelector(`[data-step="${getStep}"]`).classList.add("xl:opacity-50");
           gsap.to(card, {
             rotation: rotations[i],
             scale: 1,
             duration: 0.3,
-            zIndex: originalZIndex,
+            zIndex: ZIndexArr[i],
+            y: yOffsets[i],
             ease: "power2.out",
           });
         };
@@ -310,7 +314,7 @@ const { cards, tabId } = Astro.props;
             },
             {
               x: xOffsets[i],
-              y: 0,
+              y: yOffsets[i],
               rotation: rotations[i],
               opacity: 1,
               scale: 1,

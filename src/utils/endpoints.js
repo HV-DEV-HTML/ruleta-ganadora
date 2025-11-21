@@ -26,7 +26,7 @@ export async function preCheck(phone){
   }
 }
 
-export async function registerUser(name, email, phone, docType, docNumber){
+export async function registerUser(name, email, phone, serviceId, docType, docNumber){
   try {
    const response = await fetch(`${URL_API}/Auth/register`, {
       method: 'POST',
@@ -37,6 +37,7 @@ export async function registerUser(name, email, phone, docType, docNumber){
         name,
         email,
         phone,
+        serviceId,
         docType,
         docNumber
       })
@@ -60,6 +61,7 @@ export async function verifyCode(email, code){
   try {
     const response = await fetch(`${URL_API}/Auth/verify`, {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -118,6 +120,7 @@ export async function validUserEnabled(id){
   try {
     const response = await fetch(`${URL_API}/Spin/eligibility?userId=${id}`, {
       method: 'GET',
+      credentials: 'include', 
       headers: {
         'Content-Type': 'application/json'
       }
