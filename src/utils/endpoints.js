@@ -94,7 +94,7 @@ export async function verifyCode(email, code){
 
 export async function getListProducts(serviceId){
   try {
-    const response = await fetch(`${URL_API}/admin/prizes/available?serviceId=${serviceId}`, {
+    const response = await fetch(`${URL_API}/admin/prizes/available-grouped?serviceId=${serviceId}`, {
       method: 'GET',
       credentials: 'include', 
       headers: {
@@ -136,6 +136,34 @@ export async function validUserEnabled(serviceId){
     
   } catch (error) {
     console.error('Error en validUserEnabled:', error);
+    throw error;
+  }
+}
+
+export async function spinSaveResult(serviceId, prizeTypeId){
+  try {
+   const response = await fetch(`${URL_API}/Spin/execute-by-type`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        serviceId,
+        prizeTypeId
+      })
+    });
+
+    if (!response.ok) {
+      const errorBody = await response.text().catch(() => '');
+      throw new Error(`Error spinSaveResult (${response.status}): ${errorBody}`);
+    }
+
+    const data = await response.json();
+    return data;    
+    
+  } catch (error) {
+    console.error('Error en spinSaveResult:', error);
     throw error;
   }
 }

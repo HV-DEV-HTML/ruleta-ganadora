@@ -1,16 +1,15 @@
 ---
 import icon_frecha from "@/assets/images/ruleta/icon_flecha.png";
-import icon_claro from "@/assets/images/ruleta/icon_claro_ruleta.png";
-import ruleta from "@/assets/images/ruleta/ruletav3.png";
+import ruleta from "@/assets/images/ruleta/ruletav3.webp";
 import item1 from "@/assets/images/ruleta/item1.png";
-import item2 from "@/assets/images/ruleta/item2.png";
+import item2 from "@/assets/images/ruleta/bono_adicionales.png";
 import item3 from "@/assets/images/ruleta/item1.png";
-import item4 from "@/assets/images/ruleta/item5.png";
+import item4 from "@/assets/images/ruleta/bono_adicionales.png";
 import item5 from "@/assets/images/ruleta/item4.png";
-import item6 from "@/assets/images/ruleta/item6.png";
-import bg_mobile from "@/assets/images/banner_mobile.png"
-import bg_tablet from "@/assets/images/banner_tablet.jpg"
-import bg_desktop from "@/assets/images/banner_desktop.jpg"
+import item6 from "@/assets/images/ruleta/bono_adicionales.png";
+import bg_mobile from "@/assets/images/banner_mobile.webp"
+import bg_tablet from "@/assets/images/banner_tablet.webp"
+import bg_desktop from "@/assets/images/banner_desktop.webp"
 ---
 
 <button class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer entry_ruleta hidden">Entra ruleta</button>
@@ -21,11 +20,11 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
     <img class="w-full h-full object-cover" src={bg_mobile.src} alt="¡Gira la ruleta y gana premios al instante!">
   </picture>
   <div class="container relative z-1">
-    <p data-aos="zoom-in-up">¡Felicitaciones! Tienes <b>1 oportunidad</b> para girar la ruleta</p>
+    <p data-aos="zoom-in-up">¡Felicitaciones! Tienes <b class="text_allow_user">1 oportunidad</b> para girar la ruleta</p>
     <h2 data-aos="zoom-in-up">¡Es hora de girar y ganar!</h2>
     <h4 data-aos="zoom-in-up">Haz clic en el botón de abajo y deja que la suerte decida tu premio.</h4>
-    <button data-aos="zoom-in-up" class="cursor-pointer" id="btnGirar">Gira la ruleta</button>
-    <div class="contentRuleta" data-aos="zoom-in-down" data-aos-delay="100">
+    <button data-aos="zoom-in-up" class="cursor-pointer disabled:bg-gray-200 disabled:border-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed transition-all duration-300 z-50" id="btnGirar">Gira la ruleta</button>
+    <div class="contentRuleta opacity-0 transition-opacity duration-300" data-aos="zoom-in-down" data-aos-delay="100">
       <img src={icon_frecha.src} alt="" class="flecha">
       <div class="size-10 bg-logo-claro-gradient isotipo_claro rounded-full p-[8px] absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-20">
         <svg class="w-full h-full relative bg-logo-claro-gradient rounded-full" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -36,7 +35,7 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
         </svg>
       </div>
       <!-- <img src={icon_claro.src} alt="" class="claro"> -->
-      <div class="ruleta opacity-0 transition-opacity duration-300">
+      <div class="ruleta transition-opacity duration-300">
         <img src={ruleta.src} alt="" class="imgRuleta">
         <div class="ruleta-lights">
           <span class="ruleta-light ruleta-light-1"></span>
@@ -46,12 +45,12 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
           <span class="ruleta-light ruleta-light-5"></span>
           <span class="ruleta-light ruleta-light-6"></span>
         </div>
-        <div class="item item1" data-nombre="Moto edge"><img src={item1.src} alt=""></div>
-        <div class="item item2" data-nombre="+5gb adicionales"><img src={item2.src} alt=""></div>
-        <div class="item item3" data-nombre="Moto Watch FIT"><img src={item3.src} alt=""></div>
-        <div class="item item4" data-nombre="iPhone 17"><img src={item4.src} alt=""></div>
-        <div class="item item5" data-nombre="+10gb adicionales"><img src={item5.src} alt=""></div>
-        <div class="item item6" data-nombre="Sigue intentando"><img src={item6.src} alt=""></div>
+        <div class="item item1" data-nombre="Accesorios"><img src={item1.src} alt=""></div>
+        <div class="item item2" data-nombre="Bonos"><img src={item2.src} alt=""></div>
+        <div class="item item3" data-nombre="Accesorios"><img src={item3.src} alt=""></div>
+        <div class="item item4" data-nombre="Bonos"><img src={item4.src} alt=""></div>
+        <div class="item item5" data-nombre="Equipos"><img src={item5.src} alt=""></div>
+        <div class="item item6" data-nombre="Bonos"><img src={item6.src} alt=""></div>
       </div>
     </div>
     <p class="legal">*Imágenes referenciales. Aplican cambios según disponibilidad de stock.</p>
@@ -266,7 +265,7 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
           left: 50%;
           transform: translateX(-50%) rotate(-180deg);
           img {
-            width: 120px;
+            width: 106px;
           }
         }
 
@@ -627,13 +626,15 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
 <script>
   import { gsap } from "gsap";
   import { togglePreloadAnimation } from "@/utils/animations";
-  import {getListProducts, validUserEnabled} from '@/utils/endpoints';
+  import {getListProducts, validUserEnabled, spinSaveResult} from '@/utils/endpoints';
   import { userStore } from '@/store/userStore';
   import { showCustomModal } from '@/utils/modalHelper';
   import icon_no_cumple from "@/assets/icons/icon_no_cumple.svg";
+  import icon_gano_premio from "@/assets/icons/icon_gano_premio.svg";
 
-  const btnGirar = document.querySelector("#btnGirar") as HTMLElement;
+  const btnGirar = document.querySelector("#btnGirar") as HTMLButtonElement;
   const ruletaTable = document.querySelector(".ruleta") as HTMLElement;
+  const containerRuleta = document.querySelector(".contentRuleta") as HTMLElement;
   const items = document.querySelectorAll(".ruleta .item");
 
   let yaGiro = false;
@@ -645,15 +646,36 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
   }
 
   function girarRuleta() {
+    const { user  } = userStore.getState();
     if (yaGiro) return;
     yaGiro = true;
 
-    btnGirar.classList.add("disabled");
+    btnGirar.disabled = true;
 
-    const cantidadItems = items.length;
-    const gradosPorItem = 318 / cantidadItems;
+    // Filtrar solo los ítems con stock > 0
+    const itemsDisponibles: { index: number; element: Element }[] = [];
+    items.forEach((item, index) => {
+      const stockAttr = item.getAttribute("data-stock");
+      const stock = stockAttr ? Number(stockAttr) : 0;
+      if (stock > 0) {
+        itemsDisponibles.push({ index, element: item });
+      }
+    });
 
-    const indiceGanador = elegirIndiceGanador(cantidadItems);
+    // Si no hay ítems disponibles, cancelamos el giro y reactivamos el botón
+    if (itemsDisponibles.length === 0) {
+      console.warn("No hay ítems disponibles con stock > 0 para girar la ruleta.");
+      yaGiro = false;
+      btnGirar.disabled = true;
+      return;
+    }
+
+    const cantidadItemsDisponibles = itemsDisponibles.length;
+    const gradosPorItem = 318 / items.length;
+
+    // Elegimos un índice ganador solo entre los ítems con stock disponible
+    const indiceArray = elegirIndiceGanador(cantidadItemsDisponibles);
+    const indiceGanador = itemsDisponibles[indiceArray].index;
 
     const vueltasExtras = 360 * 5;
     const offsetFlecha = 5;
@@ -666,11 +688,55 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
       rotation: anguloFinal,
       duration: 3.5,
       ease: "power3.out",
-      onComplete: () => {
-        const nombreGanador = itemGanador.getAttribute("data-nombre");
-        console.log("Ganador:", nombreGanador);
+      onComplete: async () => {
+        togglePreloadAnimation(true);
+        const category_id = itemGanador.getAttribute("data-category_id");
+        console.log("Categoría Ganador:", category_id);
         // Después del giro mostrar modal
-        console.log({ nombreGanador });
+        btnGirar.disabled = false;
+        try {
+          const spinSaveResultResponse = await spinSaveResult(user.serviceId, Number(category_id));
+          console.log({ spinSaveResultResponse });
+          if (spinSaveResultResponse?.result === 'WIN') {
+            showCustomModal({
+              title:`🎁 ${spinSaveResultResponse.message}`,
+              html: `
+                <img class="max-w-[250px] mx-auto" src="${spinSaveResultResponse?.prizeImageUrl}" alt="${spinSaveResultResponse?.prizeName}"/>
+                <p>Te contactaremos por correo en los próximos días para coordinar la entrega.</p>
+              `,
+              iconSrc: icon_gano_premio.src,
+              confirmButtonText: "Volver al inicio",
+              showCloseButton: false,
+              onConfirm: () => {
+                document.querySelectorAll(".section_hidden").forEach(section => section.classList.remove("hidden"));
+                document.querySelector(".ruletaGanadora").classList.add("hidden");
+                document.querySelector(".main_ruleta").classList.add("overflow-hidden");
+                document.querySelector("[data-step='3']").classList.add("hidden");
+                document.querySelector("[data-step='2']").classList.remove("hidden");
+              },
+            });
+          }else{
+            showCustomModal({
+              title:`🎁 ${spinSaveResultResponse.message}`,
+              iconSrc: icon_no_cumple.src,
+              confirmButtonText: "Volver al inicio",
+              showCloseButton: false,
+              onConfirm: () => {
+                document.querySelectorAll(".section_hidden").forEach(section => section.classList.remove("hidden"));
+                document.querySelector(".ruletaGanadora").classList.add("hidden");
+                document.querySelector(".main_ruleta").classList.add("overflow-hidden");
+                document.querySelector("[data-step='3']").classList.add("hidden");
+                document.querySelector("[data-step='2']").classList.remove("hidden");
+                document.querySelector("[data-step='2']").classList.remove("hidden", "xl:hidden");
+              },
+            });
+          }
+        } catch (error) {
+          console.error('Error en spinSaveResult:', error);
+          throw error;
+        }finally{
+          togglePreloadAnimation(false);
+        }
       },
     });
 
@@ -689,7 +755,6 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
     try {
       const userEnabledResponse = await validUserEnabled(user.serviceId);
       const { canSpin, remainingPlays, playsAllowed, playsUsed, reason } = userEnabledResponse || {};
-      console.log({canSpin, remainingPlays, playsAllowed, playsUsed, reason})
       const mainRuleta = document.querySelector(".main_ruleta");
       document.querySelectorAll(".section_hidden").forEach(section => section.classList.add("hidden"));
       document.querySelector(".ruletaGanadora").classList.remove("hidden");
@@ -705,8 +770,46 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
       const forseCanSpin = false;
       if (canSpin) {
         const listProductsResponse = await getListProducts(user.serviceId);
-        console.log("listProductsResponse", listProductsResponse);
-        ruletaTable.classList.remove("opacity-0");
+        console.log({listProductsResponse})
+        if (listProductsResponse.length === 0) {
+          showCustomModal({
+            title: "Lo sentimos, no puedes participar en estos momentos 👇",
+            html: `<p>No hay premios disponibles para girar la ruleta.</p>`,
+            iconSrc: icon_no_cumple.src,
+            confirmButtonText: "Volver al inicio",
+            showCloseButton: false,
+            onConfirm: () => {
+              document.querySelectorAll(".section_hidden").forEach(section => section.classList.remove("hidden"));
+              document.querySelector(".ruletaGanadora").classList.add("hidden");
+              document.querySelector(".main_ruleta").classList.add("overflow-hidden");
+              document.querySelector("[data-step='3']").classList.add("hidden");
+              document.querySelector("[data-step='2']").classList.remove("hidden", "xl:hidden");
+            },
+          });
+          return;
+        }
+        const accesoriosResponse = listProductsResponse.filter(product => product.prizeTypeName === "Accesorios");
+        const bonosResponse = listProductsResponse.filter(product => product.prizeTypeName === "Bonos");
+        const equiposResponse = listProductsResponse.filter(product => product.prizeTypeName === "Equipos");
+        items.forEach((item, index) => {
+          const nombre = item.getAttribute("data-nombre");
+          if (nombre === "Accesorios") {
+            item.setAttribute("data-nombre", accesoriosResponse[0].prizeTypeName);
+            item.setAttribute("data-stock", accesoriosResponse[0].prizeTypeStock);
+            item.setAttribute("data-category_id", accesoriosResponse[0].prizeTypeId);
+          }
+          if (nombre === "Bonos") {
+            item.setAttribute("data-nombre", bonosResponse[0].prizeTypeName);
+            item.setAttribute("data-stock", bonosResponse[0].prizeTypeStock);
+            item.setAttribute("data-category_id", bonosResponse[0].prizeTypeId);
+          }
+          if (nombre === "Equipos") {
+            item.setAttribute("data-nombre", equiposResponse[0].prizeTypeName);
+            item.setAttribute("data-stock", equiposResponse[0].prizeTypeStock);
+            item.setAttribute("data-category_id", equiposResponse[0].prizeTypeId);
+          }
+        });
+        containerRuleta.classList.remove("opacity-0");
         const rotacion = gsap.to(isotipo, {
           rotation: "+=360",
           repeat: -1,
@@ -746,6 +849,9 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
           onConfirm: () => {
             document.querySelectorAll(".section_hidden").forEach(section => section.classList.remove("hidden"));
             document.querySelector(".ruletaGanadora").classList.add("hidden");
+            document.querySelector(".main_ruleta").classList.add("overflow-hidden");
+            document.querySelector("[data-step='3']").classList.add("hidden");
+            document.querySelector("[data-step='2']").classList.remove("hidden", "xl:hidden");
           },
         });
       }
@@ -754,7 +860,5 @@ import bg_desktop from "@/assets/images/banner_desktop.jpg"
     }finally{
       togglePreloadAnimation(false);
     }
-  });
-  
-  
+  });  
 </script>

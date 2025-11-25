@@ -1,5 +1,6 @@
 ---
 import Button from "@UI/Button.astro"
+import iconTooltip from "@/assets/icons/tooltip.svg?raw"
 ---
 
 <div class="w-full h-full relative z-10 xl:grid xl:grid-cols-2 items-start" data-step="2">
@@ -16,7 +17,8 @@ import Button from "@UI/Button.astro"
           <select id="typeDoc" name="typeDoc" autocomplete="type-document-name" class="col-start-1 row-start-1 appearance-none w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none h-[40px]" required>
             <option value="" selected>Tipo de doc.</option>
             <option value="DNI">DNI</option>
-            <option value="CEX">CEX</option>
+            <option value="PASAPORTE">Pasaporte</option>
+            <option value="CEX">Carné de extranjería</option>
           </select>
           <svg viewBox="0 0 16 16" fill="currentColor" data-slot="icon" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-900 sm:size-4 z-1">
             <path d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
@@ -25,7 +27,7 @@ import Button from "@UI/Button.astro"
       </div>
       <div class="flex flex-col text-black">
         <label for="dni" class="text-xs md:text-sm font-bold">Número de documento</label>
-        <input type="text" name="dni" id="dni" maxlength="8" inputmode="numeric" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none" placeholder="Número de documento" required disabled>
+        <input type="text" name="dni" id="dni" maxlength="8" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none" placeholder="Número de documento" required disabled>
       </div>
     </fieldset>
     <fieldset>
@@ -44,7 +46,12 @@ import Button from "@UI/Button.astro"
       </div>
     </fieldset>
     <fieldset>
-      <label for="email" class="text-xs md:text-sm font-bold">Correo electrónico</label>
+      <label for="email" class="text-xs md:text-sm font-bold flex gap-1 items-center">
+        Correo electrónico
+        <span class="cursor-pointer trigger relative block" data-tooltip="Recibirás la notificación de tu premio en este correo.">
+          <Fragment set:html={iconTooltip} />
+        </span>
+      </label>
       <input type="email" name="email" id="email" inputmode="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none" placeholder="Ingrese correo electrónico" required disabled>
       <div id="email-errors"></div>
     </fieldset>
@@ -62,7 +69,7 @@ import Button from "@UI/Button.astro"
         </div>
       </label>
     </fieldset>
-    <Button id="btn-submit-form" data-next-step="3" data-aos="zoom-in-up" data-aos-delay="100" type="submit" disabled href="https://www.claro.com.pe/personas/app/claro-musica/" classes="min-w-fit bg-white px-12 py-2.5 xl:py-3.5 border border-claro text-claro cursor-pointer hover:bg-claro hover:text-white disabled:bg-gray-200 disabled:border-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed mx-auto" >Continuar</Button>
+    <Button id="btn-submit-form" data-next-step="3" type="submit" disabled href="https://www.claro.com.pe/personas/app/claro-musica/" classes="min-w-fit bg-white px-12 py-2.5 xl:py-3.5 border border-claro text-claro cursor-pointer hover:bg-claro hover:text-white disabled:bg-gray-200 disabled:border-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed mx-auto" >Continuar</Button>
   </form>
   <div class="col-span-2 pt-3 xl:pt-0 xl:-mt-2">
     <p class="text-[11px] text-white text-center xl:text-left leading-none mx-auto xl:mr-0 xl:ml-auto md:max-w-[500px] xl:max-w-[430px] 2xl:max-w-[540px] relative xl:right-20 2xl:right-32 2xl:px-2">Lorem ipsum dolor sit amet consectetur. Eu molestie sit mus vulputate lacus volutpat blandit. Adipiscing diam sed mi vitae vel vitae massa. Interdum tempor tincidunt varius sit viverra massa amet lacus malesuada. Tempus id porttitor faucibus amet quam. Lacus id interdum vitae feugiat quam.</p>
@@ -119,13 +126,22 @@ import Button from "@UI/Button.astro"
 
   // Restricciones de entrada en los campos
   const restrictInput = (selector, allowedRegex) => {
-    const element = document.querySelector(selector);
-    if (element) {
-      element.addEventListener("input", (event) => {
-        const input = event.target as HTMLInputElement;
-        input.value = input.value.replace(allowedRegex, "");
-      });
+    const element = document.querySelector(selector) as HTMLInputElement | null;
+    if (!element) return;
+
+    // Si ya existe un handler previo, lo removemos para no acumular listeners
+    const anyElement = element as any;
+    if (anyElement._restrictHandler) {
+      element.removeEventListener("input", anyElement._restrictHandler);
     }
+
+    const handler = (event: Event) => {
+      const input = event.target as HTMLInputElement;
+      input.value = input.value.replace(allowedRegex, "");
+    };
+
+    element.addEventListener("input", handler);
+    anyElement._restrictHandler = handler;
   };
 
   const errorFindUser = (message = "") => {
@@ -200,6 +216,8 @@ import Button from "@UI/Button.astro"
       if (dniValue.length !== 8) return;
     } else if (typeDocument === "CEX") {
       if (dniValue.length < 9) return;
+    } else if(typeDocument === "PASAPORTE"){
+      if (dniValue.length < 11) return;
     }
     togglePreloadAnimation(true);
     try {
@@ -234,6 +252,7 @@ import Button from "@UI/Button.astro"
     }
     if (typeDocument === "DNI") {
       fieldDni.setAttribute("maxlength", "8");
+      fieldDni.setAttribute("inputmode", "numeric");
       
       validator.addField("#dni", [
         { rule: "required", errorMessage: "*Ingresa el número de documento." },
@@ -248,6 +267,7 @@ import Button from "@UI/Button.astro"
       restrictInput("#dni", /[^0-9]/g); // Solo permite números
     } else if (typeDocument === "CEX") {
       fieldDni.setAttribute("maxlength", "20");
+      fieldDni.setAttribute("inputmode", "text");
       validator.addField("#dni", [
         { rule: "required", errorMessage: "*Ingresa el número de documento." },
         { rule: "minLength", value: 9, errorMessage: "El CEX debe tener mínimo 9 dígitos." },
@@ -259,7 +279,21 @@ import Button from "@UI/Button.astro"
       ]);
       dniFieldRegistered = true;
       restrictInput("#dni", /[^a-zA-Z0-9]/g); // Solo permite alfanumericos
-    }
+    } else if (typeDocument === "PASAPORTE") {
+      fieldDni.setAttribute("maxlength", "12");
+      fieldDni.setAttribute("inputmode", "numeric");
+      validator.addField("#dni", [
+        { rule: "required", errorMessage: "*Ingresa el número de documento." },
+        { rule: "minLength", value: 9, errorMessage: "El Pasaporte debe tener mínimo 11 dígitos." },
+        { rule: "maxLength", value: 20, errorMessage: "El Pasaporte debe tener máximo 20 dígitos." },
+        {
+          validator: (value) => /^[0-9]+$/.test(value),
+          errorMessage: "Solo se permiten caracteres numéricos.",
+        },
+      ]);
+      dniFieldRegistered = true;
+      restrictInput("#dni", /[^0-9]/g); // Solo permite numéricos
+    } 
   };
 
   if (fieldTypeDoc) {
@@ -382,11 +416,11 @@ import Button from "@UI/Button.astro"
               const currentStep = (window as any).bannerStepTransition.getCurrentStep();
               (window as any).bannerStepTransition.nextToStep(currentStep, nextStep);
             }
-            submitBtn.disabled = false;
-            resetForm();
             togglePreloadAnimation(false);
           }
         }
+        submitBtn.disabled = false;
+        resetForm();
 
       } catch (error) {
         console.error('Error en onSuccess Paso02:', error);
@@ -453,4 +487,35 @@ import Button from "@UI/Button.astro"
     '#modalpromociones .section__modals__modal-close',
     '#modalpromociones .section__modals__modal-footer-close'
   );
+
+
+  const triggers = document.querySelectorAll('.trigger') as NodeListOf<HTMLElement>;
+
+  const openTooltip = (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+    const tooltip = target.querySelector('[role=tooltip]') as HTMLElement;
+    tooltip.classList.add('active');
+  };
+
+  const closeTooltip = (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+    const tooltip = target.querySelector('[role=tooltip]') as HTMLElement;
+    tooltip.classList.remove('active');
+  };
+
+  if (triggers) {
+    triggers.forEach((trigger) => {
+      let tooltip = document.createElement('span');
+
+      tooltip.setAttribute('role', 'tooltip');
+      tooltip.setAttribute('inert', 'true');
+      tooltip.textContent = trigger.dataset.tooltip;
+
+      trigger.appendChild(tooltip);
+
+      trigger.addEventListener('mouseenter', openTooltip);
+      trigger.addEventListener('mouseleave', closeTooltip);
+    });
+  }
+
 </script>

@@ -58,7 +58,13 @@ export function showCustomModal({
     ...baseOptions,
     ...fireOptions,
   }).then((result) => {
-    if (result.isConfirmed && typeof onConfirm === "function") {
+    console.log(result);
+    if (
+      typeof onConfirm === "function" &&
+      (result.isConfirmed ||
+        (result.isDismissed &&
+          result.dismiss === Swal.DismissReason.backdrop))
+    ) {
       onConfirm(result);
     }
     return result;
