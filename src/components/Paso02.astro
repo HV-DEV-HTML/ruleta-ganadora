@@ -5,7 +5,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
 
 <div class="w-full h-full relative z-10 xl:grid xl:grid-cols-2 items-start" data-step="2">
   <div class="flex flex-col items-center justify-center py-8 w-full relative xl:top-4">
-    <h1 data-aos="zoom-in-right"  class="font-amx-regular text-xl md:text-3xl xl:text-2xl 2xl:text-3xl leading-none italic xl:leading-[0.5] text-center text-claro">REGÍSTRATE Y PARTICIPA EN <strong class="block leading-none font-amx-black text-3xl md:text-5xl xl:text-4xl 2xl:text-5xl">RULETA GANADORA</strong></h1>
+    <h1 data-aos="zoom-in-right"  class="font-amx-regular text-xl md:text-3xl xl:text-2xl 2xl:text-3xl leading-none italic xl:leading-[0.5] text-center text-claro uppercase">REGÍSTRATE Y PARTICIPA EN la <strong class="block leading-none font-amx-black text-3xl md:text-5xl xl:text-4xl 2xl:text-5xl">RULETA GANADORA</strong></h1>
     <p data-aos="zoom-in-right" data-aos-delay="50" class="font-amx-bold italic text-[11px] md:text-sm text-center bg-claro text-white leading-none rounded-full px-2 md:px-3 py-1.5 md:py-2">¡Gira y gana más gigas, accesorios, equipos y muchos premios más!</p>
   </div>
   <form id="form-registro" data-aos="zoom-in-up" class="bg-white px-4 md:px-10 xl:px-7 2xl:px-10 mt-40 lg:mt-62 xl:mt-0 py-8 2xl:py-10 w-full rounded-2xl font-roboto flex flex-col gap-3 md:gap-4 md:max-w-[500px] xl:max-w-[430px] 2xl:max-w-[540px] mx-auto relative xl:-top-7 xl:right-12 2xl:right-16 z-10 shadow-xl/20" action="">
@@ -81,7 +81,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
   import {autoSuggestEmail} from '@/utils/autosuggestEmail';
   import icon_no_cumple from "@/assets/icons/icon_no_cumple.svg";
   import { showCustomModal } from "@/utils/modalHelper";
-  import {preCheck, registerUser} from '@/utils/endpoints';
+  import {preCheck, registerUser, validUserEnabled} from '@/utils/endpoints';
   import { userStore } from '@/store/userStore';
   import { togglePreloadAnimation } from "@/utils/animations";
 
@@ -409,8 +409,24 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
 
         if (registerUserResponse?.success) {
           if (registerUserResponse?.message === 'Ya estás registrado y verificado. Puedes jugar ahora.') {
-            const eventInitRuleta = new CustomEvent("ruleta:enter");
-            document.dispatchEvent(eventInitRuleta);
+            const userEnabledResponse = await validUserEnabled(fieldPhoneIDForm);
+            const { canSpin, remainingPlays, playsAllowed, playsUsed, reason } = userEnabledResponse || {};
+            if (canSpin) {
+              const eventInitRuleta = new CustomEvent("ruleta:enter");
+              document.dispatchEvent(eventInitRuleta);
+            }else{
+              showCustomModal({
+                title: "Lo sentimos, no puedes participar en estos momentos 👇",
+                html: `<p>${reason}</p>`,
+                iconSrc: icon_no_cumple.src,
+                confirmButtonText: "Entendido",
+                showCloseButton: false,
+                onConfirm: () => {
+                  togglePreloadAnimation(false);
+                },
+              });
+            }
+            return;
           }else{
             if ((window as any).bannerStepTransition) {
               const currentStep = (window as any).bannerStepTransition.getCurrentStep();

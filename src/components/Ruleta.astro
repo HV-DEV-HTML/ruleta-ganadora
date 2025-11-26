@@ -2,8 +2,8 @@
 import icon_frecha from "@/assets/images/ruleta/icon_flecha.png";
 import ruleta from "@/assets/images/ruleta/ruletav3.webp";
 import item1 from "@/assets/images/ruleta/item1.png";
-import item2 from "@/assets/images/ruleta/bono_adicionales.png";
-import item3 from "@/assets/images/ruleta/item1.png";
+import item2 from "@/assets/images/ruleta/vales.png";
+import item3 from "@/assets/images/ruleta/artefactos.png";
 import item4 from "@/assets/images/ruleta/bono_adicionales.png";
 import item5 from "@/assets/images/ruleta/item4.png";
 import item6 from "@/assets/images/ruleta/bono_adicionales.png";
@@ -46,8 +46,8 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
           <span class="ruleta-light ruleta-light-6"></span>
         </div>
         <div class="item item1" data-nombre="Accesorios"><img src={item1.src} alt=""></div>
-        <div class="item item2" data-nombre="Bonos"><img src={item2.src} alt=""></div>
-        <div class="item item3" data-nombre="Accesorios"><img src={item3.src} alt=""></div>
+        <div class="item item2" data-nombre="Vales"><img src={item2.src} alt=""></div>
+        <div class="item item3" data-nombre="Artefactos" data-stock="0"><img src={item3.src} alt=""></div>
         <div class="item item4" data-nombre="Bonos"><img src={item4.src} alt=""></div>
         <div class="item item5" data-nombre="Equipos"><img src={item5.src} alt=""></div>
         <div class="item item6" data-nombre="Bonos"><img src={item6.src} alt=""></div>
@@ -233,21 +233,20 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
 
         &.item1 {
           top: 95px;
-          left: 49%;
+          left: 50%;
           transform: translateX(-50%);
-
           img {
             width: 140px;
           }
         }
 
         &.item2 {
-          top: 222px;
-          right: 139px;
-          transform: rotate(64deg);
+          top: 158px;
+          right: 120px;
+          transform: rotate(60deg);
 
           img {
-            width: 100px;
+            width: 110px;
           }
         }
 
@@ -256,7 +255,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
           right: 119px;
           transform: rotate(116deg);
           img {
-            width: 140px;
+            width: 100px;
           }
         }
 
@@ -569,8 +568,8 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
     }
 
     section.ruletaGanadora .ruleta .item.item2 {
-      top: 139px;
-      right: 48%;
+      top: 100px;
+      right: 46%;
       transform: translateX(171%) rotate(62deg);
     }
 
@@ -579,22 +578,22 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
     }
 
     section.ruletaGanadora .ruleta .item.item3 {
-      bottom: 105px;
-      right: 50%;
+      bottom: 110px;
+      right: 43%;
       transform: translateX(161%) rotate(121deg);
     }
 
     section.ruletaGanadora .ruleta .item.item3 img {
-      width: 74px;
+      width: 54px;
     }
 
     section.ruletaGanadora .ruleta .item.item4 {
-      bottom: 102px;
+      bottom: 98px;
       left: 49.5%;
     }
 
     section.ruletaGanadora .ruleta .item.item4 img {
-      width: 64px;
+      width: 60px;
     }
 
     section.ruletaGanadora .contentRuleta .claro {
@@ -640,6 +639,20 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
   let yaGiro = false;
   let gradosActuales = 0;
 
+  const resetRulsete = () =>{
+    document.querySelectorAll(".section_hidden").forEach(section => section.classList.remove("hidden"));
+    document.querySelector(".ruletaGanadora").classList.add("hidden");
+    document.querySelector(".main_ruleta").classList.add("overflow-hidden");
+    document.querySelector("[data-step='3']").classList.add("hidden");
+    document.querySelector("[data-step='2']").classList.remove("hidden");
+    document.querySelector("[data-step='2']").classList.remove("hidden", "xl:hidden");
+  }
+
+  const showRuleta = () =>{
+    document.querySelectorAll(".section_hidden").forEach(section => section.classList.add("hidden"));
+    document.querySelector(".ruletaGanadora").classList.remove("hidden");
+  }
+
   function elegirIndiceGanador(cantidadItems: number): number {
     // Aquí se puede reemplazar por una lógica de probabilidades con pesos
     return Math.floor(Math.random() * cantidadItems);
@@ -677,7 +690,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
     const indiceArray = elegirIndiceGanador(cantidadItemsDisponibles);
     const indiceGanador = itemsDisponibles[indiceArray].index;
 
-    const vueltasExtras = 360 * 5;
+    const vueltasExtras = 360 * 4;
     const offsetFlecha = 5;
     const anguloObjetivo = 360 - gradosPorItem * indiceGanador - gradosPorItem / 2 + offsetFlecha;
     const anguloFinal = gradosActuales + vueltasExtras + anguloObjetivo;
@@ -686,7 +699,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
 
     gsap.to(ruletaTable, {
       rotation: anguloFinal,
-      duration: 3.5,
+      duration: 8.5,
       ease: "power3.out",
       onComplete: async () => {
         togglePreloadAnimation(true);
@@ -708,11 +721,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
               confirmButtonText: "Volver al inicio",
               showCloseButton: false,
               onConfirm: () => {
-                document.querySelectorAll(".section_hidden").forEach(section => section.classList.remove("hidden"));
-                document.querySelector(".ruletaGanadora").classList.add("hidden");
-                document.querySelector(".main_ruleta").classList.add("overflow-hidden");
-                document.querySelector("[data-step='3']").classList.add("hidden");
-                document.querySelector("[data-step='2']").classList.remove("hidden");
+                resetRulsete();
               },
             });
           }else{
@@ -722,12 +731,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
               confirmButtonText: "Volver al inicio",
               showCloseButton: false,
               onConfirm: () => {
-                document.querySelectorAll(".section_hidden").forEach(section => section.classList.remove("hidden"));
-                document.querySelector(".ruletaGanadora").classList.add("hidden");
-                document.querySelector(".main_ruleta").classList.add("overflow-hidden");
-                document.querySelector("[data-step='3']").classList.add("hidden");
-                document.querySelector("[data-step='2']").classList.remove("hidden");
-                document.querySelector("[data-step='2']").classList.remove("hidden", "xl:hidden");
+                resetRulsete();
               },
             });
           }
@@ -746,18 +750,18 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
   const eventInitRuleta = new CustomEvent("ruleta:enter");
   const entry_btn = document.querySelector(".entry_ruleta");
   entry_btn.addEventListener("click", () => {
-    document.dispatchEvent(eventInitRuleta);
+    //document.dispatchEvent(eventInitRuleta);
+    containerRuleta.classList.remove("opacity-0");
+    showRuleta();
   });
   
   document.addEventListener("ruleta:enter", async () => {
     const { user  } = userStore.getState();
-    console.log('user en ruleta:', user);
     try {
       const userEnabledResponse = await validUserEnabled(user.serviceId);
       const { canSpin, remainingPlays, playsAllowed, playsUsed, reason } = userEnabledResponse || {};
       const mainRuleta = document.querySelector(".main_ruleta");
-      document.querySelectorAll(".section_hidden").forEach(section => section.classList.add("hidden"));
-      document.querySelector(".ruletaGanadora").classList.remove("hidden");
+      showRuleta();
       if (window.innerWidth >= 1200){
         mainRuleta.classList.remove("overflow-hidden");
       }else{
@@ -767,7 +771,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
       const isotipoWrapper = document.querySelector(".isotipo_claro");
       const isotipo = isotipoWrapper?.querySelector("svg");
       // Animar el isotipo cuando se hace clic en el botón de entrada
-      const forseCanSpin = false;
+      const forseCanSpin = true;
       if (canSpin) {
         const listProductsResponse = await getListProducts(user.serviceId);
         console.log({listProductsResponse})
@@ -779,18 +783,16 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
             confirmButtonText: "Volver al inicio",
             showCloseButton: false,
             onConfirm: () => {
-              document.querySelectorAll(".section_hidden").forEach(section => section.classList.remove("hidden"));
-              document.querySelector(".ruletaGanadora").classList.add("hidden");
-              document.querySelector(".main_ruleta").classList.add("overflow-hidden");
-              document.querySelector("[data-step='3']").classList.add("hidden");
-              document.querySelector("[data-step='2']").classList.remove("hidden", "xl:hidden");
+              resetRulsete();
             },
           });
           return;
         }
         const accesoriosResponse = listProductsResponse.filter(product => product.prizeTypeName === "Accesorios");
         const bonosResponse = listProductsResponse.filter(product => product.prizeTypeName === "Bonos");
+        const valesResponse = listProductsResponse.filter(product => product.prizeTypeName === "Vales");
         const equiposResponse = listProductsResponse.filter(product => product.prizeTypeName === "Equipos");
+        const artefactosResponse = listProductsResponse.filter(product => product.prizeTypeName === "Artefactos");
         items.forEach((item, index) => {
           const nombre = item.getAttribute("data-nombre");
           if (nombre === "Accesorios") {
@@ -808,8 +810,19 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
             item.setAttribute("data-stock", equiposResponse[0].prizeTypeStock);
             item.setAttribute("data-category_id", equiposResponse[0].prizeTypeId);
           }
+          if (nombre === "Vales") {
+            item.setAttribute("data-nombre", valesResponse[0].prizeTypeName);
+            item.setAttribute("data-stock", valesResponse[0].prizeTypeStock);
+            item.setAttribute("data-category_id", valesResponse[0].prizeTypeId);
+          }
+          if (nombre === "Artefactos") {
+            if (artefactosResponse.length !== 0) {
+              item.setAttribute("data-nombre", artefactosResponse[0].prizeTypeName);
+              item.setAttribute("data-stock", artefactosResponse[0].prizeTypeStock);
+              item.setAttribute("data-category_id", artefactosResponse[0].prizeTypeId);
+            }
+          }
         });
-        containerRuleta.classList.remove("opacity-0");
         const rotacion = gsap.to(isotipo, {
           rotation: "+=360",
           repeat: -1,
@@ -817,7 +830,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
           duration: 0.3,
           opacity: 0,
         });
-  
+        containerRuleta.classList.remove("opacity-0");
         const ruletaIntro = gsap.to(ruletaTable, {
           rotation: "+=" + 360 * 50,
           duration: 1.5,
@@ -847,11 +860,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
           confirmButtonText: "Entendido",
           showCloseButton: false,
           onConfirm: () => {
-            document.querySelectorAll(".section_hidden").forEach(section => section.classList.remove("hidden"));
-            document.querySelector(".ruletaGanadora").classList.add("hidden");
-            document.querySelector(".main_ruleta").classList.add("overflow-hidden");
-            document.querySelector("[data-step='3']").classList.add("hidden");
-            document.querySelector("[data-step='2']").classList.remove("hidden", "xl:hidden");
+            resetRulsete();
           },
         });
       }
@@ -861,4 +870,6 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
       togglePreloadAnimation(false);
     }
   });  
+</script>
+
 </script>
