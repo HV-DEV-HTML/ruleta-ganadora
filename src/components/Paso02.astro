@@ -81,7 +81,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
   import {autoSuggestEmail} from '@/utils/autosuggestEmail';
   import icon_no_cumple from "@/assets/icons/icon_no_cumple.svg";
   import { showCustomModal } from "@/utils/modalHelper";
-  import {preCheck, registerUser, validUserEnabled} from '@/utils/endpoints';
+  import {preCheck, registerUser, validUserEnabled, verifyCode} from '@/utils/endpoints';
   import { userStore } from '@/store/userStore';
   import { togglePreloadAnimation } from "@/utils/animations";
 
@@ -189,6 +189,28 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
     }
     
   };
+
+  const createLocalStorageUser = (nameForm, emailForm, phoneForm, typeDocForm, dniForm, serviceForm) => {
+    const user = {
+      name: nameForm,
+      email: emailForm,
+      phone: phoneForm,
+      typeDocument: typeDocForm,
+      dni: dniForm,
+      serviceId: serviceForm,
+    }
+    localStorage.setItem('user', JSON.stringify(user));
+  }
+
+  const getLocalStorageUser = () => {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
+  }
+
+  const getParameterByUrl = (param: string) => {
+    const url = new URL(window.location.href);
+    return url.searchParams.get(param);
+  }
 
 
   const debounce = (fn, delay = 600) => {
@@ -414,6 +436,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
             if (canSpin) {
               const eventInitRuleta = new CustomEvent("ruleta:enter");
               document.dispatchEvent(eventInitRuleta);
+              createLocalStorageUser(fieldNameForm, email, fieldPhoneNameForm, docType, docNumber, fieldPhoneIDForm);
             }else{
               showCustomModal({
                 title: "Lo sentimos, no puedes participar en estos momentos 👇",
@@ -428,11 +451,22 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
             }
             return;
           }else{
-            if ((window as any).bannerStepTransition) {
-              const currentStep = (window as any).bannerStepTransition.getCurrentStep();
-              (window as any).bannerStepTransition.nextToStep(currentStep, nextStep);
-            }
+            // if ((window as any).bannerStepTransition) {
+            //   const currentStep = (window as any).bannerStepTransition.getCurrentStep();
+            //   (window as any).bannerStepTransition.nextToStep(currentStep, nextStep);
+            // }
+            createLocalStorageUser(fieldNameForm, email, fieldPhoneNameForm, docType, docNumber, fieldPhoneIDForm);
             togglePreloadAnimation(false);
+            showCustomModal({
+              title: "¡Ya casi terminamos!",
+              html: `<p>Te hemos enviado un correo para validar tu cuenta.Revisa tu bandeja de entrada o spam.</p>`,
+              iconSrc: icon_no_cumple.src,
+              confirmButtonText: "Entendido",
+              showCloseButton: false,
+              onConfirm: () => {
+                resetForm();
+              },
+            });
           }
         }
         submitBtn.disabled = false;
@@ -533,5 +567,66 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
       trigger.addEventListener('mouseleave', closeTooltip);
     });
   }
+
+  document.addEventListener('DOMContentLoaded',async() => {
+    const getParameter = getParameterByUrl('code');
+    const user = getLocalStorageUser();
+    console.log(getParameter);
+    if (getParameter && user) {
+      togglePreloadAnimation(true);
+      try {
+        const verifyCodeResponse = await verifyCode(user.email, getParameter);
+        const { verified, message, status } = verifyCodeResponse || {};
+        const verifyMockup = true;
+        if (verified) {
+          userStore.setState({ user: { ...user, verified: true } });
+          const userEnabledResponse = await validUserEnabled(user.serviceId);
+          const { canSpin, remainingPlays, playsAllowed, playsUsed, reason } = userEnabledResponse || {};
+          if (canSpin) {
+            document.querySelectorAll(".section_hidden").forEach(section => section.classList.add("hidden"));
+            document.querySelector(".ruletaGanadora").classList.remove("hidden");
+            const eventInitRuleta = new CustomEvent("ruleta:enter");
+            document.dispatchEvent(eventInitRuleta);
+          }else{
+            showCustomModal({
+              title: "Lo sentimos, no puedes participar en estos momentos 👇",
+              html: `<p>${reason}</p>`,
+              iconSrc: icon_no_cumple.src,
+              confirmButtonText: "Entendido",
+              showCloseButton: false,
+              onConfirm: () => {
+                togglePreloadAnimation(false);
+              },
+            });
+          }
+        } else {
+          showCustomModal({
+            title: "Token inválido y/o expirado",
+            html: message || "El token ingresado no es válido",
+            iconSrc: icon_no_cumple.src,
+            confirmButtonText: "Aceptar",
+            showCloseButton: false,
+            onConfirm: () => {
+              resetForm();
+            },
+          });
+        }
+      } catch (error) {
+        console.error('Error en verifyCode:', error);
+        showCustomModal({
+          title: "Error en la validación",
+          html: '',
+          iconSrc: icon_no_cumple.src,
+          confirmButtonText: 'Entendido',
+          showCloseButton: true,
+          onConfirm: () => {
+            resetForm();
+          },
+        });
+      }finally{
+        togglePreloadAnimation(false);
+      }
+    }
+  })
 
 </script>
