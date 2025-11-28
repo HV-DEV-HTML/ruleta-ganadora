@@ -212,6 +212,12 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
     return url.searchParams.get(param);
   }
 
+  const deleteParameterByUrl = (param: string) => {
+    const url = new URL(window.location.href);
+    url.searchParams.delete(param);
+    window.history.replaceState(null, "", url);
+  }
+
 
   const debounce = (fn, delay = 600) => {
     let timeoutId: number | undefined;
@@ -406,7 +412,9 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
       const dataForm = new FormData(form);
       const fieldPhoneIDForm = dataForm.get('phone') as string;
       const fieldPhoneNameForm = fieldPhone.options[fieldPhone.selectedIndex].text;
+      const fieldEmailForm = dataForm.get('email') as string;
       const fieldNameForm = dataForm.get('name') as string
+      const fielDNIForm = dataForm.get('dni') as string;
       const nextStep = Number(submitBtn.dataset.nextStep);
       submitBtn.disabled = true;
       togglePreloadAnimation(true);
@@ -421,11 +429,11 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
         const {email, docType, docNumber } = user;
         const registerUserResponse = await registerUser(
           fieldNameForm,
-          email,
+          fieldEmailForm,
           fieldPhoneNameForm,
           fieldPhoneIDForm,
           docType,
-          docNumber
+          fielDNIForm
         );
         //console.log('registerUserResponse:', registerUserResponse);
 
@@ -436,7 +444,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
             if (canSpin) {
               const eventInitRuleta = new CustomEvent("ruleta:enter");
               document.dispatchEvent(eventInitRuleta);
-              createLocalStorageUser(fieldNameForm, email, fieldPhoneNameForm, docType, docNumber, fieldPhoneIDForm);
+              createLocalStorageUser(fieldNameForm, fieldEmailForm, fieldPhoneNameForm, docType, fielDNIForm, fieldPhoneIDForm);
             }else{
               showCustomModal({
                 title: "Lo sentimos, no puedes participar en estos momentos 👇",
@@ -455,7 +463,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
             //   const currentStep = (window as any).bannerStepTransition.getCurrentStep();
             //   (window as any).bannerStepTransition.nextToStep(currentStep, nextStep);
             // }
-            createLocalStorageUser(fieldNameForm, email, fieldPhoneNameForm, docType, docNumber, fieldPhoneIDForm);
+            createLocalStorageUser(fieldNameForm, fieldEmailForm, fieldPhoneNameForm, docType, fielDNIForm, fieldPhoneIDForm);
             togglePreloadAnimation(false);
             showCustomModal({
               title: "¡Ya casi terminamos!",
@@ -624,6 +632,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
           },
         });
       }finally{
+        deleteParameterByUrl('code');
         togglePreloadAnimation(false);
       }
     }
