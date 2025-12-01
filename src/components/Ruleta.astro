@@ -260,7 +260,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
         }
 
         &.item4 {
-          bottom: 150px;
+          bottom: 90px;
           left: 50%;
           transform: translateX(-50%) rotate(-180deg);
           img {
@@ -279,9 +279,9 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
         }
 
         &.item6 {
-          top: 221px;
+          top: 168px;
           left: 140px;
-          transform: rotate(305deg);
+          transform: rotate(293deg);
 
           img {
             width: 100px;
@@ -774,8 +774,22 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
       const forseCanSpin = true;
       if (canSpin) {
         const listProductsResponse = await getListProducts(user.serviceId);
-        console.log({listProductsResponse})
+        const totalStockProducts = listProductsResponse.reduce((total, product) => total + Number(product.prizeTypeStock), 0);
+        console.log({listProductsResponse, totalStockProducts})
         if (listProductsResponse.length === 0) {
+          showCustomModal({
+            title: "Lo sentimos, no puedes participar en estos momentos 👇",
+            html: `<p>No hay premios disponibles para girar la ruleta.</p>`,
+            iconSrc: icon_no_cumple.src,
+            confirmButtonText: "Volver al inicio",
+            showCloseButton: false,
+            onConfirm: () => {
+              resetRulsete();
+            },
+          });
+          return;
+        }
+        if (totalStockProducts === 0) {
           showCustomModal({
             title: "Lo sentimos, no puedes participar en estos momentos 👇",
             html: `<p>No hay premios disponibles para girar la ruleta.</p>`,

@@ -34,6 +34,30 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
       <label for="name" class="text-xs md:text-sm font-bold">Nombres y Apellidos</label>
       <input type="text" name="name" id="name" inputmode="text" minlength="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none" placeholder="Nombres y apellidos" required disabled>
     </fieldset>
+    <fieldset class="grid grid-cols-2 gap-4">
+      <div class="flex flex-col text-black">
+        <label for="departament" class="text-xs md:text-sm font-bold">Departamento</label>
+        <div class="grid grid-cols-1 text-black">
+          <select id="departament" name="departament" autocomplete="type-document-name" class="col-start-1 row-start-1 appearance-none w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none h-[40px]" required disabled>
+            <option value="" selected>Departamento</option>
+          </select>
+          <svg viewBox="0 0 16 16" fill="currentColor" data-slot="icon" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-900 sm:size-4 z-1">
+            <path d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+          </svg>
+        </div>
+      </div>
+      <div class="flex flex-col text-black">
+        <label for="province" class="text-xs md:text-sm font-bold">Provincia</label>
+        <div class="grid grid-cols-1 text-black">
+          <select id="province" name="province" autocomplete="type-document-name" class="col-start-1 row-start-1 appearance-none w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none h-[40px]" required disabled>
+            <option value="" selected>Provincia</option>
+          </select>
+          <svg viewBox="0 0 16 16" fill="currentColor" data-slot="icon" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-900 sm:size-4 z-1">
+            <path d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+          </svg>
+        </div>
+      </div>
+    </fieldset>
     <fieldset>
       <label for="phone" class="text-xs md:text-sm font-bold">Servicio asociado</label>
       <div class="grid grid-cols-1 text-black">
@@ -92,6 +116,8 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
   const fieldDni = document.querySelector('#dni') as HTMLInputElement;
   const fieldPhone = document.querySelector('#phone') as HTMLSelectElement;
   const fieldTypeDoc = document.querySelector('#typeDoc') as HTMLInputElement;
+  const fieldDepartament = document.querySelector('#departament') as HTMLSelectElement;
+  const fieldProvince = document.querySelector('#province') as HTMLSelectElement;
 
   const handleModal = (btnsOpenSelector, modalsSelector, closesSubSelector, closesBtnSelector) => {
     const modals = document.querySelectorAll(modalsSelector);
@@ -167,6 +193,8 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
     fieldName.disabled = false;
     fieldEmail.value = user.email;
     fieldEmail.disabled = false;
+    fieldDepartament.disabled = false;
+    fieldProvince.disabled = false;
     fieldPhone.innerHTML = `<option value="">Selecciona tu servicio</option>`;
     if (Array.isArray(user.services) && user.services.length > 0) {
       user.services.forEach(({id, phone}) => {
@@ -182,6 +210,8 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
     if (validator) {
       validator.revalidateField('#name');
       validator.revalidateField('#email');
+      validator.revalidateField('#departament');
+      validator.revalidateField('#province');
       validator.revalidateField('#phone');
       validator.revalidateField('#dni');
       validator.revalidateField('#typeDoc');
@@ -368,6 +398,18 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
       {
         rule: 'required',
         errorMessage: '*Selecciona el tipo de documento.',
+      }
+    ])
+    .addField('#departament', [
+      {
+        rule: 'required',
+        errorMessage: '*Selecciona el departamento.',
+      }
+    ])
+    .addField('#province', [
+      {
+        rule: 'required',
+        errorMessage: '*Selecciona la provincia.',
       }
     ])
     .addField('#phone', [
