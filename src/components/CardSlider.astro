@@ -127,9 +127,9 @@ const { cards, tabId } = Astro.props;
 
     const initMobile = () => {
       const cardPositions = [
-        { x: 0, y: 0, rotation: 0, scale: 1, zIndex: 30, opacity: 1 },
-        { x: 8, y: 12, rotation: 8, scale: 0.94, zIndex: 20, opacity: 0.9 },
-        { x: -8, y: -12, rotation: -9, scale: 0.95, zIndex: 10, opacity: 0.9 },
+        { x: 0, y: 0, rotation: 0, scale: 1, zIndex: 3, opacity: 1 },
+        { x: 8, y: 12, rotation: 8, scale: 0.94, zIndex: 2, opacity: 0.9 },
+        { x: -8, y: -12, rotation: -9, scale: 0.95, zIndex: 1, opacity: 0.9 },
       ];
 
       cards.forEach((card, i) => {
@@ -249,7 +249,7 @@ const { cards, tabId } = Astro.props;
       // Posición base de las cards
       cards.forEach((card, i) => {
         const originalZIndex = i === 1 ? 10 : 1;
-        const ZIndexArr = [10, 5, 2];
+        const ZIndexArr = [4, 2, 1];
 
         gsap.set(card, {
           rotation: rotations[i],

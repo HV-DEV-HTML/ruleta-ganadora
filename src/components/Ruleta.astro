@@ -560,11 +560,11 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
     }
 
     section.ruletaGanadora .ruleta .item.item1 {
-      top: 67px;
+      top: 75px;
     }
 
     section.ruletaGanadora .ruleta .item.item1 img {
-      width: 72px;
+      width: 52px;
     }
 
     section.ruletaGanadora .ruleta .item.item2 {
@@ -588,7 +588,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
     }
 
     section.ruletaGanadora .ruleta .item.item4 {
-      bottom: 98px;
+      bottom: 56px;
       left: 49.5%;
     }
 
@@ -602,16 +602,16 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
 
     section.ruletaGanadora .ruleta .item.item5 {
       top: 264px;
-      left: 48%;
+      left: 41%;
       transform: translateX(-200%) rotate(242deg);
     }
 
     section.ruletaGanadora .ruleta .item.item5 img {
-      width: 70px;
+      width: 56px;
     }
 
     section.ruletaGanadora .ruleta .item.item6 {
-      top: 143px;
+      top: 104px;
       left: 51%;
       transform: translateX(-196%) rotate(298deg);
     }
@@ -784,8 +784,8 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
       "provinceId": sinVale
     }
     userStore.setState({ user: userTemp });
-    // document.dispatchEvent(eventInitRuleta);
-    showModalWin(userWinFake, userTemp);
+    document.dispatchEvent(eventInitRuleta);
+    // showModalWin(userWinFake, userTemp);
     // containerRuleta.classList.remove("opacity-0");
     // showRuleta();
     //console.log(userStore.getState());
@@ -826,7 +826,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
       const isotipo = isotipoWrapper?.querySelector("svg");
       // Animar el isotipo cuando se hace clic en el botón de entrada
       const forseCanSpin = true;
-      if (canSpin) {
+      if (forseCanSpin) {
         const listProductsResponse = await getListProducts(user.provinceId);
         const dataProducts = listProductsResponse.data;
         const totalStockProducts = listProductsResponse.count;
