@@ -29,9 +29,9 @@ export function showCustomModal({
       actions: "gap-2",
       icon: "rounded-[0px] border-0",
       title:
-        "font-amx-bold text-2xl xl:text-3xl text-black pt-0 text-balance",
+        "font-amx-bold text-2xl xl:text-3xl text-black pt-0 text-balance px-2",
       htmlContainer:
-        "font-roboto text-base text-black !flex flex-col gap-2 xl:gap-3 px-10",
+        "font-roboto text-base text-black !flex flex-col gap-2 xl:gap-3 px-10 pt-2",
       cancelButton: "",
       confirmButton:
         "font-amx-bold min-w-[124px] max-w-fit cursor-pointer outline-none py-3 px-6 font-medium text-base rounded-[40px] transition duration-300 flex items-center justify-center gap-1 leading-none h-fit bg-claro hover:bg-claro-dark text-white",
@@ -58,7 +58,7 @@ export function showCustomModal({
     ...baseOptions,
     ...fireOptions,
   }).then((result) => {
-    console.log(result);
+    // console.log(result);
     if (
       typeof onConfirm === "function" &&
       (result.isConfirmed ||

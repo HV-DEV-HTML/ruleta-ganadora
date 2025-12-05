@@ -24,12 +24,12 @@ const { cards, tabId } = Astro.props;
       </div>
     ))}
 
-    <button class="nav-btn nav-prev absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 z-50 w-10 h-10 rounded-full text-[#FFC5C1] flex items-center justify-center shadow-lg lg:hidden transition-opacity duration-300 disabled:opacity-30 disabled:cursor-not-allowed" disabled>
+    <button class="nav-btn nav-prev absolute left-0 md:left-1/6 top-1/2 -translate-y-1/2 -translate-x-3 z-50 w-10 h-10 rounded-full text-[#FFC5C1] flex items-center justify-center shadow-lg lg:hidden transition-opacity duration-300 disabled:opacity-30 disabled:cursor-not-allowed" disabled>
       <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
       </svg>
     </button>
-    <button class="nav-btn nav-next absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 z-50 w-10 h-10 rounded-full text-[#FFC5C1] flex items-center justify-center shadow-lg lg:hidden transition-opacity duration-300 disabled:opacity-30 disabled:cursor-not-allowed">
+    <button class="nav-btn nav-next absolute right-0 md:right-1/6 top-1/2 -translate-y-1/2 translate-x-3 z-50 w-10 h-10 rounded-full text-[#FFC5C1] flex items-center justify-center shadow-lg lg:hidden transition-opacity duration-300 disabled:opacity-30 disabled:cursor-not-allowed">
       <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
       </svg>
@@ -39,7 +39,7 @@ const { cards, tabId } = Astro.props;
   <div class="flex flex-col md:flex-row justify-center items-start gap-4 lg:gap-6 px-4 py-4 slider_participa_steps">
     {cards.map((card) => (
       <div
-        class="flex flex-col gap-1 hidden md:flex w-full md:max-w-[210px] xl:max-w-[340px] duration-300"
+        class="flex flex-col gap-1 hidden xl:flex w-full md:max-w-[210px] xl:max-w-[340px] duration-300"
         data-step={card.step}
       >
         <p class="text-center font-amx-black text-3xl">Paso {card.step}</p>

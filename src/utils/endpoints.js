@@ -1,6 +1,50 @@
 const URL_API = 'https://api-ruleta.dev-limprod.com/api'
 
 
+export async function getDepartament(){
+  try {
+    const response = await fetch(`${URL_API}/Provinces/departments`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      const errorBody = await response.text().catch(() => '');
+      throw new Error(`Error getDepartament (${response.status}): ${errorBody}`);
+    }
+
+    const data = await response.json();
+    return data;    
+  } catch (error) {
+    console.error('Error en getDepartament:', error);
+    throw error;
+  }
+}
+
+export async function getProvince(departmentId){
+  try {
+    const response = await fetch(`${URL_API}/Provinces/departments/${departmentId}/provinces`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      const errorBody = await response.text().catch(() => '');
+      throw new Error(`Error getProvince (${response.status}): ${errorBody}`);
+    }
+
+    const data = await response.json();
+    return data;    
+  } catch (error) {
+    console.error('Error en getProvince:', error);
+    throw error;
+  }
+}
+
 export async function preCheck(phone){
   try {
     const response = await fetch(`${URL_API}/Auth/precheck`, {
@@ -26,7 +70,7 @@ export async function preCheck(phone){
   }
 }
 
-export async function registerUser(name, email, phone, serviceId, docType, docNumber){
+export async function registerUser(name, email, phone, serviceId, docType, docNumber, provinceId){
   try {
    const response = await fetch(`${URL_API}/Auth/register`, {
       method: 'POST',
@@ -39,7 +83,8 @@ export async function registerUser(name, email, phone, serviceId, docType, docNu
         phone,
         serviceId,
         docType,
-        docNumber
+        docNumber,
+        provinceId
       })
     });
 
@@ -92,9 +137,9 @@ export async function verifyCode(email, code){
   }
 }
 
-export async function getListProducts(serviceId){
+export async function getListProducts(provinceId){
   try {
-    const response = await fetch(`${URL_API}/admin/prizes/available-grouped?serviceId=${serviceId}`, {
+    const response = await fetch(`${URL_API}/Provinces/${provinceId}/allowed-prize-types`, {
       method: 'GET',
       credentials: 'include', 
       headers: {

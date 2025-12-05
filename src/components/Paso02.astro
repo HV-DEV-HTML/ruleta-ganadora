@@ -80,20 +80,26 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
       <div id="email-errors"></div>
     </fieldset>
     <fieldset class="flex flex-col gap-1.5">
-      <label class="flex items-center space-x-2">
-        <input type="checkbox" name="terms" id="terms" class="accent-claro" checked="" required/>
-        <div class="text-xs md:text-sm 2xl:text-base text-gray-900">
-          Acepto los <strong class="underline cursor-pointer openModalTratamiento">términos y condiciones</strong>
-        </div>
-      </label>
-      <label class="flex items-center space-x-2">
-        <input type="checkbox" name="comunicacion" id="comunicacion" class="accent-claro" checked=""/>
-        <div class="text-xs md:text-sm 2xl:text-base text-gray-900">
-          Acepto recibir <strong class="underline cursor-pointer openModalPromociones">comunicación publicitaria de Claro.</strong>
-        </div>
-      </label>
+      <div class="flex flex-wrap items-center space-x-2">
+        <label class="flex items-center space-x-2">
+          <input type="checkbox" name="terms" id="terms" class="accent-claro" checked="" required/>
+          <div class="text-xs md:text-sm 2xl:text-base text-gray-900">
+            Acepto los
+          </div>
+        </label>
+        <strong class="text-xs md:text-sm 2xl:text-base text-gray-900 underline cursor-pointer openModalTratamiento">términos y condiciones</strong>
+      </div>
+      <div class="flex flex-wrap items-center space-x-2">
+        <label class="flex items-center space-x-2">
+          <input type="checkbox" name="comunicacion" id="comunicacion" class="accent-claro" checked=""/>
+          <div class="text-xs md:text-sm 2xl:text-base text-gray-900">
+            Acepto recibir
+          </div>
+        </label>
+        <strong class="text-xs md:text-sm 2xl:text-base text-gray-900 underline cursor-pointer openModalPromociones">comunicación publicitaria de Claro.</strong>
+      </div>
     </fieldset>
-    <Button id="btn-submit-form" data-next-step="3" type="submit" disabled href="https://www.claro.com.pe/personas/app/claro-musica/" classes="min-w-fit bg-white px-12 py-2.5 xl:py-3.5 border border-claro text-claro cursor-pointer hover:bg-claro hover:text-white disabled:bg-gray-200 disabled:border-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed mx-auto" >Continuar</Button>
+    <Button id="btn-submit-form" data-next-step="3" type="submit" disabled href="https://www.claro.com.pe/personas/app/claro-musica/" classes="min-w-fit px-12 py-2.5 xl:py-3.5 border border-claro cursor-pointer bg-claro hover:bg-claro-dark text-white hover:text-white disabled:bg-gray-200 disabled:border-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed mx-auto" >Continuar</Button>
   </form>
   <div class="col-span-2 pt-3 xl:pt-0 xl:-mt-2">
     <p class="text-[11px] text-white text-center xl:text-left leading-none mx-auto xl:mr-0 xl:ml-auto md:max-w-[500px] xl:max-w-[430px] 2xl:max-w-[540px] relative xl:right-20 2xl:right-32 2xl:px-2">Lorem ipsum dolor sit amet consectetur. Eu molestie sit mus vulputate lacus volutpat blandit. Adipiscing diam sed mi vitae vel vitae massa. Interdum tempor tincidunt varius sit viverra massa amet lacus malesuada. Tempus id porttitor faucibus amet quam. Lacus id interdum vitae feugiat quam.</p>
@@ -105,523 +111,570 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
   import {autoSuggestEmail} from '@/utils/autosuggestEmail';
   import icon_no_cumple from "@/assets/icons/icon_no_cumple.svg";
   import { showCustomModal } from "@/utils/modalHelper";
-  import {preCheck, registerUser, validUserEnabled, verifyCode} from '@/utils/endpoints';
+  import {preCheck, registerUser, validUserEnabled, verifyCode, getDepartament, getProvince} from '@/utils/endpoints';
   import { userStore } from '@/store/userStore';
   import { togglePreloadAnimation } from "@/utils/animations";
 
-  const form = document.querySelector('#form-registro') as HTMLFormElement;
-  const submitBtn = document.querySelector('#btn-submit-form') as HTMLButtonElement;
-  const fieldName = document.querySelector('#name') as HTMLInputElement;
-  const fieldEmail = document.querySelector('#email') as HTMLInputElement;
-  const fieldDni = document.querySelector('#dni') as HTMLInputElement;
-  const fieldPhone = document.querySelector('#phone') as HTMLSelectElement;
-  const fieldTypeDoc = document.querySelector('#typeDoc') as HTMLInputElement;
-  const fieldDepartament = document.querySelector('#departament') as HTMLSelectElement;
-  const fieldProvince = document.querySelector('#province') as HTMLSelectElement;
-
-  const handleModal = (btnsOpenSelector, modalsSelector, closesSubSelector, closesBtnSelector) => {
-    const modals = document.querySelectorAll(modalsSelector);
-    const btnsOpen = document.querySelectorAll(btnsOpenSelector);
-    const closesSub = document.querySelectorAll(closesSubSelector);
-    const closesBtn = document.querySelectorAll(closesBtnSelector);
-
-    btnsOpen.forEach((btn, i) => {
-      btn.onclick = () => {
-        modals[i].classList.add('active');
-        //console.log("CLICK");
-        window.onclick = (event) => {
-          if (event.target === modals[i]) {
-            modals.forEach(modal => modal.classList.remove('active'));
-          }
-        };
-      };
-    });
-
-    closesSub.forEach(close => {
-      close.onclick = () => {
-        modals.forEach(modal => modal.classList.remove('active'));
-      };
-    });
-
-    closesBtn.forEach(close => {
-      close.onclick = () => {
-        modals.forEach(modal => modal.classList.remove('active'));
-      };
-    });
-  };
-
-  // Restricciones de entrada en los campos
-  const restrictInput = (selector, allowedRegex) => {
-    const element = document.querySelector(selector) as HTMLInputElement | null;
-    if (!element) return;
-
-    // Si ya existe un handler previo, lo removemos para no acumular listeners
-    const anyElement = element as any;
-    if (anyElement._restrictHandler) {
-      element.removeEventListener("input", anyElement._restrictHandler);
-    }
-
-    const handler = (event: Event) => {
-      const input = event.target as HTMLInputElement;
-      input.value = input.value.replace(allowedRegex, "");
-    };
-
-    element.addEventListener("input", handler);
-    anyElement._restrictHandler = handler;
-  };
-
-  const errorFindUser = (message = "") => {
-    togglePreloadAnimation(false);
-    console.log({message})
-    const messageDefault = `<p>Para participar debes realizar una recarga desde s/7 soles en Mi Claro App, activar una línea , renovar o migrar a Claro.</p>`
-    const messageShow = message === "Ya estás registrado y verificado." ? `<p>${message}</p>` : messageDefault;
-    showCustomModal({
-      iconSrc: icon_no_cumple.src,
-      title: "Lo sentimos, no puedes participar en estos momentos 👇",
-      html: messageShow,
-      confirmButtonText: "Entendido",
-      showCloseButton: true,
-      onConfirm: () => {
-        // aquí haces el callback que quieras, por ejemplo:
-        resetForm();
-      },
-    });
-  };
-
-  const setValuesForm = (user) => {
-    fieldName.value = user.fullName;
-    fieldName.disabled = false;
-    fieldEmail.value = user.email;
-    fieldEmail.disabled = false;
-    fieldDepartament.disabled = false;
-    fieldProvince.disabled = false;
-    fieldPhone.innerHTML = `<option value="">Selecciona tu servicio</option>`;
-    if (Array.isArray(user.services) && user.services.length > 0) {
-      user.services.forEach(({id, phone}) => {
-        const option = document.createElement('option');
-        option.value = id;
-        option.textContent = phone;
-        fieldPhone.appendChild(option);
-      });
-      //fieldPhone.value = user.phones[0];
-    }
-    fieldPhone.disabled = false;
-    //submitBtn.disabled = false;
-    if (validator) {
-      validator.revalidateField('#name');
-      validator.revalidateField('#email');
-      validator.revalidateField('#departament');
-      validator.revalidateField('#province');
-      validator.revalidateField('#phone');
-      validator.revalidateField('#dni');
-      validator.revalidateField('#typeDoc');
-      validator.revalidateField('#terms');
-    }
-    
-  };
-
-  const createLocalStorageUser = (nameForm, emailForm, phoneForm, typeDocForm, dniForm, serviceForm) => {
-    const user = {
-      name: nameForm,
-      email: emailForm,
-      phone: phoneForm,
-      typeDocument: typeDocForm,
-      dni: dniForm,
-      serviceId: serviceForm,
-    }
-    localStorage.setItem('user', JSON.stringify(user));
-  }
-
-  const getLocalStorageUser = () => {
-    const user = localStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
-  }
-
-  const getParameterByUrl = (param: string) => {
-    const url = new URL(window.location.href);
-    return url.searchParams.get(param);
-  }
-
-  const deleteParameterByUrl = (param: string) => {
-    const url = new URL(window.location.href);
-    url.searchParams.delete(param);
-    window.history.replaceState(null, "", url);
-  }
-
-
-  const debounce = (fn, delay = 600) => {
-    let timeoutId: number | undefined;
-    return (...args: any[]) => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-      timeoutId = window.setTimeout(() => {
-        fn(...args);
-      }, delay);
-    };
-  };
   
-
-  const handlePreCheckByDni = async () => {
-    if (!fieldDni || !fieldTypeDoc) return;
-    if (fieldTypeDoc.value === "") {
-      fieldTypeDoc.dispatchEvent(new Event('change'));
-      return;
-    }
-    const typeDocument = fieldTypeDoc.value;
-    const dniValue = fieldDni.value.trim();
-    if (typeDocument === "DNI") {
-      if (dniValue.length !== 8) return;
-    } else if (typeDocument === "CEX") {
-      if (dniValue.length < 9) return;
-    } else if(typeDocument === "PASAPORTE"){
-      if (dniValue.length < 11) return;
-    }
-    togglePreloadAnimation(true);
-    try {
-      const {allowed, reason, user} = await preCheck(dniValue);
-      if ( (!allowed || !user) && reason !== "Ya estás registrado y verificado.") {
-        errorFindUser(reason);
-        return;
+  document.addEventListener('DOMContentLoaded',async() => {
+    const form = document.querySelector('#form-registro') as HTMLFormElement;
+    const submitBtn = document.querySelector('#btn-submit-form') as HTMLButtonElement;
+    const fieldName = document.querySelector('#name') as HTMLInputElement;
+    const fieldEmail = document.querySelector('#email') as HTMLInputElement;
+    const fieldDni = document.querySelector('#dni') as HTMLInputElement;
+    const fieldPhone = document.querySelector('#phone') as HTMLSelectElement;
+    const fieldTypeDoc = document.querySelector('#typeDoc') as HTMLInputElement;
+    const fieldDepartament = document.querySelector('#departament') as HTMLSelectElement;
+    const fieldProvince = document.querySelector('#province') as HTMLSelectElement;
+  
+    const handleModal = (btnsOpenSelector, modalsSelector, closesSubSelector, closesBtnSelector) => {
+      const modals = document.querySelectorAll(modalsSelector);
+      const btnsOpen = document.querySelectorAll(btnsOpenSelector);
+      const closesSub = document.querySelectorAll(closesSubSelector);
+      const closesBtn = document.querySelectorAll(closesBtnSelector);
+  
+      btnsOpen.forEach((btn, i) => {
+        btn.onclick = () => {
+          modals[i].classList.add('active');
+          //console.log("CLICK");
+          window.onclick = (event) => {
+            if (event.target === modals[i]) {
+              modals.forEach(modal => modal.classList.remove('active'));
+            }
+          };
+        };
+      });
+  
+      closesSub.forEach(close => {
+        close.onclick = () => {
+          modals.forEach(modal => modal.classList.remove('active'));
+        };
+      });
+  
+      closesBtn.forEach(close => {
+        close.onclick = () => {
+          modals.forEach(modal => modal.classList.remove('active'));
+        };
+      });
+    };
+  
+    // Restricciones de entrada en los campos
+    const restrictInput = (selector, allowedRegex) => {
+      const element = document.querySelector(selector) as HTMLInputElement | null;
+      if (!element) return;
+  
+      // Si ya existe un handler previo, lo removemos para no acumular listeners
+      const anyElement = element as any;
+      if (anyElement._restrictHandler) {
+        element.removeEventListener("input", anyElement._restrictHandler);
       }
-      setValuesForm(user);
-      //seteamos los datos del user en el store
-      userStore.setState({ user });
-    } catch (error) {
-      console.error('Error en preCheck desde DNI:', error);
-    }finally{
+  
+      const handler = (event: Event) => {
+        const input = event.target as HTMLInputElement;
+        input.value = input.value.replace(allowedRegex, "");
+      };
+  
+      element.addEventListener("input", handler);
+      anyElement._restrictHandler = handler;
+    };
+  
+    const errorFindUser = (message = "") => {
       togglePreloadAnimation(false);
-    }
-  };
-
-  if (fieldDni) {
-    const debouncedPreCheck = debounce(handlePreCheckByDni, 600);
-    fieldDni.addEventListener('input', () => {
-      debouncedPreCheck();
-    });
-  }
-
-  // Validación dinámica para el campo de documento
-  let dniFieldRegistered = false;
-
-  const updateDocumentValidation = (typeDocument) => {
-    if (dniFieldRegistered) {
-      validator.removeField("#dni");
-    }
-    if (typeDocument === "DNI") {
-      fieldDni.setAttribute("maxlength", "8");
-      fieldDni.setAttribute("inputmode", "numeric");
-      
-      validator.addField("#dni", [
-        { rule: "required", errorMessage: "*Ingresa el número de documento." },
-        { rule: "minLength", value: 8, errorMessage: "El DNI debe tener 8 dígitos." },
-        { rule: "maxLength", value: 8, errorMessage: "El DNI debe tener 8 dígitos." },
-        {
-          validator: (value) => /^\d+$/.test(value),
-          errorMessage: "Solo se permiten números.",
+      //console.log({message})
+      const messageDefault = `<p>Para participar debes realizar una recarga desde s/7 soles en Mi Claro App, activar una línea , renovar o migrar a Claro.</p>`
+      const messageShow = message === "Ya estás registrado y verificado." ? `<p>${message}</p>` : messageDefault;
+      showCustomModal({
+        iconSrc: icon_no_cumple.src,
+        title: "Lo sentimos, no puedes participar en estos momentos 👇",
+        html: messageShow,
+        confirmButtonText: "Entendido",
+        showCloseButton: true,
+        onConfirm: () => {
+          // aquí haces el callback que quieras, por ejemplo:
+          resetForm();
         },
-      ]);
-      dniFieldRegistered = true;
-      restrictInput("#dni", /[^0-9]/g); // Solo permite números
-    } else if (typeDocument === "CEX") {
-      fieldDni.setAttribute("maxlength", "20");
-      fieldDni.setAttribute("inputmode", "text");
-      validator.addField("#dni", [
-        { rule: "required", errorMessage: "*Ingresa el número de documento." },
-        { rule: "minLength", value: 9, errorMessage: "El CEX debe tener mínimo 9 dígitos." },
-        { rule: "maxLength", value: 20, errorMessage: "El CEX debe tener máximo 20 dígitos." },
-        {
-          validator: (value) => /^[a-zA-Z0-9]+$/.test(value),
-          errorMessage: "Solo se permiten caracteres alfanuméricos.",
-        },
-      ]);
-      dniFieldRegistered = true;
-      restrictInput("#dni", /[^a-zA-Z0-9]/g); // Solo permite alfanumericos
-    } else if (typeDocument === "PASAPORTE") {
-      fieldDni.setAttribute("maxlength", "12");
-      fieldDni.setAttribute("inputmode", "numeric");
-      validator.addField("#dni", [
-        { rule: "required", errorMessage: "*Ingresa el número de documento." },
-        { rule: "minLength", value: 9, errorMessage: "El Pasaporte debe tener mínimo 11 dígitos." },
-        { rule: "maxLength", value: 20, errorMessage: "El Pasaporte debe tener máximo 20 dígitos." },
-        {
-          validator: (value) => /^[0-9]+$/.test(value),
-          errorMessage: "Solo se permiten caracteres numéricos.",
-        },
-      ]);
-      dniFieldRegistered = true;
-      restrictInput("#dni", /[^0-9]/g); // Solo permite numéricos
-    } 
-  };
-
-  if (fieldTypeDoc) {
-    fieldTypeDoc.addEventListener('change', () => {
-      if(fieldTypeDoc.value === ""){
-        fieldDni.disabled = true;
-        return;
+      });
+    };
+  
+    const setValuesForm = (user) => {
+      fieldName.value = user.fullName;
+      fieldName.disabled = false;
+      fieldEmail.value = user.email;
+      fieldEmail.disabled = false;
+      fieldDepartament.disabled = false;
+      fieldProvince.disabled = false;
+      fieldPhone.innerHTML = `<option value="">Selecciona tu servicio</option>`;
+      if (Array.isArray(user.services) && user.services.length > 0) {
+        user.services.forEach(({id, phone}) => {
+          const option = document.createElement('option');
+          option.value = id;
+          option.textContent = phone;
+          fieldPhone.appendChild(option);
+        });
+        //fieldPhone.value = user.phones[0];
       }
-      fieldDni.disabled = false;
-      updateDocumentValidation(fieldTypeDoc.value);
-    });
-  }
-
-  if(fieldPhone){
-    fieldPhone.addEventListener("change", () => {
+      fieldPhone.disabled = false;
+      //submitBtn.disabled = false;
       if (validator) {
-        validator.revalidateField('#phone');
         validator.revalidateField('#name');
         validator.revalidateField('#email');
+        validator.revalidateField('#departament');
+        validator.revalidateField('#province');
+        validator.revalidateField('#phone');
         validator.revalidateField('#dni');
         validator.revalidateField('#typeDoc');
+        validator.revalidateField('#terms');
+      }
+      
+    };
+  
+    const createLocalStorageUser = (nameForm, emailForm, phoneForm, typeDocForm, dniForm, serviceForm, provinceForm) => {
+      const user = {
+        fullName: nameForm,
+        email: emailForm,
+        phone: phoneForm,
+        typeDocument: typeDocForm,
+        dni: dniForm,
+        serviceId: serviceForm,
+        provinceId: provinceForm
+      }
+      localStorage.setItem('user', JSON.stringify(user));
+    }
+  
+    const getLocalStorageUser = () => {
+      const user = localStorage.getItem('user');
+      return user ? JSON.parse(user) : null;
+    }
+  
+    const getParameterByUrl = (param: string) => {
+      const url = new URL(window.location.href);
+      return url.searchParams.get(param);
+    }
+  
+    const deleteParameterByUrl = (param: string) => {
+      const url = new URL(window.location.href);
+      url.searchParams.delete(param);
+      window.history.replaceState(null, "", url);
+    }
+  
+  
+    const debounce = (fn, delay = 600) => {
+      let timeoutId: number | undefined;
+      return (...args: any[]) => {
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
+        timeoutId = window.setTimeout(() => {
+          fn(...args);
+        }, delay);
+      };
+    };
+    
+  
+    const handlePreCheckByDni = async () => {
+      if (!fieldDni || !fieldTypeDoc) return;
+      if (fieldTypeDoc.value === "") {
+        fieldTypeDoc.dispatchEvent(new Event('change'));
+        return;
+      }
+      const typeDocument = fieldTypeDoc.value;
+      const dniValue = fieldDni.value.trim();
+      if (typeDocument === "DNI") {
+        if (dniValue.length !== 8) return;
+      } else if (typeDocument === "CEX") {
+        if (dniValue.length < 9) return;
+      } else if(typeDocument === "PASAPORTE"){
+        if (dniValue.length !== 9) return;
+      }
+      togglePreloadAnimation(true);
+      try {
+        const {allowed, reason, user} = await preCheck(dniValue);
+        if ( (!allowed || !user) && reason !== "Ya estás registrado y verificado.") {
+          errorFindUser(reason);
+          return;
+        }
+        setValuesForm(user);
+        //seteamos los datos del user en el store
+        userStore.setState({ user });
+      } catch (error) {
+        console.error('Error en preCheck desde DNI:', error);
+      }finally{
+        togglePreloadAnimation(false);
+      }
+    };
+  
+    if (fieldDni) {
+      const debouncedPreCheck = debounce(handlePreCheckByDni, 600);
+      fieldDni.addEventListener('input', () => {
+        debouncedPreCheck();
+      });
+    }
+  
+    // Validación dinámica para el campo de documento
+    let dniFieldRegistered = false;
+  
+    const updateDocumentValidation = (typeDocument) => {
+      if (dniFieldRegistered) {
+        validator.removeField("#dni");
+      }
+      if (typeDocument === "DNI") {
+        fieldDni.setAttribute("maxlength", "8");
+        fieldDni.setAttribute("inputmode", "numeric");
+        
+        validator.addField("#dni", [
+          { rule: "required", errorMessage: "*Ingresa el número de documento." },
+          { rule: "minLength", value: 8, errorMessage: "El DNI debe tener 8 dígitos." },
+          { rule: "maxLength", value: 8, errorMessage: "El DNI debe tener 8 dígitos." },
+          {
+            validator: (value) => /^\d+$/.test(value),
+            errorMessage: "Solo se permiten números.",
+          },
+        ]);
+        dniFieldRegistered = true;
+        restrictInput("#dni", /[^0-9]/g); // Solo permite números
+      } else if (typeDocument === "CEX") {
+        fieldDni.setAttribute("maxlength", "20");
+        fieldDni.setAttribute("inputmode", "text");
+        validator.addField("#dni", [
+          { rule: "required", errorMessage: "*Ingresa el número de documento." },
+          { rule: "minLength", value: 9, errorMessage: "El CEX debe tener mínimo 9 dígitos." },
+          { rule: "maxLength", value: 20, errorMessage: "El CEX debe tener máximo 20 dígitos." },
+          {
+            validator: (value) => /^[a-zA-Z0-9]+$/.test(value),
+            errorMessage: "Solo se permiten caracteres alfanuméricos.",
+          },
+        ]);
+        dniFieldRegistered = true;
+        restrictInput("#dni", /[^a-zA-Z0-9]/g); // Solo permite alfanumericos
+      } else if (typeDocument === "PASAPORTE") {
+        fieldDni.setAttribute("maxlength", "9");
+        fieldDni.setAttribute("inputmode", "numeric");
+        validator.addField("#dni", [
+          { rule: "required", errorMessage: "*Ingresa el número de documento." },
+          { rule: "minLength", value: 9, errorMessage: "El pasaporte debe de tener 9 dígitos." },
+          { rule: "maxLength", value: 9, errorMessage: "El pasaporte debe de tener 9 dígitos." },
+          {
+            validator: (value) => /^[0-9]+$/.test(value),
+            errorMessage: "Solo se permiten caracteres numéricos.",
+          },
+        ]);
+        dniFieldRegistered = true;
+        restrictInput("#dni", /[^0-9]/g); // Solo permite numéricos
+      } 
+    };
+  
+    if (fieldTypeDoc) {
+      fieldTypeDoc.addEventListener('change', () => {
+        if(fieldTypeDoc.value === ""){
+          fieldDni.disabled = true;
+          return;
+        }
+        fieldDni.disabled = false;
+        updateDocumentValidation(fieldTypeDoc.value);
+      });
+    }
+  
+    if(fieldPhone){
+      fieldPhone.addEventListener("change", () => {
+        if (validator) {
+          validator.revalidateField('#phone');
+          validator.revalidateField('#name');
+          validator.revalidateField('#email');
+          validator.revalidateField('#dni');
+          validator.revalidateField('#typeDoc');
+        }
+      });
+    }
+  
+    if (fieldDepartament) {
+      const getResponseDepartment = await getDepartament();
+      if (getResponseDepartment.success) {
+        const departments = getResponseDepartment.data;
+        fieldDepartament.innerHTML = `<option value="">Departamento</option>`;
+        departments.forEach(({id, name, isActive}) => {
+          const option = document.createElement('option');
+          option.value = id;
+          option.textContent = name;
+          if (isActive) {
+            fieldDepartament.appendChild(option);
+          }
+        });
+      }
+    }
+  
+    fieldDepartament.addEventListener('change', async () => {
+      const departmentId = fieldDepartament.value;
+      const getResponseProvince = await getProvince(departmentId);
+      if (getResponseProvince.success) {
+        const provinces = getResponseProvince.data;
+        fieldProvince.innerHTML = `<option value="">Provincia</option>`;
+        provinces.forEach(({id, name, isActive}) => {
+          const option = document.createElement('option');
+          option.value = id;
+          option.textContent = name;
+          if (isActive) {
+            fieldProvince.appendChild(option);
+          }
+        });
+      }
+      if (validator) {
+        validator.revalidateField('#province');
       }
     });
-  }
-
-  const validator = new JustValidate('#form-registro', {
-    errorFieldCssClass: 'border-red-500',
-    errorLabelCssClass: 'text-red-500 text-xs mt-1',
-    successFieldCssClass: 'border-green-500',
-    validateBeforeSubmitting: true,
-  });
-
-  validator
-    .addField('#name', [
-      { rule: "required", errorMessage: "*Ingresa el nombre." },
-        { rule: "minLength", value: 3, errorMessage: "*Ingresa como mínimo 3 caracteres." },
-        { rule: "maxLength", value: 60, errorMessage: "El nombre no puede superar los 60 caracteres." },
+  
+  
+    const validator = new JustValidate('#form-registro', {
+      errorFieldCssClass: 'border-red-500',
+      errorLabelCssClass: 'text-red-500 text-xs mt-1',
+      successFieldCssClass: 'border-green-500',
+      validateBeforeSubmitting: true,
+    });
+  
+    validator
+      .addField('#name', [
+        { rule: "required", errorMessage: "*Ingresa tus nombres y apellidos." },
+          { rule: "minLength", value: 3, errorMessage: "*Ingresa como mínimo 3 caracteres." },
+          { rule: "maxLength", value: 60, errorMessage: "El nombre no puede superar los 60 caracteres." },
+          {
+            validator: (value) => /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value),
+            errorMessage: "Solo se permiten letras.",
+          }
+      ])
+      .addField('#typeDoc', [
         {
-          validator: (value) => /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value),
-          errorMessage: "Solo se permiten letras.",
+          rule: 'required',
+          errorMessage: '*Selecciona el tipo de documento.',
         }
-    ])
-    .addField('#typeDoc', [
-      {
-        rule: 'required',
-        errorMessage: '*Selecciona el tipo de documento.',
-      }
-    ])
-    .addField('#departament', [
-      {
-        rule: 'required',
-        errorMessage: '*Selecciona el departamento.',
-      }
-    ])
-    .addField('#province', [
-      {
-        rule: 'required',
-        errorMessage: '*Selecciona la provincia.',
-      }
-    ])
-    .addField('#phone', [
-      {
-        validator: () => {
-          if (!fieldPhone) return true;
-          // Si está deshabilitado, no lo consideramos para la validación
-          if (fieldPhone.disabled) return true;
-          // Cuando está habilitado, debe tener un valor distinto de ""
-          return fieldPhone.value !== '';
+      ])
+      .addField('#departament', [
+        {
+          rule: 'required',
+          errorMessage: '*Selecciona el departamento.',
+        }
+      ])
+      .addField('#province', [
+        {
+          rule: 'required',
+          errorMessage: '*Selecciona la provincia.',
+        }
+      ])
+      .addField('#phone', [
+        {
+          validator: () => {
+            if (!fieldPhone) return true;
+            // Si está deshabilitado, no lo consideramos para la validación
+            if (fieldPhone.disabled) return true;
+            // Cuando está habilitado, debe tener un valor distinto de ""
+            return fieldPhone.value !== '';
+          },
+          errorMessage: '*Selecciona tu servicio asociado.',
         },
-        errorMessage: '*Selecciona tu servicio asociado.',
-      },
-    ])
-    .addField('#email', [
-      {
-        rule: 'email',
-        errorMessage: 'Ingrese un correo electrónico válido',
-      },
-      {
-        rule: 'required',
-        errorMessage: 'El correo electrónico es obligatorio',
-      }
-    ], {
-      errorsContainer: '#email-errors',
-    })
-    .addField('#terms', [
-      {
-        rule: 'required',
-        errorMessage: '*Acepta los términos y condiciones para participar.',
-      },
-    ])
-    .onValidate(({ isValid, isSubmitted, fields, errors, failedRules, failedRulesCount }) => {     
-      if (isValid) {
-        submitBtn.disabled = !isValid;
-      }else{
-        submitBtn.disabled = !isValid;
-      }
-    })
-    .onSuccess(async (event) => {
-      event.preventDefault();
-      const dataForm = new FormData(form);
-      const fieldPhoneIDForm = dataForm.get('phone') as string;
-      const fieldPhoneNameForm = fieldPhone.options[fieldPhone.selectedIndex].text;
-      const fieldEmailForm = dataForm.get('email') as string;
-      const fieldNameForm = dataForm.get('name') as string
-      const fielDNIForm = dataForm.get('dni') as string;
-      const nextStep = Number(submitBtn.dataset.nextStep);
-      submitBtn.disabled = true;
-      togglePreloadAnimation(true);
-
-      try {
-        const { user } = userStore.getState();
-        userStore.setState({ user: { ...user, serviceId: fieldPhoneIDForm } });
-        if (!user) {
-          throw new Error('User no está definido en el store antes de registerUser');
+      ])
+      .addField('#email', [
+        {
+          rule: 'email',
+          errorMessage: '*Ingrese un correo electrónico válido.',
+        },
+        {
+          rule: 'required',
+          errorMessage: 'El correo electrónico es obligatorio',
         }
-
-        const {email, docType, docNumber } = user;
-        const registerUserResponse = await registerUser(
-          fieldNameForm,
-          fieldEmailForm,
-          fieldPhoneNameForm,
-          fieldPhoneIDForm,
-          docType,
-          fielDNIForm
-        );
-        //console.log('registerUserResponse:', registerUserResponse);
-
-        if (registerUserResponse?.success) {
-          if (registerUserResponse?.message === 'Ya estás registrado y verificado. Puedes jugar ahora.') {
-            const userEnabledResponse = await validUserEnabled(fieldPhoneIDForm);
-            const { canSpin, remainingPlays, playsAllowed, playsUsed, reason } = userEnabledResponse || {};
-            if (canSpin) {
-              const eventInitRuleta = new CustomEvent("ruleta:enter");
-              document.dispatchEvent(eventInitRuleta);
-              createLocalStorageUser(fieldNameForm, fieldEmailForm, fieldPhoneNameForm, docType, fielDNIForm, fieldPhoneIDForm);
+      ], {
+        errorsContainer: '#email-errors',
+      })
+      .addField('#terms', [
+        {
+          rule: 'required',
+          errorMessage: '*Acepta los términos y condiciones para participar.',
+        },
+      ])
+      .onValidate(({ isValid, isSubmitted, fields, errors, failedRules, failedRulesCount }) => {     
+        if (isValid) {
+          submitBtn.disabled = !isValid;
+        }else{
+          submitBtn.disabled = !isValid;
+        }
+      })
+      .addField('#comunicacion', [
+        {
+          rule: 'required',
+          errorMessage: '*Acepta recibir comunicación publicitaria de Claro.',
+        },
+      ])
+      .onSuccess(async (event) => {
+        event.preventDefault();
+        const dataForm = new FormData(form);
+        const fieldPhoneIDForm = dataForm.get('phone') as string;
+        const fieldPhoneNameForm = fieldPhone.options[fieldPhone.selectedIndex].text;
+        const fieldEmailForm = dataForm.get('email') as string;
+        const fieldNameForm = dataForm.get('name') as string
+        const fielDNIForm = dataForm.get('dni') as string;
+        const fieldProvinceForm = dataForm.get('province') as string;
+        const nextStep = Number(submitBtn.dataset.nextStep);
+        submitBtn.disabled = true;
+        togglePreloadAnimation(true);
+  
+        try {
+          const { user } = userStore.getState();
+          userStore.setState({ user: { ...user, serviceId: fieldPhoneIDForm, provinceId: fieldProvinceForm } });
+          if (!user) {
+            throw new Error('User no está definido en el store antes de registerUser');
+          }
+  
+          const {email, docType, docNumber } = user;
+          const registerUserResponse = await registerUser(
+            fieldNameForm,
+            fieldEmailForm,
+            fieldPhoneNameForm,
+            fieldPhoneIDForm,
+            docType,
+            fielDNIForm,
+            fieldProvinceForm
+          );
+          //console.log('registerUserResponse:', registerUserResponse);
+  
+          if (registerUserResponse?.success) {
+            if (registerUserResponse?.message === 'Ya estás registrado y verificado. Puedes jugar ahora.') {
+              const userEnabledResponse = await validUserEnabled(fieldPhoneIDForm);
+              const { canSpin, remainingPlays, playsAllowed, playsUsed, reason } = userEnabledResponse || {};
+              if (canSpin) {
+                //console.log('Usuario puede jugar, iniciando ruleta');
+                const eventInitRuleta = new CustomEvent("ruleta:enter");
+                document.dispatchEvent(eventInitRuleta);
+                createLocalStorageUser(fieldNameForm, fieldEmailForm, fieldPhoneNameForm, docType, fielDNIForm, fieldPhoneIDForm, fieldProvinceForm);
+              }else{
+                showCustomModal({
+                  title: "Lo sentimos, no puedes participar en estos momentos 👇",
+                  html: `<p>${reason}</p>`,
+                  iconSrc: icon_no_cumple.src,
+                  confirmButtonText: "Entendido",
+                  showCloseButton: false,
+                  onConfirm: () => {
+                    togglePreloadAnimation(false);
+                  },
+                });
+              }
+              return;
             }else{
+              // if ((window as any).bannerStepTransition) {
+              //   const currentStep = (window as any).bannerStepTransition.getCurrentStep();
+              //   (window as any).bannerStepTransition.nextToStep(currentStep, nextStep);
+              // }
+              createLocalStorageUser(fieldNameForm, fieldEmailForm, fieldPhoneNameForm, docType, fielDNIForm, fieldPhoneIDForm, fieldProvinceForm);
+              togglePreloadAnimation(false);
               showCustomModal({
-                title: "Lo sentimos, no puedes participar en estos momentos 👇",
-                html: `<p>${reason}</p>`,
+                title: "¡Ya casi terminamos!",
+                html: `<p>Te hemos enviado un correo para validar tu cuenta.Revisa tu bandeja de entrada o spam.</p>`,
                 iconSrc: icon_no_cumple.src,
                 confirmButtonText: "Entendido",
                 showCloseButton: false,
                 onConfirm: () => {
-                  togglePreloadAnimation(false);
+                  resetForm();
                 },
               });
             }
-            return;
-          }else{
-            // if ((window as any).bannerStepTransition) {
-            //   const currentStep = (window as any).bannerStepTransition.getCurrentStep();
-            //   (window as any).bannerStepTransition.nextToStep(currentStep, nextStep);
-            // }
-            createLocalStorageUser(fieldNameForm, fieldEmailForm, fieldPhoneNameForm, docType, fielDNIForm, fieldPhoneIDForm);
-            togglePreloadAnimation(false);
-            showCustomModal({
-              title: "¡Ya casi terminamos!",
-              html: `<p>Te hemos enviado un correo para validar tu cuenta.Revisa tu bandeja de entrada o spam.</p>`,
-              iconSrc: icon_no_cumple.src,
-              confirmButtonText: "Entendido",
-              showCloseButton: false,
-              onConfirm: () => {
-                resetForm();
-              },
-            });
           }
-        }
-        submitBtn.disabled = false;
-        resetForm();
-
-      } catch (error) {
-        console.error('Error en onSuccess Paso02:', error);
-        togglePreloadAnimation(false);
-        showCustomModal({
-          iconSrc: icon_no_cumple.src,
-          title: 'Error en la validación',
-          html: '',
-          confirmButtonText: 'Entendido',
-          showCloseButton: true,
-          onConfirm: () => {
-            resetForm();
-          },
-        });
-      }
-    });
-
-  //Crea una funcion para restear el formulario y poder usarlo en onSuccess
-  const resetForm = () => {
-    form.reset();
-    validator.refresh();
-    fieldPhone.disabled = true;
-    fieldName.disabled = true;
-    fieldEmail.disabled = true;
-    fieldDni.disabled = true;
-    submitBtn.disabled = true;
-  };
+          submitBtn.disabled = false;
+          resetForm();
   
-  // #name solo se permiten letras
-  restrictInput("#name", /[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g);
-  //#email solo se permiten caracteres validos
-  restrictInput("#email", /[^a-zA-Z0-9@.]/g);
-
-  //Agrega una función debounde para el input fieldDNi para cuando el usuario termine de escribir llamar al api preCheck
-
-  // Inicializar autoSuggestEmail para sugerencias de correo
-  new autoSuggestEmail(fieldEmail, {
-    domains: [
-      "gmail.com",
-      "hotmail.com", 
-      "yahoo.com",
-      "icloud.com",
-      "outlook.com",
-    ],
-    priority: [
-      "gmail.com",
-      "hotmail.com",
-      "outlook.com", 
-      "icloud.com",
-      "yahoo.com",
-    ],
-  });
-
-  handleModal(
-    '.openModalTratamiento',
-    '#modaltratamiento',
-    '#modaltratamiento .section__modals__modal-close',
-    '#modaltratamiento .section__modals__modal-footer-close'
-  );
-
-  handleModal(
-    '.openModalPromociones',
-    '#modalpromociones',
-    '#modalpromociones .section__modals__modal-close',
-    '#modalpromociones .section__modals__modal-footer-close'
-  );
-
-
-  const triggers = document.querySelectorAll('.trigger') as NodeListOf<HTMLElement>;
-
-  const openTooltip = (e: MouseEvent) => {
-    const target = e.target as HTMLElement;
-    const tooltip = target.querySelector('[role=tooltip]') as HTMLElement;
-    tooltip.classList.add('active');
-  };
-
-  const closeTooltip = (e: MouseEvent) => {
-    const target = e.target as HTMLElement;
-    const tooltip = target.querySelector('[role=tooltip]') as HTMLElement;
-    tooltip.classList.remove('active');
-  };
-
-  if (triggers) {
-    triggers.forEach((trigger) => {
-      let tooltip = document.createElement('span');
-
-      tooltip.setAttribute('role', 'tooltip');
-      tooltip.setAttribute('inert', 'true');
-      tooltip.textContent = trigger.dataset.tooltip;
-
-      trigger.appendChild(tooltip);
-
-      trigger.addEventListener('mouseenter', openTooltip);
-      trigger.addEventListener('mouseleave', closeTooltip);
+        } catch (error) {
+          console.error('Error en onSuccess Paso02:', error);
+          togglePreloadAnimation(false);
+          showCustomModal({
+            iconSrc: icon_no_cumple.src,
+            title: 'Error en la validación',
+            html: '',
+            confirmButtonText: 'Entendido',
+            showCloseButton: true,
+            onConfirm: () => {
+              resetForm();
+            },
+          });
+        }
+      });
+  
+    //Crea una funcion para restear el formulario y poder usarlo en onSuccess
+    const resetForm = () => {
+      form.reset();
+      validator.refresh();
+      fieldPhone.disabled = true;
+      fieldName.disabled = true;
+      fieldEmail.disabled = true;
+      fieldDni.disabled = true;
+      submitBtn.disabled = true;
+    };
+    
+    // #name solo se permiten letras
+    restrictInput("#name", /[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g);
+    //#email solo se permiten caracteres validos
+    restrictInput("#email", /[^a-zA-Z0-9@.]/g);
+  
+    //Agrega una función debounde para el input fieldDNi para cuando el usuario termine de escribir llamar al api preCheck
+  
+    // Inicializar autoSuggestEmail para sugerencias de correo
+    new autoSuggestEmail(fieldEmail, {
+      domains: [
+        "gmail.com",
+        "hotmail.com", 
+        "yahoo.com",
+        "icloud.com",
+        "outlook.com",
+      ],
+      priority: [
+        "gmail.com",
+        "hotmail.com",
+        "outlook.com", 
+        "icloud.com",
+        "yahoo.com",
+      ],
     });
-  }
-
-  document.addEventListener('DOMContentLoaded',async() => {
+  
+    handleModal(
+      '.openModalTratamiento',
+      '#modaltratamiento',
+      '#modaltratamiento .section__modals__modal-close',
+      '#modaltratamiento .section__modals__modal-footer-close'
+    );
+  
+    handleModal(
+      '.openModalPromociones',
+      '#modalpromociones',
+      '#modalpromociones .section__modals__modal-close',
+      '#modalpromociones .section__modals__modal-footer-close'
+    );
+  
+  
+    const triggers = document.querySelectorAll('.trigger') as NodeListOf<HTMLElement>;
+  
+    const openTooltip = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const tooltip = target.querySelector('[role=tooltip]') as HTMLElement;
+      tooltip.classList.add('active');
+    };
+  
+    const closeTooltip = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const tooltip = target.querySelector('[role=tooltip]') as HTMLElement;
+      tooltip.classList.remove('active');
+    };
+  
+    if (triggers) {
+      triggers.forEach((trigger) => {
+        let tooltip = document.createElement('span');
+  
+        tooltip.setAttribute('role', 'tooltip');
+        tooltip.setAttribute('inert', 'true');
+        tooltip.textContent = trigger.dataset.tooltip;
+  
+        trigger.appendChild(tooltip);
+  
+        trigger.addEventListener('mouseenter', openTooltip);
+        trigger.addEventListener('mouseleave', closeTooltip);
+      });
+    }
     const getParameter = getParameterByUrl('code');
     const user = getLocalStorageUser();
-    console.log(getParameter);
+    //console.log(getParameter);
     if (getParameter && user) {
       togglePreloadAnimation(true);
       try {
@@ -632,6 +685,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
           userStore.setState({ user: { ...user, verified: true } });
           const userEnabledResponse = await validUserEnabled(user.serviceId);
           const { canSpin, remainingPlays, playsAllowed, playsUsed, reason } = userEnabledResponse || {};
+          const canSpinMockup = true;
           if (canSpin) {
             document.querySelectorAll(".section_hidden").forEach(section => section.classList.add("hidden"));
             document.querySelector(".ruletaGanadora").classList.remove("hidden");
