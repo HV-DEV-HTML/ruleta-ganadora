@@ -676,15 +676,15 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
 
   const showModalWin = (dataResponse, user) =>{
     showCustomModal({
-      title:`¡Felicitaciones! ${user.fullName}, ganaste un:`,
+      title:`¡Felicitaciones!`,
       html: `
-        <p class="font-amx-regular text-xl xl:text-2xl">${dataResponse?.prizeName}</p>
+        <p class="font-amx-regular text-xl xl:text-2xl">Ganaste un: <span class="font-amx-bold">${dataResponse?.prizeName}</span></p>
         <img class="max-w-[250px] mx-auto" src="${dataResponse?.prizeImageUrl}" alt="${dataResponse?.prizeName}"/>
         <p>Te contactaremos por correo en los próximos días para coordinar la entrega.</p>
       `,
       iconSrc: icon_gano_premio.src,
       confirmButtonText: "Volver al inicio",
-      showCloseButton: false,
+      showCloseButton: true,
       onConfirm: () => {
         resetRulsete();
         resetForm();
