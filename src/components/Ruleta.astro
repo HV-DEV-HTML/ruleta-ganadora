@@ -653,13 +653,14 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
   let yaGiro = false;
   let gradosActuales = 0;
 
-  const resetRulsete = () =>{
+  const resetRuleta = () =>{
     document.querySelectorAll(".section_hidden").forEach(section => section.classList.remove("hidden"));
     document.querySelector(".ruletaGanadora").classList.add("hidden");
     document.querySelector(".main_ruleta").classList.add("overflow-hidden");
     document.querySelector("[data-step='3']").classList.add("hidden");
     document.querySelector("[data-step='2']").classList.remove("hidden");
     document.querySelector("[data-step='2']").classList.remove("hidden", "xl:hidden");
+    ruletaTable.removeAttribute("style");
     yaGiro = false;
     resetForm();
   }
@@ -686,7 +687,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
       confirmButtonText: "Volver al inicio",
       showCloseButton: false,
       onConfirm: () => {
-        resetRulsete();
+        resetRuleta();
         resetForm();
       },
     });
@@ -753,7 +754,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
               confirmButtonText: "Volver al inicio",
               showCloseButton: false,
               onConfirm: () => {
-                resetRulsete();
+                resetRuleta();
               },
             });
           }
@@ -798,7 +799,12 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
     const fieldEmail = document.querySelector('#email') as HTMLInputElement;
     const fieldDni = document.querySelector('#dni') as HTMLInputElement;
     const fieldPhone = document.querySelector('#phone') as HTMLSelectElement;
-    const validator = new JustValidate('#form-registro');
+    const validator = new JustValidate('#form-registro', {
+      errorFieldCssClass: 'border-red-500',
+      errorLabelCssClass: 'text-red-500 text-xs mt-1',
+      successFieldCssClass: 'border-green-500',
+      validateBeforeSubmitting: true,
+    });
     form.reset();
     validator.refresh();
     fieldPhone.disabled = true;
@@ -839,7 +845,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
             confirmButtonText: "Volver al inicio",
             showCloseButton: false,
             onConfirm: () => {
-              resetRulsete();
+              resetRuleta();
             },
           });
           return;
@@ -852,7 +858,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
             confirmButtonText: "Volver al inicio",
             showCloseButton: false,
             onConfirm: () => {
-              resetRulsete();
+              resetRuleta();
             },
           });
           return;
@@ -943,7 +949,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
           confirmButtonText: "Entendido",
           showCloseButton: false,
           onConfirm: () => {
-            resetRulsete();
+            resetRuleta();
           },
         });
       }
