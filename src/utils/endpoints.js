@@ -102,7 +102,7 @@ export async function registerUser(name, email, phone, serviceId, docType, docNu
   }
 }
 
-export async function verifyCode(email, code){
+export async function verifyCode(email, code, docNumber){
   try {
     const response = await fetch(`${URL_API}/Auth/verify`, {
       method: 'POST',
@@ -112,7 +112,8 @@ export async function verifyCode(email, code){
       },
       body: JSON.stringify({
         email,
-        code
+        code,
+        docNumber
       })
     });
     // La API puede devolver 400 con un cuerpo útil (verified, message, token, etc.)
@@ -209,6 +210,31 @@ export async function spinSaveResult(serviceId, prizeTypeId){
     
   } catch (error) {
     console.error('Error en spinSaveResult:', error);
+    throw error;
+  }
+}
+
+
+export async function deleteUserByDni(docNumber){
+  try {
+    const response = await fetch(`${URL_API}/auth/cleanup-by-dni`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        docNumber
+      })
+    })
+    if (!response.ok) {
+      const errorBody = await response.text().catch(() => '');
+      throw new Error(`Error deleteUserByDni (${response.status}): ${errorBody}`);
+    }
+    const data = await response.json();
+    return data;
+    
+  } catch (error) {
+    console.error('Error en deleteUserByDni:', error);
     throw error;
   }
 }

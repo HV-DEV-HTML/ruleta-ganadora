@@ -111,7 +111,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
   import {autoSuggestEmail} from '@/utils/autosuggestEmail';
   import icon_no_cumple from "@/assets/icons/icon_no_cumple.svg";
   import { showCustomModal } from "@/utils/modalHelper";
-  import {preCheck, registerUser, validUserEnabled, verifyCode, getDepartament, getProvince} from '@/utils/endpoints';
+  import {preCheck, registerUser, validUserEnabled, verifyCode, getDepartament, getProvince, deleteUserByDni} from '@/utils/endpoints';
   import { userStore } from '@/store/userStore';
   import { togglePreloadAnimation } from "@/utils/animations";
 
@@ -673,17 +673,17 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
       });
     }
     const getParameter = getParameterByUrl('code');
-    const user = getLocalStorageUser();
+    const userLocal = getLocalStorageUser();
     //console.log(getParameter);
-    if (getParameter && user) {
+    if (getParameter && userLocal) {
       togglePreloadAnimation(true);
       try {
-        const verifyCodeResponse = await verifyCode(user.email, getParameter);
+        const verifyCodeResponse = await verifyCode(userLocal.email, getParameter, userLocal.dni);
         const { verified, message, status } = verifyCodeResponse || {};
         const verifyMockup = true;
         if (verified) {
-          userStore.setState({ user: { ...user, verified: true } });
-          const userEnabledResponse = await validUserEnabled(user.serviceId);
+          userStore.setState({ user: { ...userLocal, verified: true } });
+          const userEnabledResponse = await validUserEnabled(userLocal.serviceId);
           const { canSpin, remainingPlays, playsAllowed, playsUsed, reason } = userEnabledResponse || {};
           const canSpinMockup = true;
           if (canSpin) {
@@ -730,6 +730,18 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
       }finally{
         deleteParameterByUrl('code');
         togglePreloadAnimation(false);
+      }
+    }
+
+    const getDniByParameter = getParameterByUrl('dnihavas');
+    if (getDniByParameter) {
+      try {
+        const deleteUserByDniResponse = await deleteUserByDni(getDniByParameter);
+        console.log(deleteUserByDniResponse);
+        alert("DNI eliminado correctamente");
+        deleteParameterByUrl('dnihavas');
+      } catch (error) {
+        alert("Error al eliminar el DNI");
       }
     }
   })

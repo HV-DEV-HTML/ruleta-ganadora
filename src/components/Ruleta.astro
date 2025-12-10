@@ -676,15 +676,15 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
 
   const showModalWin = (dataResponse, user) =>{
     showCustomModal({
-      title:`¡Felicitaciones!`,
+      title:`¡Felicitaciones! Ganaste un: `,
       html: `
-        <p class="font-amx-regular text-xl xl:text-2xl">Ganaste un: <span class="font-amx-bold">${dataResponse?.prizeName}</span></p>
+        <p class="font-amx-regular text-xl xl:text-2xl">${dataResponse?.prizeName}</p>
         <img class="max-w-[250px] mx-auto" src="${dataResponse?.prizeImageUrl}" alt="${dataResponse?.prizeName}"/>
         <p>Te contactaremos por correo en los próximos días para coordinar la entrega.</p>
       `,
       iconSrc: icon_gano_premio.src,
       confirmButtonText: "Volver al inicio",
-      showCloseButton: true,
+      showCloseButton: false,
       onConfirm: () => {
         resetRulsete();
         resetForm();
@@ -784,8 +784,8 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
       "provinceId": sinVale
     }
     userStore.setState({ user: userTemp });
-    document.dispatchEvent(eventInitRuleta);
-    // showModalWin(userWinFake, userTemp);
+    //document.dispatchEvent(eventInitRuleta);
+    showModalWin(userWinFake, userTemp);
     // containerRuleta.classList.remove("opacity-0");
     // showRuleta();
     //console.log(userStore.getState());
