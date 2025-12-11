@@ -670,9 +670,27 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
     document.querySelector(".ruletaGanadora").classList.remove("hidden");
   }
 
-  function elegirIndiceGanador(cantidadItems: number): number {
-    // Aquí se puede reemplazar por una lógica de probabilidades con pesos
-    return Math.floor(Math.random() * cantidadItems);
+  function elegirIndiceGanadorPorAngulo(
+    anguloFinal: number,
+    cantidadItems: number,
+    gradosPorItem: number,
+    offsetFlecha: number
+  ): number {
+    // Normalizar el ángulo en el rango [0, 360)
+    const anguloNormalizado = ((anguloFinal % 360) + 360) % 360;
+
+    // Convertir al sistema usado para la ruleta:
+    // en el cálculo original del ángulo objetivo se usaba:
+    // anguloObjetivo = 360 - gradosPorItem * indice - gradosPorItem / 2 + offsetFlecha
+    // Despejamos para obtener el índice aproximado a partir del ángulo observado.
+    const anguloRelativo = (360 - (anguloNormalizado - offsetFlecha) + 360) % 360;
+
+    let indice = Math.floor(anguloRelativo / gradosPorItem);
+
+    if (indice < 0) indice = 0;
+    if (indice >= cantidadItems) indice = cantidadItems - 1;
+
+    return indice;
   }
 
   const showModalWin = (dataResponse, user) =>{
@@ -718,26 +736,28 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
       return;
     }
 
-    const cantidadItemsDisponibles = itemsDisponibles.length;
     const gradosPorItem = 318 / items.length;
-
-    // Elegimos un índice ganador solo entre los ítems con stock disponible
-    const indiceArray = elegirIndiceGanador(cantidadItemsDisponibles);
-    const indiceGanador = itemsDisponibles[indiceArray].index;
-
     const vueltasExtras = 360 * 4;
     const offsetFlecha = 5;
-    const anguloObjetivo = 360 - gradosPorItem * indiceGanador - gradosPorItem / 2 + offsetFlecha;
-    const anguloFinal = gradosActuales + vueltasExtras + anguloObjetivo;
 
-    const itemGanador = items[indiceGanador];
+    // Ángulo aleatorio dentro del rango efectivo de la ruleta (318°)
+    const anguloRandomDentroRuleta = Math.random() * 318;
+    const anguloFinal = gradosActuales + vueltasExtras + anguloRandomDentroRuleta;
 
     gsap.to(ruletaTable, {
       rotation: anguloFinal,
       duration: 8.5,
       ease: "power3.out",
       onComplete: async () => {
-        togglePreloadAnimation(true);
+        // Determinar el índice ganador según la posición final bajo la flecha
+        const indiceGanador = elegirIndiceGanadorPorAngulo(
+          anguloFinal,
+          items.length,
+          gradosPorItem,
+          offsetFlecha
+        );
+
+        const itemGanador = items[indiceGanador];
         const category_id = itemGanador.getAttribute("data-category_id");
         //console.log("Categoría Ganador:", category_id);
         // Después del giro mostrar modal
@@ -785,8 +805,8 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
       "provinceId": sinVale
     }
     userStore.setState({ user: userTemp });
-    //document.dispatchEvent(eventInitRuleta);
-    showModalWin(userWinFake, userTemp);
+    document.dispatchEvent(eventInitRuleta);
+    //showModalWin(userWinFake, userTemp);
     // containerRuleta.classList.remove("opacity-0");
     // showRuleta();
     //console.log(userStore.getState());
@@ -938,6 +958,9 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
             isotipo.classList.remove("bg-logo-claro-gradient", "rounded-full");
             mainRuleta.classList.add("overflow-hidden");
             mainRuleta.classList.remove("h-full");
+            setTimeout(() => {
+              ruletaTable.removeAttribute("style");
+            }, 800);
           },
         });
         btnGirar.addEventListener("click", girarRuleta);
