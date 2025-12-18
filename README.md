@@ -1,52 +1,119 @@
-# Template Claro con Astro
+# Ruleta Ganadora (Astro)
+
+Landing interactiva para campaña **Ruleta Ganadora** (Claro). Incluye flujo de registro/validación, carga dinámica de premios, animaciones de entrada y giro de ruleta.
+
+## Stack
+
+- **Framework:** Astro
+- **Estilos:** TailwindCSS
+- **Animaciones:** GSAP (ruleta/intro), AOS (transiciones por scroll)
+- **Estado:** Zustand (vanilla store)
+- **Form validation:** JustValidate
+- **UI modal:** SweetAlert2
+
+## Requisitos
+
+- Node.js (recomendado 18+)
+- npm
+
+## Instalación
 
 ```sh
-npm create astro@latest -- --template basics
+npm install
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+## 🧞 Comandos
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Todos los comandos se ejecutan desde la raíz del proyecto:
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+| Comando | Acción |
+| :-- | :-- |
+| `npm run dev` | Inicia el servidor de desarrollo en `http://localhost:4321` |
+| `npm run build` | Construye el sitio para producción en `./dist/` |
+| `npm run preview` | Previsualiza el build localmente |
+| `npm run astro ...` | Ejecuta comandos de la CLI de Astro |
 
-## 🚀 Estructura del Proyecto
-
-Dentro de tu proyecto de Prepago Móvil, verás las siguientes carpetas y archivos:
+## Estructura del proyecto
 
 ```text
 /
 ├── public/
-│   └── favicon.svg
 ├── src/
-│   ├── layouts/
-│   │   └── Layout.astro
-│   ├── pages/
-│   │   └── index.astro
-│   ├── components/
-│   │   └── Header.astro
-│   └── styles/
-│       └── global.css
+│   ├── assets/                # Imágenes, íconos, svgs
+│   ├── components/            # Componentes Astro (flujo + ruleta)
+│   ├── layouts/               # Layout base
+│   ├── pages/                 # Entrypoints (index)
+│   ├── store/                 # Zustand store (user)
+│   ├── styles/                # CSS global / utilidades
+│   └── utils/                 # Endpoints, helpers de animación/modal
 └── package.json
 ```
 
-Para aprender más sobre la estructura de carpetas de un proyecto Astro, consulta [nuestra guía sobre la estructura del proyecto](https://docs.astro.build/en/basics/project-structure/).
+## Componentes y flujo (alto nivel)
 
-## 🧞 Comandos
+- **`src/pages/index.astro`**
+  - Importa CSS de AOS y ejecuta `AOS.init()`.
+  - Renderiza el layout y componentes principales.
+- **`src/components/Ruleta.astro`**
+  - Vista/experiencia principal de ruleta.
+  - Animación de intro y giro con **GSAP**.
+  - Persistencia de usuario (localStorage) y reinicio del flujo.
+  - Reset de AOS dentro de la sección para re-disparar animaciones cuando se vuelve al inicio.
+- **`src/components/Paso01.astro`, `Paso02.astro`, `Paso03.astro`**
+  - Pasos del flujo (registro, validación, etc.) con `data-step`.
+- **`src/components/Banner.astro`**
+  - Transición entre pasos y utilidades de reseteo/preservación de AOS.
 
-Todos los comandos se ejecutan desde la raíz del proyecto, desde una terminal:
+## API / Endpoints
 
-| Comando                   | Acción                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Instala las dependencias                         |
-| `npm run dev`             | Inicia el servidor de desarrollo en `localhost:4321` |
-| `npm run build`           | Construye tu sitio de producción en `./dist/`    |
-| `npm run preview`         | Previsualiza tu construcción localmente, antes de desplegar |
-| `npm run astro ...`       | Ejecuta comandos de la CLI como `astro add`, `astro check` |
-| `npm run astro -- --help` | Obtén ayuda usando la CLI de Astro               |
+Los llamados a backend están en:
 
-## 👀 ¿Quieres aprender más?
+- `src/utils/endpoints.js`
 
-Siéntete libre de consultar [nuestra documentación](https://docs.astro.build) o unirte a nuestro [servidor de Discord](https://astro.build/chat).
+Base URL actual:
+
+- `https://api_ruleta.claromarketingcloud.pe/api`
+
+Funciones principales:
+
+- `getDepartament()` / `getProvince(departmentId)`
+- `preCheck(phone)`
+- `registerUser(name, email, phone, serviceId, docType, docNumber, provinceId)`
+- `verifyCode(email, code, docNumber)`
+- `validUserEnabled(serviceId)`
+- `getListProducts(provinceId)`
+- `spinSaveResult(serviceId, prizeTypeId)`
+
+## Estado (Zustand)
+
+- `src/store/userStore.js`
+  - `user`
+  - `setUser(user)`
+
+## Notas de animación
+
+### AOS (data-aos)
+
+- AOS se inicializa en `src/pages/index.astro`.
+- Para re-disparar animaciones al volver a mostrar una sección, se remueven clases `aos-init`/`aos-animate` de nodos con `[data-aos]` y se ejecuta `AOS.refreshHard()`.
+
+### GSAP (ruleta)
+
+- La ruleta usa animación de intro y giro con GSAP.
+- Para evitar que la intro deje un ángulo “acumulado”, se normaliza el estado al finalizar (rotación base) limpiando estilos inline.
+
+## Build / Deploy
+
+La configuración principal está en `astro.config.mjs`:
+
+- **GitHub Pages:** se define `site` y `base` cuando `GITHUB_ACTIONS === 'true'`.
+- **Assets:** `build.assetsPrefix` apunta a un CDN/ruta de Claro para servir assets en producción.
+
+## Troubleshooting
+
+- Si en dev notas que animaciones AOS no vuelven a dispararse al cambiar de step/mostrar secciones, revisa que se ejecute `AOS.refreshHard()` luego de manipular `hidden`.
+- Si la ruleta queda en ángulos inesperados tras varias entradas, asegúrate de no depender de rotaciones `"+="` sin normalizar el estado al final de la animación.
+
+## Referencias
+
+- Astro docs: https://docs.astro.build
