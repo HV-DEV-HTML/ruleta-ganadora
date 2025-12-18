@@ -545,6 +545,11 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
                 const eventInitRuleta = new CustomEvent("ruleta:enter");
                 document.dispatchEvent(eventInitRuleta);
                 createLocalStorageUser(fieldNameForm, fieldEmailForm, fieldPhoneNameForm, docType, fielDNIForm, fieldPhoneIDForm, fieldProvinceForm);
+                //Animate scrollTop
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth"
+                });
               }else{
                 showCustomModal({
                   title: "Lo sentimos, no puedes participar en estos momentos 👇",

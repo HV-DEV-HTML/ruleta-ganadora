@@ -12,8 +12,8 @@ import bg_tablet from "@/assets/images/banner_tablet.webp"
 import bg_desktop from "@/assets/images/banner_desktop.webp"
 ---
 
-<button class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer entry_ruleta">Entra ruleta</button>
-<button class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer reset_ruleta">Resetear ruleta</button>
+<button class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer entry_ruleta hidden">Entra ruleta</button>
+<button class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer reset_ruleta hidden">Resetear ruleta</button>
 <section class="ruletaGanadora relative hidden" data-step="4">
   <picture class="w-full h-full absolute top-0 left-0 z-0">
     <source srcset={bg_desktop.src} media="(min-width: 1280px)">
@@ -674,6 +674,8 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
     ruletaTable.removeAttribute("style");
     setTimeout(() => AOS.refreshHard(), 50);
     sectionRuleta.querySelector("svg").classList.add("bg-logo-claro-gradient", "rounded-full");
+    sectionRuleta.querySelector("svg").removeAttribute("style");
+    containerRuleta.classList.add("opacity-0")
     // Reiniciar estado interno de la ruleta para que el siguiente giro parta desde 0°
     gradosActuales = 0;
     yaGiro = false;
@@ -715,8 +717,9 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
     showCustomModal({
       title:`¡Felicitaciones! Ganaste:`,
       html: `
-        <img class="max-w-[250px] mx-auto" src="${dataResponse?.prizeImageUrl}" alt="${dataResponse?.prizeName}"/>
-        <p>Te contactaremos en los próximos días para coordinar la entrega.</p>
+        <p class="text-xl font-bold font-roboto text-claro">${dataResponse?.prizeName}</p>
+        <img class="max-w-[250px] mx-auto object-contain" src="${dataResponse?.prizeImageUrl}" alt="${dataResponse?.prizeName}"/>
+        <p class="pt-2 text-base font-amx-bold text-black">Te contactaremos en los próximos días para coordinar la entrega.</p>
       `,
       iconSrc: icon_gano_premio.src,
       confirmButtonText: "Volver al inicio",
@@ -818,10 +821,10 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
       "serviceId": "d999f49b-a8cf-46c0-904f-093d6dd9f9ab",
       "provinceId": conVale
     }
-    togglePreloadAnimation(true);
+    //togglePreloadAnimation(true);
     userStore.setState({ user: userTemp });
-    document.dispatchEvent(eventInitRuleta);
-    // showModalWin(userWinFake, userTemp);
+    // document.dispatchEvent(eventInitRuleta);
+    showModalWin(userWinFake, userTemp);
     // containerRuleta.classList.remove("opacity-0");
     // showRuleta();
     //console.log(userStore.getState());
@@ -875,7 +878,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
       const isotipo = isotipoWrapper?.querySelector("svg");
       // Animar el isotipo cuando se hace clic en el botón de entrada
       const forseCanSpin = true;
-      if (forseCanSpin) {
+      if (canSpin) {
         const listProductsResponse = await getListProducts(user.provinceId);
         const dataProducts = listProductsResponse.data;
         const totalStockProducts = listProductsResponse.count;
@@ -989,6 +992,10 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
           rotation: "+=" + 360 * 50,
           duration: 1.5,
           ease: "power3.out",
+          onComplete: () => {
+            gsap.set(ruletaTable, { rotation: 0 });
+            ruletaTable.removeAttribute("style");
+          },
         });
         
         gsap.from(isotipo, {
