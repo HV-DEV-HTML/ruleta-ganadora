@@ -1,14 +1,46 @@
 ---
 import logo_01 from "@/assets/images/auspiciadores/logo01.png"
 import logo_02 from "@/assets/images/auspiciadores/logo02.png"
+import logo_03 from "@/assets/images/auspiciadores/logo03.png"
+import logo_04 from "@/assets/images/auspiciadores/logo04.png"
+import logo_05 from "@/assets/images/auspiciadores/logo05.png"
+import logo_06 from "@/assets/images/auspiciadores/logo06.png"
+const auspiciadores = [
+  {
+    image: logo_01.src,
+    name: "Bembos",
+    classname: "max-w-[54px] md:max-w-fit h-auto"
+  },
+  {
+    image: logo_02.src,
+    name: "Xiaomi",
+    classname: "max-h-[18px] md:max-h-fit h-auto"
+  },
+  {
+    image: logo_04.src,
+    name: "OPPO",
+    classname: "max-h-[38px] md:max-w-fit h-auto"
+  },
+  {
+    image: logo_05.src,
+    name: "ZTE",
+    classname: "max-h-[22px] md:max-h-fit h-auto"
+  },
+  {
+    image: logo_06.src,
+    name: "VIVO",
+    classname: "max-h-[22px] md:max-h-fit h-auto"
+  }
+]
 ---
 
 <section class="relative bg-transparent z-10 text-white pb-14 xl:pb-10">
   <div class="container">
     <h3 class="text-center font-amx-bold text-2xl xl:text-[42px]">Auspiciadores</h3>
-    <div class="flex justify-center items-center gap-8 pt-6 pb-12 xl:pb-6">
-      <img class="max-w-[60px] md:max-w-fit h-auto" src={logo_01.src} alt="Bembos">
-      <img class="max-w-[80px] md:max-w-fit h-auto" src={logo_02.src} alt="Xiaomi">
+    <div class="flex flex-wrap justify-center items-center gap-8 md:gap-12 pt-6 md:pt-12 pb-12 xl:pb-6">
+      {auspiciadores.map((auspiciador, index) => (
+        <img class={auspiciador.classname} src={auspiciador.image} alt={auspiciador.name}>
+      ))}
     </div>
     <button class="w-fit mx-auto cursor-pointer font-amx-bold flex xl:hidden gap-2 items-center justify-center group goToForm bg-white text-claro hover:bg-claro hover:text-white md:text-lg rounded-full px-5 py-2.5 md:py-3 xl:py-3.5 transition-all duration-300" data-next-step="2">
       <div>

@@ -13,6 +13,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
 ---
 
 <button class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer entry_ruleta hidden">Entra ruleta</button>
+<button class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer reset_ruleta">Reser ruleta</button>
 <section class="ruletaGanadora relative hidden" data-step="4">
   <picture class="w-full h-full absolute top-0 left-0 z-0">
     <source srcset={bg_desktop.src} media="(min-width: 1280px)">
@@ -661,6 +662,8 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
     document.querySelector("[data-step='2']").classList.remove("hidden");
     document.querySelector("[data-step='2']").classList.remove("hidden", "xl:hidden");
     ruletaTable.removeAttribute("style");
+    // Reiniciar estado interno de la ruleta para que el siguiente giro parta desde 0°
+    gradosActuales = 0;
     yaGiro = false;
     resetForm();
   }
@@ -735,30 +738,28 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
       return;
     }
 
-    const gradosPorItem = 318 / items.length;
+    // Usamos la circunferencia completa para que cada premio ocupe el mismo ángulo
+    const gradosPorItem = 360 / items.length;
     const vueltasExtras = 360 * 4;
-    const offsetFlecha = 5;
+    const offsetFlecha = 20;
 
-    // Ángulo aleatorio dentro del rango efectivo de la ruleta (318°)
-    const anguloRandomDentroRuleta = Math.random() * 318;
-    const anguloFinal = gradosActuales + vueltasExtras + anguloRandomDentroRuleta;
+    // Elegimos aleatoriamente uno de los items disponibles (con stock > 0)
+    const indiceArray = Math.floor(Math.random() * itemsDisponibles.length);
+    const indiceGanador = itemsDisponibles[indiceArray].index;
+
+    // Calculamos el ángulo objetivo para que la flecha quede cerca del centro del premio ganador
+    const anguloObjetivo = 360 - gradosPorItem * indiceGanador - gradosPorItem / 2 + offsetFlecha;
+    const anguloFinal = gradosActuales + vueltasExtras + anguloObjetivo;
 
     gsap.to(ruletaTable, {
       rotation: anguloFinal,
       duration: 8.5,
       ease: "power3.out",
       onComplete: async () => {
-        // Determinar el índice ganador según la posición final bajo la flecha
-        const indiceGanador = elegirIndiceGanadorPorAngulo(
-          anguloFinal,
-          items.length,
-          gradosPorItem,
-          offsetFlecha
-        );
-
         const itemGanador = items[indiceGanador];
         const category_id = itemGanador.getAttribute("data-category_id");
-        //console.log("Categoría Ganador:", category_id);
+        const category_name = itemGanador.getAttribute("data-nombre"); 
+        console.log(`Categoría Ganador: ${category_name}, con ID ${category_id}`);
         // Después del giro mostrar modal
         btnGirar.disabled = false;
         try {
@@ -774,6 +775,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
               showCloseButton: false,
               onConfirm: () => {
                 resetRuleta();
+                resetForm();
               },
             });
           }
@@ -809,6 +811,10 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
     // containerRuleta.classList.remove("opacity-0");
     // showRuleta();
     //console.log(userStore.getState());
+  });
+  document.querySelector(".reset_ruleta").addEventListener("click", () => {
+    yaGiro = false;
+    resetRuleta();
   });
 
   const resetForm = () => {
