@@ -824,19 +824,23 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
     const fieldEmail = document.querySelector('#email') as HTMLInputElement;
     const fieldDni = document.querySelector('#dni') as HTMLInputElement;
     const fieldPhone = document.querySelector('#phone') as HTMLSelectElement;
-    const validator = new JustValidate('#form-registro', {
-      errorFieldCssClass: 'border-red-500',
-      errorLabelCssClass: 'text-red-500 text-xs mt-1',
-      successFieldCssClass: 'border-green-500',
-      validateBeforeSubmitting: true,
-    });
+    const selectDeparment = document.querySelector('#departament') as HTMLSelectElement;
+    const selectProvince = document.querySelector('#province') as HTMLSelectElement;
     form.reset();
-    validator.refresh();
+    // Limpiar clases de validación para que el formulario se vea "prístino"
+    const campos = form.querySelectorAll('input, select, textarea');
+    campos.forEach((campo: HTMLElement) => {
+      campo.classList.remove('border-green-500', 'border-red-500', 'just-validate-success-field', 'just-validate-error-field');
+    });
+    // Eliminar labels de error generados por JustValidate (si quedara alguno)
+    form.querySelectorAll('.just-validate-error-label').forEach(label => label.remove());
     fieldPhone.disabled = true;
     fieldName.disabled = true;
     fieldEmail.disabled = true;
     fieldDni.disabled = true;
     submitBtn.disabled = true;
+    selectDeparment.disabled = true;
+    selectProvince.disabled = true;
   };
   
   
