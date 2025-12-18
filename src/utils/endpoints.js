@@ -1,4 +1,4 @@
-const URL_API = 'https://api-ruleta.dev-limprod.com/api'
+const URL_API = 'https://api_ruleta.claromarketingcloud.pe/api'
 
 
 export async function getDepartament(){
