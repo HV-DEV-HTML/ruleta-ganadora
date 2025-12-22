@@ -654,6 +654,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
 
   let yaGiro = false;
   let gradosActuales = 0;
+  let ruletaIntroTween: gsap.core.Tween | null = null;
 
   const resetAosAnimations = (element: Element) => {
     const aosElements = element.querySelectorAll('[data-aos]');
@@ -737,6 +738,12 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
 
     btnGirar.disabled = true;
 
+    if (ruletaIntroTween) {
+      ruletaIntroTween.kill();
+      ruletaIntroTween = null;
+    }
+    gsap.killTweensOf(ruletaTable, "rotation");
+
     // Filtrar solo los ítems con stock > 0
     const itemsDisponibles: { index: number; element: Element }[] = [];
     items.forEach((item, index) => {
@@ -757,7 +764,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
 
     // Usamos la circunferencia completa para que cada premio ocupe el mismo ángulo
     const gradosPorItem = 360 / items.length;
-    const vueltasExtras = 360 * 4;
+    const vueltasExtras = 360 * 10;
     const offsetFlecha = 20;
 
     // Elegimos aleatoriamente uno de los items disponibles (con stock > 0)
@@ -770,16 +777,17 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
 
     gsap.to(ruletaTable, {
       rotation: anguloFinal,
-      duration: 8.5,
+      duration: 10,
       ease: "power3.out",
       onComplete: async () => {
         const itemGanador = items[indiceGanador];
         const category_id = itemGanador.getAttribute("data-category_id");
         const category_name = itemGanador.getAttribute("data-nombre"); 
-        console.log(`Categoría Ganador: ${category_name}, con ID ${category_id}`);
+        //console.log(`Categoría Ganador: ${category_name}, con ID ${category_id}`);
         // Después del giro mostrar modal
         btnGirar.disabled = false;
         try {
+          //console.log("Giro completado");
           const spinSaveResultResponse = await spinSaveResult(user.serviceId, Number(category_id));
           //console.log({ spinSaveResultResponse });
           if (spinSaveResultResponse?.result === 'WIN') {
@@ -823,8 +831,8 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
     }
     //togglePreloadAnimation(true);
     userStore.setState({ user: userTemp });
-    // document.dispatchEvent(eventInitRuleta);
-    showModalWin(userWinFake, userTemp);
+    document.dispatchEvent(eventInitRuleta);
+    // showModalWin(userWinFake, userTemp);
     // containerRuleta.classList.remove("opacity-0");
     // showRuleta();
     //console.log(userStore.getState());
@@ -878,7 +886,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
       const isotipo = isotipoWrapper?.querySelector("svg");
       // Animar el isotipo cuando se hace clic en el botón de entrada
       const forseCanSpin = true;
-      if (canSpin) {
+      if (forseCanSpin) {
         const listProductsResponse = await getListProducts(user.provinceId);
         const dataProducts = listProductsResponse.data;
         const totalStockProducts = listProductsResponse.count;
@@ -988,13 +996,18 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
           opacity: 0,
         });
         containerRuleta.classList.remove("opacity-0");
-        const ruletaIntro = gsap.to(ruletaTable, {
+        btnGirar.disabled = true;
+        ruletaIntroTween = gsap.to(ruletaTable, {
           rotation: "+=" + 360 * 50,
           duration: 1.5,
           ease: "power3.out",
           onComplete: () => {
             gsap.set(ruletaTable, { rotation: 0 });
             ruletaTable.removeAttribute("style");
+            ruletaIntroTween = null;
+            btnGirar.disabled = false;
+            btnGirar.removeEventListener("click", girarRuleta);
+            btnGirar.addEventListener("click", girarRuleta);
           },
         });
         
@@ -1015,7 +1028,6 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
             // }, 800);
           },
         });
-        btnGirar.addEventListener("click", girarRuleta);
       }else{
         showCustomModal({
           title: "Lo sentimos, no puedes participar en estos momentos 👇",
