@@ -104,10 +104,9 @@ Funciones principales:
 
 ## Build / Deploy
 
-La configuración principal está en `astro.config.mjs`:
+La carpeta _assets se despliega en MOSAIC, en el path declarado en `astro.config.mjs`:
 
-- **GitHub Pages:** se define `site` y `base` cuando `GITHUB_ACTIONS === 'true'`.
-- **Assets:** `build.assetsPrefix` apunta a un CDN/ruta de Claro para servir assets en producción.
+- **Assets:** `build.assetsPrefix` apunta a un CDN/MOSAIC de Claro para servir assets en el CMS de producción.
 
 ## Troubleshooting
 
