@@ -7,37 +7,74 @@ import item3 from "@/assets/images/ruleta/artefactos.png";
 import item4 from "@/assets/images/ruleta/bono_adicionales.png";
 import item5 from "@/assets/images/ruleta/item4.png";
 import item6 from "@/assets/images/ruleta/bono_adicionales.png";
-import bg_mobile from "@/assets/images/banner_mobile.webp"
-import bg_tablet from "@/assets/images/banner_tablet.webp"
-import bg_desktop from "@/assets/images/banner_desktop.webp"
+import bg_mobile from "@/assets/images/banner_mobile.webp";
+import bg_tablet from "@/assets/images/banner_tablet.webp";
+import bg_desktop from "@/assets/images/banner_desktop.webp";
 ---
 
-<button class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer entry_ruleta hidden">Entra ruleta</button>
-<button class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer reset_ruleta hidden">Resetear ruleta</button>
+<button
+  class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer entry_ruleta hidden"
+  >Entra ruleta</button
+>
+<button
+  class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer reset_ruleta hidden"
+  >Resetear ruleta</button
+>
 <section class="ruletaGanadora relative hidden" data-step="4">
   <picture class="w-full h-full absolute top-0 left-0 z-0">
-    <source srcset={bg_desktop.src} media="(min-width: 1280px)">
-    <source srcset={bg_tablet.src} media="(min-width: 768px)">
-    <img class="w-full h-full object-cover" src={bg_mobile.src} alt="¡Gira la ruleta y gana premios al instante!">
+    <source srcset={bg_desktop.src} media="(min-width: 1280px)" />
+    <source srcset={bg_tablet.src} media="(min-width: 768px)" />
+    <img
+      class="w-full h-full object-cover"
+      src={bg_mobile.src}
+      alt="¡Gira la ruleta y gana premios al instante!"
+    />
   </picture>
   <div class="container relative z-1">
-    <p data-aos="zoom-in-up">¡Felicitaciones! Tienes <b class="text_allow_user">1 oportunidad</b> para girar la ruleta</p>
+    <p data-aos="zoom-in-up">
+      ¡Felicitaciones! Tienes <b class="text_allow_user">1 oportunidad</b> para girar
+      la ruleta
+    </p>
     <h2 data-aos="zoom-in-up">¡Es hora de girar y ganar!</h2>
-    <h4 data-aos="zoom-in-up">Haz clic en el botón de abajo y deja que la suerte decida tu premio.</h4>
-    <button data-aos="zoom-in-up" class="cursor-pointer disabled:bg-gray-200 disabled:border-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed transition-all duration-300 z-50" id="btnGirar">Gira la ruleta</button>
-    <div class="contentRuleta opacity-0 transition-opacity duration-300" data-aos="zoom-in-down" data-aos-delay="100">
-      <img src={icon_frecha.src} alt="" class="flecha">
-      <div class="size-10 bg-logo-claro-gradient isotipo_claro rounded-full p-[8px] absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-20">
-        <svg class="w-full h-full relative bg-logo-claro-gradient rounded-full" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M27.4407 22.1073L42.8203 7.00478L38.7367 3.04688L23.3572 18.1494L27.4407 22.1073Z" fill="white"/>
-          <path d="M17.1317 0H11.6813V16.0108H17.1317V0Z" fill="white"/>
-          <path d="M47.4938 28.207H30.3663V33.544H47.4938V28.207Z" fill="white"/>
-          <path d="M18.1749 39.1204C16.854 40.5036 15.1633 41.1184 13.2085 41.1184C11.3065 41.1184 9.6686 40.4524 8.34776 39.1204C7.02691 37.7372 6.28724 36.1491 6.28724 34.3048C6.28724 32.3581 7.02691 30.77 8.34776 29.438C9.6686 28.0548 11.3593 27.4401 13.2085 27.4913C15.1633 27.4401 16.8012 28.1061 18.2277 29.438C19.4957 30.7188 20.1826 32.3581 20.2354 34.3048C20.1826 36.1491 19.4957 37.7372 18.1749 39.1204ZM22.6129 25.1347C19.9712 22.5733 16.8012 21.3438 13.2085 21.3438C9.61577 21.3438 6.49857 22.5733 3.90971 25.1347C1.26802 27.6962 0 30.77 0 34.3048C0 37.8397 1.26802 40.9647 3.90971 43.4237C6.44574 45.9852 9.56294 47.2659 13.2085 47.2659C16.8012 47.2659 19.9712 45.9852 22.6129 43.4237C25.2018 40.9135 26.4698 37.8397 26.4698 34.3048C26.4698 30.77 25.2018 27.6962 22.6129 25.1347Z" fill="white"/>
+    <h4 data-aos="zoom-in-up">
+      Haz clic en el botón de abajo y deja que la suerte decida tu premio.
+    </h4>
+    <button
+      data-aos="zoom-in-up"
+      class="cursor-pointer disabled:bg-gray-200 disabled:border-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed transition-all duration-300 z-50"
+      id="btnGirar">Gira la ruleta</button
+    >
+    <div
+      class="contentRuleta opacity-0 transition-opacity duration-300"
+      data-aos="zoom-in-down"
+      data-aos-delay="100"
+    >
+      <img src={icon_frecha.src} alt="" class="flecha" />
+      <div
+        class="size-10 bg-logo-claro-gradient isotipo_claro rounded-full p-[8px] absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-20"
+      >
+        <svg
+          class="w-full h-full relative bg-logo-claro-gradient rounded-full"
+          width="48"
+          height="48"
+          viewBox="0 0 48 48"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M27.4407 22.1073L42.8203 7.00478L38.7367 3.04688L23.3572 18.1494L27.4407 22.1073Z"
+            fill="white"></path>
+          <path d="M17.1317 0H11.6813V16.0108H17.1317V0Z" fill="white"></path>
+          <path d="M47.4938 28.207H30.3663V33.544H47.4938V28.207Z" fill="white"
+          ></path>
+          <path
+            d="M18.1749 39.1204C16.854 40.5036 15.1633 41.1184 13.2085 41.1184C11.3065 41.1184 9.6686 40.4524 8.34776 39.1204C7.02691 37.7372 6.28724 36.1491 6.28724 34.3048C6.28724 32.3581 7.02691 30.77 8.34776 29.438C9.6686 28.0548 11.3593 27.4401 13.2085 27.4913C15.1633 27.4401 16.8012 28.1061 18.2277 29.438C19.4957 30.7188 20.1826 32.3581 20.2354 34.3048C20.1826 36.1491 19.4957 37.7372 18.1749 39.1204ZM22.6129 25.1347C19.9712 22.5733 16.8012 21.3438 13.2085 21.3438C9.61577 21.3438 6.49857 22.5733 3.90971 25.1347C1.26802 27.6962 0 30.77 0 34.3048C0 37.8397 1.26802 40.9647 3.90971 43.4237C6.44574 45.9852 9.56294 47.2659 13.2085 47.2659C16.8012 47.2659 19.9712 45.9852 22.6129 43.4237C25.2018 40.9135 26.4698 37.8397 26.4698 34.3048C26.4698 30.77 25.2018 27.6962 22.6129 25.1347Z"
+            fill="white"></path>
         </svg>
       </div>
       <!-- <img src={icon_claro.src} alt="" class="claro"> -->
       <div class="ruleta transition-opacity duration-300">
-        <img src={ruleta.src} alt="" class="imgRuleta">
+        <img src={ruleta.src} alt="" class="imgRuleta" />
         <div class="ruleta-lights">
           <span class="ruleta-light ruleta-light-1"></span>
           <span class="ruleta-light ruleta-light-2"></span>
@@ -46,15 +83,29 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
           <span class="ruleta-light ruleta-light-5"></span>
           <span class="ruleta-light ruleta-light-6"></span>
         </div>
-        <div class="item item1" data-nombre="Accesorios"><img src={item1.src} alt=""></div>
-        <div class="item item2" data-nombre="Vales general"><img src={item2.src} alt=""></div>
-        <div class="item item3" data-nombre="Artefactos" data-stock="0"><img src={item3.src} alt=""></div>
-        <div class="item item4" data-nombre="Bonos"><img src={item4.src} alt=""></div>
-        <div class="item item5" data-nombre="Equipos"><img src={item5.src} alt=""></div>
-        <div class="item item6" data-nombre="Bonos"><img src={item6.src} alt=""></div>
+        <div class="item item1" data-nombre="Accesorios">
+          <img src={item1.src} alt="" />
+        </div>
+        <div class="item item2" data-nombre="Vales general">
+          <img src={item2.src} alt="" />
+        </div>
+        <div class="item item3" data-nombre="Artefactos" data-stock="0">
+          <img src={item3.src} alt="" />
+        </div>
+        <div class="item item4" data-nombre="Bonos">
+          <img src={item4.src} alt="" />
+        </div>
+        <div class="item item5" data-nombre="Equipos">
+          <img src={item5.src} alt="" />
+        </div>
+        <div class="item item6" data-nombre="Bonos">
+          <img src={item6.src} alt="" />
+        </div>
       </div>
     </div>
-    <p class="legal">*Imágenes referenciales. Aplican cambios según disponibilidad de stock.</p>
+    <p class="legal">
+      *Imágenes referenciales. Aplican cambios según disponibilidad de stock.
+    </p>
   </div>
 </section>
 
@@ -66,7 +117,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
     top: -30px;
     left: -26px;
     rotate: 6deg;
-    @media (min-width: 768px){
+    @media (min-width: 768px) {
       top: -50px;
       left: -40px;
     }
@@ -82,42 +133,80 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
     /* filter: blur(2px); */
     mix-blend-mode: soft-light;
     background: radial-gradient(circle, #ffe9b8 0%, #ffc35a 45%, #e78b25 100%);
-    box-shadow: 0 0 10px rgba(255, 195, 90, 0.9), 0 0 18px rgba(255, 195, 90, 0.8);
+    box-shadow:
+      0 0 10px rgba(255, 195, 90, 0.9),
+      0 0 18px rgba(255, 195, 90, 0.8);
     transform-origin: center center;
     transform: translate(-50%, -50%);
     --flash-scale: 1;
     animation: ruleta-light-flash 1.3s ease-in-out infinite alternate;
   }
-  .ruleta-light-1 { transform: rotate(  0deg) translate(var(--ruleta-radius)) translate(-50%, -50%) scale(var(--flash-scale)); }
-  .ruleta-light-2 { transform: rotate( 60deg) translate(var(--ruleta-radius)) translate(-50%, -50%) scale(var(--flash-scale)); }
-  .ruleta-light-3 { transform: rotate(120deg) translate(var(--ruleta-radius)) translate(-50%, -50%) scale(var(--flash-scale)); }
-  .ruleta-light-4 { transform: rotate(180deg) translate(var(--ruleta-radius)) translate(-50%, -50%) scale(var(--flash-scale)); }
-  .ruleta-light-5 { transform: rotate(240deg) translate(var(--ruleta-radius)) translate(-50%, -50%) scale(var(--flash-scale)); }
-  .ruleta-light-6 { transform: rotate(300deg) translate(var(--ruleta-radius)) translate(-50%, -50%) scale(var(--flash-scale)); }
+  .ruleta-light-1 {
+    transform: rotate(0deg) translate(var(--ruleta-radius))
+      translate(-50%, -50%) scale(var(--flash-scale));
+  }
+  .ruleta-light-2 {
+    transform: rotate(60deg) translate(var(--ruleta-radius))
+      translate(-50%, -50%) scale(var(--flash-scale));
+  }
+  .ruleta-light-3 {
+    transform: rotate(120deg) translate(var(--ruleta-radius))
+      translate(-50%, -50%) scale(var(--flash-scale));
+  }
+  .ruleta-light-4 {
+    transform: rotate(180deg) translate(var(--ruleta-radius))
+      translate(-50%, -50%) scale(var(--flash-scale));
+  }
+  .ruleta-light-5 {
+    transform: rotate(240deg) translate(var(--ruleta-radius))
+      translate(-50%, -50%) scale(var(--flash-scale));
+  }
+  .ruleta-light-6 {
+    transform: rotate(300deg) translate(var(--ruleta-radius))
+      translate(-50%, -50%) scale(var(--flash-scale));
+  }
 
   /* Escalonar el destello para que no todas las luces parpadeen al mismo tiempo */
-  .ruleta-light-1 { animation-delay: 0s; }
-  .ruleta-light-2 { animation-delay: 0.15s; }
-  .ruleta-light-3 { animation-delay: 0.3s; }
-  .ruleta-light-4 { animation-delay: 0.45s; }
-  .ruleta-light-5 { animation-delay: 0.6s; }
-  .ruleta-light-6 { animation-delay: 0.75s; }
+  .ruleta-light-1 {
+    animation-delay: 0s;
+  }
+  .ruleta-light-2 {
+    animation-delay: 0.15s;
+  }
+  .ruleta-light-3 {
+    animation-delay: 0.3s;
+  }
+  .ruleta-light-4 {
+    animation-delay: 0.45s;
+  }
+  .ruleta-light-5 {
+    animation-delay: 0.6s;
+  }
+  .ruleta-light-6 {
+    animation-delay: 0.75s;
+  }
 
   @keyframes ruleta-light-flash {
     0% {
       opacity: 0.35;
       --flash-scale: 0.85;
-      box-shadow: 0 0 6px rgba(255, 195, 90, 0.5), 0 0 10px rgba(255, 195, 90, 0.4);
+      box-shadow:
+        0 0 6px rgba(255, 195, 90, 0.5),
+        0 0 10px rgba(255, 195, 90, 0.4);
     }
     50% {
       opacity: 0.9;
       --flash-scale: 1.05;
-      box-shadow: 0 0 14px rgba(255, 210, 120, 0.9), 0 0 20px rgba(255, 210, 120, 0.8);
+      box-shadow:
+        0 0 14px rgba(255, 210, 120, 0.9),
+        0 0 20px rgba(255, 210, 120, 0.8);
     }
     100% {
       opacity: 0.6;
       --flash-scale: 1.15;
-      box-shadow: 0 0 20px rgba(255, 230, 150, 1), 0 0 30px rgba(255, 230, 150, 0.9);
+      box-shadow:
+        0 0 20px rgba(255, 230, 150, 1),
+        0 0 30px rgba(255, 230, 150, 0.9);
     }
   }
   section.ruletaGanadora {
@@ -215,17 +304,19 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
       justify-content: center;
       position: relative;
       max-width: 665px;
-      --ruleta-radius: calc(50% + 162px); /* radio relativo al ancho del contenedor */
+      --ruleta-radius: calc(
+        50% + 162px
+      ); /* radio relativo al ancho del contenedor */
       --ruleta-light-size: 24px;
       .imgRuleta {
         width: 100%;
         max-width: 665px;
       }
-      @media (min-width: 768px){
+      @media (min-width: 768px) {
         --ruleta-radius: calc(50% + 290px);
         --ruleta-light-size: 36px;
       }
-      @media (min-width: 1200px){
+      @media (min-width: 1200px) {
         --ruleta-light-size: 44px;
       }
 
@@ -626,30 +717,37 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
 <script>
   import AOS from "aos";
   import { gsap } from "gsap";
-  import JustValidate from 'just-validate';
+  import JustValidate from "just-validate";
   import { togglePreloadAnimation } from "@/utils/animations";
-  import {getListProducts, validUserEnabled, spinSaveResult} from '@/utils/endpoints';
-  import { userStore } from '@/store/userStore';
-  import { showCustomModal } from '@/utils/modalHelper';
+  import {
+    getListProducts,
+    validUserEnabled,
+    spinSaveResult,
+  } from "@/utils/endpoints";
+  import { userStore } from "@/store/userStore";
+  import { showCustomModal } from "@/utils/modalHelper";
   import icon_no_cumple from "@/assets/icons/icon_no_cumple.svg";
   import icon_gano_premio from "@/assets/icons/icon_gano_premio.svg";
 
   const userWinFake = {
-    "success": true,
-    "result": "WIN",
-    "prizeId": "b0975216-cd8a-4761-b81b-83e33de8858c",
-    "prizeName": "Descuento de Whopper Jr",
-    "prizeImageUrl": "https://crm.dev-limprod.com/images/premios/c885731f-5d48-4447-98c2-212f07755a3e.png",
-    "prizeTypeId": 3,
-    "prizeTypeName": "Vales general",
-    "probability": 0.50000,
-    "remainingPlays": 1,
-    "message": "¡Felicitaciones! Has ganado: Descuento de Whopper Jr"
-}
+    success: true,
+    result: "WIN",
+    prizeId: "b0975216-cd8a-4761-b81b-83e33de8858c",
+    prizeName: "Descuento de Whopper Jr",
+    prizeImageUrl:
+      "https://crm.dev-limprod.com/images/premios/c885731f-5d48-4447-98c2-212f07755a3e.png",
+    prizeTypeId: 3,
+    prizeTypeName: "Vales general",
+    probability: 0.5,
+    remainingPlays: 1,
+    message: "¡Felicitaciones! Has ganado: Descuento de Whopper Jr",
+  };
 
   const btnGirar = document.querySelector("#btnGirar") as HTMLButtonElement;
   const ruletaTable = document.querySelector(".ruleta") as HTMLElement;
-  const containerRuleta = document.querySelector(".contentRuleta") as HTMLElement;
+  const containerRuleta = document.querySelector(
+    ".contentRuleta"
+  ) as HTMLElement;
   const items = document.querySelectorAll(".ruleta .item");
 
   let yaGiro = false;
@@ -657,26 +755,34 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
   let ruletaIntroTween: gsap.core.Tween | null = null;
 
   const resetAosAnimations = (element: Element) => {
-    const aosElements = element.querySelectorAll('[data-aos]');
+    const aosElements = element.querySelectorAll("[data-aos]");
     aosElements.forEach((el) => {
-      el.classList.remove('aos-animate', 'aos-init');
+      el.classList.remove("aos-animate", "aos-init");
     });
   };
 
-  const resetRuleta = () =>{
-    const sectionRuleta = document.querySelector(".ruletaGanadora") as HTMLElement;
+  const resetRuleta = () => {
+    const sectionRuleta = document.querySelector(
+      ".ruletaGanadora"
+    ) as HTMLElement;
     if (!sectionRuleta) return;
-    document.querySelectorAll(".section_hidden").forEach(section => section.classList.remove("hidden"));
+    document
+      .querySelectorAll(".section_hidden")
+      .forEach((section) => section.classList.remove("hidden"));
     sectionRuleta.classList.add("hidden");
     document.querySelector(".main_ruleta").classList.add("overflow-hidden");
     document.querySelector("[data-step='3']").classList.add("hidden");
     document.querySelector("[data-step='2']").classList.remove("hidden");
-    document.querySelector("[data-step='2']").classList.remove("hidden", "xl:hidden");
+    document
+      .querySelector("[data-step='2']")
+      .classList.remove("hidden", "xl:hidden");
     ruletaTable.removeAttribute("style");
     setTimeout(() => AOS.refreshHard(), 50);
-    sectionRuleta.querySelector("svg").classList.add("bg-logo-claro-gradient", "rounded-full");
+    sectionRuleta
+      .querySelector("svg")
+      .classList.add("bg-logo-claro-gradient", "rounded-full");
     sectionRuleta.querySelector("svg").removeAttribute("style");
-    containerRuleta.classList.add("opacity-0")
+    containerRuleta.classList.add("opacity-0");
     // Reiniciar estado interno de la ruleta para que el siguiente giro parta desde 0°
     gradosActuales = 0;
     yaGiro = false;
@@ -684,12 +790,14 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
     //reemover el localStorage
     localStorage.removeItem("user");
     userStore.setState({ user: null });
-  }
+  };
 
-  const showRuleta = () =>{
-    document.querySelectorAll(".section_hidden").forEach(section => section.classList.add("hidden"));
+  const showRuleta = () => {
+    document
+      .querySelectorAll(".section_hidden")
+      .forEach((section) => section.classList.add("hidden"));
     document.querySelector(".ruletaGanadora").classList.remove("hidden");
-  }
+  };
 
   function elegirIndiceGanadorPorAngulo(
     anguloFinal: number,
@@ -704,7 +812,8 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
     // en el cálculo original del ángulo objetivo se usaba:
     // anguloObjetivo = 360 - gradosPorItem * indice - gradosPorItem / 2 + offsetFlecha
     // Despejamos para obtener el índice aproximado a partir del ángulo observado.
-    const anguloRelativo = (360 - (anguloNormalizado - offsetFlecha) + 360) % 360;
+    const anguloRelativo =
+      (360 - (anguloNormalizado - offsetFlecha) + 360) % 360;
 
     let indice = Math.floor(anguloRelativo / gradosPorItem);
 
@@ -714,9 +823,9 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
     return indice;
   }
 
-  const showModalWin = (dataResponse, user) =>{
+  const showModalWin = (dataResponse, user) => {
     showCustomModal({
-      title:`¡Felicitaciones! Ganaste:`,
+      title: `¡Felicitaciones! Ganaste:`,
       html: `
         <p class="text-xl font-bold font-roboto text-claro">${dataResponse?.prizeName}</p>
         <img class="max-w-[250px] mx-auto object-contain" src="${dataResponse?.prizeImageUrl}" alt="${dataResponse?.prizeName}"/>
@@ -729,10 +838,10 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
         resetRuleta();
       },
     });
-  }
+  };
 
   function girarRuleta() {
-    const { user  } = userStore.getState();
+    const { user } = userStore.getState();
     if (yaGiro) return;
     yaGiro = true;
 
@@ -756,7 +865,9 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
 
     // Si no hay ítems disponibles, cancelamos el giro y reactivamos el botón
     if (itemsDisponibles.length === 0) {
-      console.warn("No hay ítems disponibles con stock > 0 para girar la ruleta.");
+      console.warn(
+        "No hay ítems disponibles con stock > 0 para girar la ruleta."
+      );
       yaGiro = false;
       btnGirar.disabled = true;
       return;
@@ -772,7 +883,8 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
     const indiceGanador = itemsDisponibles[indiceArray].index;
 
     // Calculamos el ángulo objetivo para que la flecha quede cerca del centro del premio ganador
-    const anguloObjetivo = 360 - gradosPorItem * indiceGanador - gradosPorItem / 2 + offsetFlecha;
+    const anguloObjetivo =
+      360 - gradosPorItem * indiceGanador - gradosPorItem / 2 + offsetFlecha;
     const anguloFinal = gradosActuales + vueltasExtras + anguloObjetivo;
 
     gsap.to(ruletaTable, {
@@ -782,19 +894,22 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
       onComplete: async () => {
         const itemGanador = items[indiceGanador];
         const category_id = itemGanador.getAttribute("data-category_id");
-        const category_name = itemGanador.getAttribute("data-nombre"); 
+        const category_name = itemGanador.getAttribute("data-nombre");
         //console.log(`Categoría Ganador: ${category_name}, con ID ${category_id}`);
         // Después del giro mostrar modal
         btnGirar.disabled = false;
         try {
           //console.log("Giro completado");
-          const spinSaveResultResponse = await spinSaveResult(user.serviceId, Number(category_id));
+          const spinSaveResultResponse = await spinSaveResult(
+            user.serviceId,
+            Number(category_id)
+          );
           //console.log({ spinSaveResultResponse });
-          if (spinSaveResultResponse?.result === 'WIN') {
+          if (spinSaveResultResponse?.result === "WIN") {
             showModalWin(spinSaveResultResponse, user);
-          }else{
+          } else {
             showCustomModal({
-              title:`🎁 ${spinSaveResultResponse.message}`,
+              title: `🎁 ${spinSaveResultResponse.message}`,
               iconSrc: icon_no_cumple.src,
               confirmButtonText: "Volver al inicio",
               showCloseButton: false,
@@ -804,9 +919,9 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
             });
           }
         } catch (error) {
-          console.error('Error en spinSaveResult:', error);
+          console.error("Error en spinSaveResult:", error);
           throw error;
-        }finally{
+        } finally {
           togglePreloadAnimation(false);
         }
       },
@@ -818,17 +933,17 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
   const eventInitRuleta = new CustomEvent("ruleta:enter");
   const entry_btn = document.querySelector(".entry_ruleta");
   entry_btn.addEventListener("click", () => {
-    const sinVale = '4e2f787c-6391-467b-894e-d3340e35582e'
-    const conVale = '178ce82c-618d-4f7f-8ec2-2e51ae9abeb1'
+    const sinVale = "4e2f787c-6391-467b-894e-d3340e35582e";
+    const conVale = "178ce82c-618d-4f7f-8ec2-2e51ae9abeb1";
     const userTemp = {
-      "id": "e315e242-b2cd-48cb-b606-5a4188ef5aa6",
-      "email": "javiercastro.ik@gmail.com",
-      "fullName": "Victor Castro",
-      "docType": "DNI",
-      "docNumber": "42122122",
-      "serviceId": "d999f49b-a8cf-46c0-904f-093d6dd9f9ab",
-      "provinceId": conVale
-    }
+      id: "e315e242-b2cd-48cb-b606-5a4188ef5aa6",
+      email: "javiercastro.ik@gmail.com",
+      fullName: "Victor Castro",
+      docType: "DNI",
+      docNumber: "42122122",
+      serviceId: "d999f49b-a8cf-46c0-904f-093d6dd9f9ab",
+      provinceId: conVale,
+    };
     //togglePreloadAnimation(true);
     userStore.setState({ user: userTemp });
     document.dispatchEvent(eventInitRuleta);
@@ -843,22 +958,35 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
   });
 
   const resetForm = () => {
-    const form = document.querySelector('#form-registro') as HTMLFormElement;
-    const submitBtn = document.querySelector('#btn-submit-form') as HTMLButtonElement;
-    const fieldName = document.querySelector('#name') as HTMLInputElement;
-    const fieldEmail = document.querySelector('#email') as HTMLInputElement;
-    const fieldDni = document.querySelector('#dni') as HTMLInputElement;
-    const fieldPhone = document.querySelector('#phone') as HTMLSelectElement;
-    const selectDeparment = document.querySelector('#departament') as HTMLSelectElement;
-    const selectProvince = document.querySelector('#province') as HTMLSelectElement;
+    const form = document.querySelector("#form-registro") as HTMLFormElement;
+    const submitBtn = document.querySelector(
+      "#btn-submit-form"
+    ) as HTMLButtonElement;
+    const fieldName = document.querySelector("#name") as HTMLInputElement;
+    const fieldEmail = document.querySelector("#email") as HTMLInputElement;
+    const fieldDni = document.querySelector("#dni") as HTMLInputElement;
+    const fieldPhone = document.querySelector("#phone") as HTMLSelectElement;
+    const selectDeparment = document.querySelector(
+      "#departament"
+    ) as HTMLSelectElement;
+    const selectProvince = document.querySelector(
+      "#province"
+    ) as HTMLSelectElement;
     form.reset();
     // Limpiar clases de validación para que el formulario se vea "prístino"
-    const campos = form.querySelectorAll('input, select, textarea');
+    const campos = form.querySelectorAll("input, select, textarea");
     campos.forEach((campo: HTMLElement) => {
-      campo.classList.remove('border-green-500', 'border-red-500', 'just-validate-success-field', 'just-validate-error-field');
+      campo.classList.remove(
+        "border-green-500",
+        "border-red-500",
+        "just-validate-success-field",
+        "just-validate-error-field"
+      );
     });
     // Eliminar labels de error generados por JustValidate (si quedara alguno)
-    form.querySelectorAll('.just-validate-error-label').forEach(label => label.remove());
+    form
+      .querySelectorAll(".just-validate-error-label")
+      .forEach((label) => label.remove());
     fieldPhone.disabled = true;
     fieldName.disabled = true;
     fieldEmail.disabled = true;
@@ -867,18 +995,18 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
     selectDeparment.disabled = true;
     selectProvince.disabled = true;
   };
-  
-  
+
   document.addEventListener("ruleta:enter", async () => {
-    const { user  } = userStore.getState();
+    const { user } = userStore.getState();
     try {
       const userEnabledResponse = await validUserEnabled(user.serviceId);
-      const { canSpin, remainingPlays, playsAllowed, playsUsed, reason } = userEnabledResponse || {};
+      const { canSpin, remainingPlays, playsAllowed, playsUsed, reason } =
+        userEnabledResponse || {};
       const mainRuleta = document.querySelector(".main_ruleta");
       showRuleta();
-      if (window.innerWidth >= 1200){
+      if (window.innerWidth >= 1200) {
         mainRuleta.classList.remove("overflow-hidden");
-      }else{
+      } else {
         // mainRuleta.classList.add("h-full");
       }
       //Botón para animacion de entrada de ruleta
@@ -918,50 +1046,95 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
           return;
         }
         // console.log({dataProducts})
-        const bonosResponse = dataProducts.filter(product => product.prizeTypeName === "Bonos");
-        const accesoriosResponse = dataProducts.filter(product => product.prizeTypeName === "Accesorios");
-        const valesResponse = dataProducts.filter(product => product.prizeTypeName === "Vales general");
-        const valesBurguerResponse = dataProducts.filter(product => product.prizeTypeName === "Vales burger");
-        const valesCineResponse = dataProducts.filter(product => product.prizeTypeName === "Vales Cine");
+        const bonosResponse = dataProducts.filter(
+          (product) => product.prizeTypeName === "Bonos"
+        );
+        const accesoriosResponse = dataProducts.filter(
+          (product) => product.prizeTypeName === "Accesorios"
+        );
+        const valesResponse = dataProducts.filter(
+          (product) => product.prizeTypeName === "Vales burguer king y Cinemark"
+        );
+        const valesBurguerResponse = dataProducts.filter(
+          (product) => product.prizeTypeName === "Solo vales Burger King"
+        );
+        const valesCineResponse = dataProducts.filter(
+          (product) => product.prizeTypeName === "Solo vales Cinemark"
+        );
         //console.log({valesResponse})
-        const equiposResponse = dataProducts.filter(product => product.prizeTypeName === "Equipos");
-        const artefactosResponse = dataProducts.filter(product => product.prizeTypeName === "Artefactos");
-        const getValesForItem = (product)=>{
+        const equiposResponse = dataProducts.filter(
+          (product) => product.prizeTypeName === "Equipos"
+        );
+        const artefactosResponse = dataProducts.filter(
+          (product) => product.prizeTypeName === "Artefactos"
+        );
+        const getValesForItem = (product) => {
           if (valesResponse.length !== 0) {
             product.setAttribute("data-nombre", valesResponse[0].prizeTypeName);
             product.setAttribute("data-stock", valesResponse[0].hasStock);
-            product.setAttribute("data-category_id", valesResponse[0].prizeTypeId);
+            product.setAttribute(
+              "data-category_id",
+              valesResponse[0].prizeTypeId
+            );
             product.querySelector("img").src = valesResponse[0].imageUrl;
             return;
           }
           if (valesBurguerResponse.length !== 0) {
-            product.setAttribute("data-nombre", valesBurguerResponse[0].prizeTypeName);
-            product.setAttribute("data-stock", valesBurguerResponse[0].hasStock);
-            product.setAttribute("data-category_id", valesBurguerResponse[0].prizeTypeId);
+            product.setAttribute(
+              "data-nombre",
+              valesBurguerResponse[0].prizeTypeName
+            );
+            product.setAttribute(
+              "data-stock",
+              valesBurguerResponse[0].hasStock
+            );
+            product.setAttribute(
+              "data-category_id",
+              valesBurguerResponse[0].prizeTypeId
+            );
             product.querySelector("img").src = valesBurguerResponse[0].imageUrl;
             return;
           }
           if (valesCineResponse.length !== 0) {
-            product.setAttribute("data-nombre", valesCineResponse[0].prizeTypeName);
+            product.setAttribute(
+              "data-nombre",
+              valesCineResponse[0].prizeTypeName
+            );
             product.setAttribute("data-stock", valesCineResponse[0].hasStock);
-            product.setAttribute("data-category_id", valesCineResponse[0].prizeTypeId);
+            product.setAttribute(
+              "data-category_id",
+              valesCineResponse[0].prizeTypeId
+            );
             product.querySelector("img").src = valesCineResponse[0].imageUrl;
             return;
           }
-          if (valesResponse.length === 0 && valesBurguerResponse.length === 0 && valesCineResponse.length === 0) {
+          if (
+            valesResponse.length === 0 &&
+            valesBurguerResponse.length === 0 &&
+            valesCineResponse.length === 0
+          ) {
             product.setAttribute("data-nombre", bonosResponse[0].prizeTypeName);
             product.setAttribute("data-stock", bonosResponse[0].hasStock);
-            product.setAttribute("data-category_id", bonosResponse[0].prizeTypeId);
+            product.setAttribute(
+              "data-category_id",
+              bonosResponse[0].prizeTypeId
+            );
             product.querySelector("img").src = bonosResponse[0].imageUrl;
             return;
           }
-        }
+        };
         items.forEach((item, index) => {
           const nombre = item.getAttribute("data-nombre");
           if (nombre === "Accesorios") {
-            item.setAttribute("data-nombre", accesoriosResponse[0].prizeTypeName);
+            item.setAttribute(
+              "data-nombre",
+              accesoriosResponse[0].prizeTypeName
+            );
             item.setAttribute("data-stock", accesoriosResponse[0].hasStock);
-            item.setAttribute("data-category_id", accesoriosResponse[0].prizeTypeId);
+            item.setAttribute(
+              "data-category_id",
+              accesoriosResponse[0].prizeTypeId
+            );
             item.querySelector("img").src = accesoriosResponse[0].imageUrl;
           }
           if (nombre === "Bonos") {
@@ -973,7 +1146,10 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
           if (nombre === "Equipos") {
             item.setAttribute("data-nombre", equiposResponse[0].prizeTypeName);
             item.setAttribute("data-stock", equiposResponse[0].hasStock);
-            item.setAttribute("data-category_id", equiposResponse[0].prizeTypeId);
+            item.setAttribute(
+              "data-category_id",
+              equiposResponse[0].prizeTypeId
+            );
             item.querySelector("img").src = equiposResponse[0].imageUrl;
           }
           if (nombre === "Vales general") {
@@ -981,9 +1157,15 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
           }
           if (nombre === "Artefactos") {
             if (artefactosResponse.length !== 0) {
-              item.setAttribute("data-nombre", artefactosResponse[0].prizeTypeName);
+              item.setAttribute(
+                "data-nombre",
+                artefactosResponse[0].prizeTypeName
+              );
               item.setAttribute("data-stock", artefactosResponse[0].hasStock);
-              item.setAttribute("data-category_id", artefactosResponse[0].prizeTypeId);
+              item.setAttribute(
+                "data-category_id",
+                artefactosResponse[0].prizeTypeId
+              );
               item.querySelector("img").src = artefactosResponse[0].imageUrl;
             }
           }
@@ -1010,7 +1192,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
             btnGirar.addEventListener("click", girarRuleta);
           },
         });
-        
+
         gsap.from(isotipo, {
           scale: 600,
           transformOrigin: "50% 50%",
@@ -1028,7 +1210,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
             // }, 800);
           },
         });
-      }else{
+      } else {
         showCustomModal({
           title: "Lo sentimos, no puedes participar en estos momentos 👇",
           html: `<p>${reason}</p>`,
@@ -1042,10 +1224,8 @@ import bg_desktop from "@/assets/images/banner_desktop.webp"
       }
     } catch (error) {
       console.error(error);
-    }finally{
+    } finally {
       togglePreloadAnimation(false);
     }
-  });  
-</script>
-
+  });
 </script>
