@@ -105,7 +105,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
     <Button id="btn-submit-form" data-next-step="3" type="submit" disabled href="https://www.claro.com.pe/personas/app/claro-musica/" classes="min-w-fit px-12 py-2.5 xl:py-3.5 border border-claro cursor-pointer bg-claro hover:bg-claro-dark text-white hover:text-white disabled:bg-gray-200 disabled:border-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed mx-auto" >Continuar</Button>
   </form>
   <div class="col-span-2 pt-3 xl:pt-0 xl:-mt-2">
-    <p class="text-[11px] text-white text-center xl:text-left leading-none mx-auto xl:mr-0 xl:ml-auto md:max-w-[500px] xl:max-w-[430px] 2xl:max-w-[520px] relative xl:right-20 2xl:right-32 2xl:px-0">No aplica para RUC 20. Vale hasta 15/01/2026. Conoce los términos y condiciones, detalle de los premios y stock aquí: <a href="https://claro.pe/ruletaganadora" class="underline">claro.pe/ruletaganadora</a></p>
+    <p class="text-[11px] text-white text-center xl:text-left leading-none mx-auto xl:mr-0 xl:ml-auto md:max-w-[500px] xl:max-w-[430px] 2xl:max-w-[520px] relative xl:right-20 2xl:right-32 2xl:px-0">No aplica para RUC 20. Vale hasta 15/01/2026. Conoce los términos y condiciones, detalle de los premios y stock aquí: <a href="https://claro.pe/ruletaganadora" class="underline linktoc20pe">claro.pe/ruletaganadora</a></p>
   </div>
 </div>
 
@@ -752,6 +752,20 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
         alert("Error al eliminar el DNI");
       }
     }
+
+    const linkToC20pe = document.querySelector(".linktoc20pe") as HTMLAnchorElement;
+    linkToC20pe.addEventListener("click", (e) => {
+      e.preventDefault();
+      const c20peElement = document.querySelector(".c20pe") as HTMLElement;
+      if (c20peElement) {
+        const yOffset = -80;
+        const y = c20peElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({
+          top: y,
+          behavior: "smooth"
+        });
+      }
+    })
   })
 
 </script>
