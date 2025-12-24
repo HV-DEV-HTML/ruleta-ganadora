@@ -14,47 +14,83 @@ const { cards, tabId } = Astro.props;
 ---
 
 <div class="card-slider" data-tab-id={tabId}>
-  <div class="cards-container relative w-full h-[450px] lg:h-auto py-4 lg:py-14 xl:py-16 flex justify-center items-center">
-    {cards.map((card, index) => (
-      <div
-        class="card w-full max-w-[260px] rounded-4xl overflow-hidden shadow-card-claro absolute lg:relative cursor-grab active:cursor-grabbing"
-        data-index={index}
-      >
-        <img class="w-full h-full object-cover" src={card.image} alt={card.alt} />
-      </div>
-    ))}
+  <div
+    class="cards-container relative w-full h-[450px] lg:h-auto py-4 lg:py-14 xl:py-16 flex justify-center items-center"
+  >
+    {
+      cards.map((card, index) => (
+        <div
+          class="card w-full max-w-[260px] rounded-4xl overflow-hidden shadow-card-claro absolute lg:relative cursor-grab active:cursor-grabbing"
+          data-index={index}
+        >
+          <img
+            class="w-full h-full object-cover"
+            src={card.image}
+            alt={card.alt}
+          />
+        </div>
+      ))
+    }
 
-    <button class="nav-btn nav-prev absolute left-0 md:left-1/6 top-1/2 -translate-y-1/2 -translate-x-3 z-50 w-10 h-10 rounded-full text-[#FFC5C1] flex items-center justify-center shadow-lg lg:hidden transition-opacity duration-300 disabled:opacity-30 disabled:cursor-not-allowed" disabled>
-      <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+    <button
+      class="nav-btn nav-prev absolute left-0 md:left-1/6 top-1/2 -translate-y-1/2 -translate-x-3 z-50 w-10 h-10 rounded-full text-[#FFC5C1] flex items-center justify-center shadow-lg lg:hidden transition-opacity duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
+      disabled
+    >
+      <svg
+        class="w-full h-full"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M15 19l-7-7 7-7"></path>
       </svg>
     </button>
-    <button class="nav-btn nav-next absolute right-0 md:right-1/6 top-1/2 -translate-y-1/2 translate-x-3 z-50 w-10 h-10 rounded-full text-[#FFC5C1] flex items-center justify-center shadow-lg lg:hidden transition-opacity duration-300 disabled:opacity-30 disabled:cursor-not-allowed">
-      <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+    <button
+      class="nav-btn nav-next absolute right-0 md:right-1/6 top-1/2 -translate-y-1/2 translate-x-3 z-50 w-10 h-10 rounded-full text-[#FFC5C1] flex items-center justify-center shadow-lg lg:hidden transition-opacity duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
+    >
+      <svg
+        class="w-full h-full"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 5l7 7-7 7"></path>
       </svg>
     </button>
   </div>
 
-  <div class="flex flex-col md:flex-row justify-center items-start gap-4 lg:gap-6 px-4 py-4 slider_participa_steps">
-    {cards.map((card) => (
-      <div
-        class="flex flex-col gap-1 hidden xl:flex w-full md:max-w-[210px] xl:max-w-[340px] duration-300"
-        data-step={card.step}
-      >
-        <p class="text-center font-amx-black text-3xl">Paso {card.step}</p>
-        {card.title && (
-          <p class="text-center md:text-xs xl:text-lg leading-tight font-amx-regular text-balance xl:text-wrap">
-            {card.title}
-          </p>
-        )}
-        {card.description && (
-          <p class="text-center md:text-xs xl:text-lg leading-tight font-amx-regular text-balance">
-            {card.description}
-          </p>
-        )}
-      </div>
-    ))}
+  <div
+    class="flex flex-col md:flex-row justify-center items-start gap-4 lg:gap-6 px-4 py-4 slider_participa_steps"
+  >
+    {
+      cards.map((card) => (
+        <div
+          class="flex flex-col gap-1 hidden xl:flex w-full md:max-w-[210px] xl:max-w-[340px] duration-300"
+          data-step={card.step}
+        >
+          <p class="text-center font-amx-black text-3xl">Paso {card.step}</p>
+          {card.title && (
+            <p
+              class="text-center md:text-xs xl:text-lg leading-tight font-amx-regular text-balance xl:text-wrap"
+              set:html={card.title}
+            />
+          )}
+          {card.description && (
+            <p class="text-center md:text-xs xl:text-lg leading-tight font-amx-regular text-balance">
+              {card.description}
+            </p>
+          )}
+        </div>
+      ))
+    }
   </div>
 </div>
 
@@ -65,8 +101,12 @@ const { cards, tabId } = Astro.props;
   gsap.registerPlugin(Draggable);
 
   const initSlider = (root: HTMLElement) => {
-    const cards = gsap.utils.toArray(root.querySelectorAll<HTMLElement>(".card")) as HTMLElement[];
-    const sliderParticipaSteps = root.querySelector(".slider_participa_steps") as HTMLElement | null;
+    const cards = gsap.utils.toArray(
+      root.querySelectorAll<HTMLElement>(".card")
+    ) as HTMLElement[];
+    const sliderParticipaSteps = root.querySelector(
+      ".slider_participa_steps"
+    ) as HTMLElement | null;
     const navPrev = root.querySelector(".nav-prev") as HTMLButtonElement | null;
     const navNext = root.querySelector(".nav-next") as HTMLButtonElement | null;
 
@@ -74,8 +114,13 @@ const { cards, tabId } = Astro.props;
 
     let currentIndex = 0;
     let draggableInstance: Draggable[] = [];
-    let hoverListeners: Array<{ element: HTMLElement; enter: () => void; leave: () => void }> = [];
-    let buttonListeners: Array<{ element: HTMLElement; handler: () => void }> = [];
+    let hoverListeners: Array<{
+      element: HTMLElement;
+      enter: () => void;
+      leave: () => void;
+    }> = [];
+    let buttonListeners: Array<{ element: HTMLElement; handler: () => void }> =
+      [];
     let currentMode: "mobile" | "desktop" | null = null;
 
     const updateStep = (index: number, isMobile: boolean) => {
@@ -91,7 +136,9 @@ const { cards, tabId } = Astro.props;
       sliderParticipaSteps.querySelectorAll("[data-step]").forEach((step) => {
         step.classList.add("hidden");
       });
-      const activeStep = sliderParticipaSteps.querySelector(`[data-step="${index + 1}"]`);
+      const activeStep = sliderParticipaSteps.querySelector(
+        `[data-step="${index + 1}"]`
+      );
       activeStep?.classList.remove("hidden");
 
       if (navPrev) {
@@ -286,7 +333,11 @@ const { cards, tabId } = Astro.props;
         card.addEventListener("mouseenter", enterHandler);
         card.addEventListener("mouseleave", leaveHandler);
 
-        hoverListeners.push({ element: card, enter: enterHandler, leave: leaveHandler });
+        hoverListeners.push({
+          element: card,
+          enter: enterHandler,
+          leave: leaveHandler,
+        });
       });
 
       // Animación de entrada tipo baraja (más desordenada)
@@ -300,7 +351,7 @@ const { cards, tabId } = Astro.props;
           const randomRot = (Math.random() - 0.5) * 20; // -7 a 7
 
           const fromX = xOffsets[i] - 200 + randomX;
-          const fromY = - 50 + randomY;
+          const fromY = -50 + randomY;
           const fromRotation = rotations[i] - 20 + randomRot;
 
           gsap.fromTo(
@@ -330,7 +381,7 @@ const { cards, tabId } = Astro.props;
       deckIntro();
 
       // Permitir re-disparar la animación desde fuera (por ejemplo, al cambiar de tab)
-      root.addEventListener("cards:enter", deckIntro);      
+      root.addEventListener("cards:enter", deckIntro);
 
       updateStep(0, false);
     };
@@ -364,4 +415,28 @@ const { cards, tabId } = Astro.props;
 
   const sliders = document.querySelectorAll<HTMLElement>(".card-slider");
   sliders.forEach((root) => initSlider(root));
+
+  const linkToC20pe2 = document.querySelector(
+    ".linkToC20pe2"
+  ) as HTMLAnchorElement;
+  linkToC20pe2.addEventListener("click", (e) => {
+    e.preventDefault();
+    const c20peElement = document.querySelector(".c20pe") as HTMLElement;
+    if (c20peElement) {
+      const yOffset = -80;
+      const y =
+        c20peElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({
+        top: y,
+        behavior: "smooth",
+      });
+      setTimeout(() => {
+        const actBtn = c20peElement.querySelector(
+          ".actBtn"
+        ) as HTMLElement | null;
+
+        actBtn?.click();
+      }, 600);
+    }
+  });
 </script>

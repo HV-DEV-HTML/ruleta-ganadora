@@ -1,0 +1,26 @@
+---
+import icon07 from "@/assets/icons/icon_07.webp";
+---
+
+<img
+  class="hidden xl:block absolute icon_parallax icon07"
+  data-delay="0.8"
+  data-invert-x="true"
+  src={icon07.src}
+  alt="Icon 07"
+/>
+
+<style>
+  img.icon07 {
+    top: 210px;
+    left: 540px;
+    z-index: 1;
+  }
+  @media (max-width: 1599px) {
+    img.icon07 {
+      top: 200px;
+      left: 350px;
+      z-index: 1;
+    }
+  }
+</style>

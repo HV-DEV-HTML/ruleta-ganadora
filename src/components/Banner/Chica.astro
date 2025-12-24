@@ -1,11 +1,38 @@
 ---
-import chica_mobile from "@/assets/images/chica_mobile.webp"
-import chica_tablet from "@/assets/images/chica_tablet.webp"
-import chica_desktop from "@/assets/images/chica_desktop.webp"
+import chica_mobile from "@/assets/images/chica_mobile.webp";
+import chica_tablet from "@/assets/images/chica_tablet.webp";
+import chica_desktop from "@/assets/images/chica_desktopv2.webp";
 ---
 
-<picture class="w-full max-w-[240px] md:max-w-[300px] lg:max-w-[360px] xl:max-w-[460px] 2xl:max-w-[500px] h-auto block absolute -bottom-6 md:-bottom-10 lg:bottom-22 xl:-bottom-70 2xl:-bottom-90 left-1/2 xl:left-0 -translate-x-1/2 xl:translate-x-0 icon_girl">
-  <source srcset={chica_desktop.src} media="(min-width: 1280px)">
-  <source srcset={chica_tablet.src} media="(min-width: 768px)">
-  <img class="w-full h-full object-cover relative -left-8 xl:-left-7 2xl:left-26" src={chica_mobile.src} alt="Banner sorteo">
+<picture
+  class="w-full max-w-[240px] md:max-w-[300px] lg:max-w-[360px] xl:max-w-[460px] 2xl:max-w-[500px] h-auto block absolute -bottom-6 md:-bottom-10 lg:bottom-22 xl:-bottom-70 2xl:-bottom-90 left-1/2 xl:left-0 -translate-x-1/2 xl:translate-x-0 icon_girl"
+>
+  <source srcset={chica_desktop.src} media="(min-width: 1280px)" />
+  <source srcset={chica_desktop.src} media="(min-width: 768px)" />
+  <img
+    class="w-full h-full object-cover relative -left-4 xl:-left-3 2xl:left-35 imgMujer"
+    src={chica_desktop.src}
+    alt="Banner sorteo"
+  />
 </picture>
+
+<style>
+  .imgMujer {
+    top: 40px;
+  }
+  @media (max-width: 1599px) {
+    .imgMujer {
+      top: 60px;
+    }
+  }
+  @media (max-width: 1279px) {
+    .imgMujer {
+      top: 160px;
+    }
+  }
+  @media (max-width: 767px) {
+    .imgMujer {
+      top: 40px;
+    }
+  }
+</style>

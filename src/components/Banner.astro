@@ -1,54 +1,96 @@
 ---
-import Paso01 from "@components/Paso01.astro"
-import Paso02 from "@components/Paso02.astro"
-import Paso03 from "@components/Paso03.astro"
-import bg_mobile from "@/assets/images/banner_mobile.webp"
-import bg_tablet from "@/assets/images/banner_tablet.webp"
-import bg_desktop from "@/assets/images/banner_desktop.webp"
-import bg_content_mobile from "@/assets/images/banner_containt_mobile.webp"
-import bg_content_desktop from "@/assets/images/banner_containt_desktop.webp"
-import ChicaAsset from "@components/Banner/Chica.astro"
-import Icon01 from "@components/Banner/Icon01.astro"
-import Icon02 from "@components/Banner/Icon02.astro"
-import Icon03 from "@components/Banner/Icon03.astro"
-import Icon04 from "@components/Banner/Icon04.astro"
-import Icon05 from "@components/Banner/Icon05.astro"
-import Icon06 from "@components/Banner/Icon06.astro"
+import Paso01 from "@components/Paso01.astro";
+import Paso02 from "@components/Paso02.astro";
+import Paso03 from "@components/Paso03.astro";
+import bg_mobile from "@/assets/images/banner_mobile.webp";
+import bg_tablet from "@/assets/images/banner_tablet.webp";
+import bg_desktop from "@/assets/images/banner_desktop.webp";
+import bg_content_mobile from "@/assets/images/banner_containt_mobile.webp";
+import bg_content_desktop from "@/assets/images/banner_containt_desktopv2.webp";
+import ChicaAsset from "@components/Banner/Chica.astro";
+import Icon01 from "@components/Banner/Icon01.astro";
+import Icon02 from "@components/Banner/Icon02.astro";
+import Icon03 from "@components/Banner/Icon03.astro";
+import Icon04 from "@components/Banner/Icon04.astro";
+import Icon05 from "@components/Banner/Icon05.astro";
+import Icon06 from "@components/Banner/Icon06.astro";
+import Icon07 from "@components/Banner/Icon07.astro";
 ---
 
-<section class="p-0 relative banner_sorteo section_hidden bg-transparent h-[800px] md:h-[1000px] lg:h-[1200px] xl:h-[740px] 2xl:h-[900px]" data-current-step="2">
-  <picture class="w-full h-full relative z-0 bg-claro">
-    <source srcset={bg_desktop.src} media="(min-width: 1280px)">
-    <source srcset={bg_tablet.src} media="(min-width: 768px)">
-    <img class="w-full h-full object-cover object-bottom" src={bg_mobile.src} alt="¡Gira la ruleta y gana premios al instante!">
+<section
+  class="p-0 relative banner_sorteo section_hidden bg-transparent h-[800px] md:h-[1000px] lg:h-[1200px] xl:h-[740px] 2xl:h-[900px]"
+  data-current-step="2"
+>
+  <picture class="bg-claro">
+    <source srcset={bg_desktop.src} media="(min-width: 1280px)" />
+    <source srcset={bg_tablet.src} media="(min-width: 768px)" />
+    <img
+      style="    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+    min-height: 100%;
+    min-width: 100%;
+    object-fit: cover;"
+      class=""
+      src={bg_mobile.src}
+      alt="¡Gira la ruleta y gana premios al instante!"
+    />
   </picture>
-  <button class="absolute w-full top-3 xl:top-5 left-0 z-2 btn_back_step hidden cursor-pointer" data-prev-step="1">
+  <button
+    class="absolute w-full top-3 xl:top-5 left-0 z-2 btn_back_step hidden cursor-pointer"
+    data-prev-step="1"
+  >
     <div class="container flex items-center gap-2">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 24C5.38667 24 0 18.6133 0 12C0 5.38667 5.38667 0 12 0C18.6133 0 24 5.38667 24 12C24 18.6133 18.6133 24 12 24ZM12 1.82667C6.38667 1.82667 1.82667 6.38667 1.82667 12C1.82667 17.6133 6.38667 22.1733 12 22.1733C17.6133 22.1733 22.1733 17.6133 22.1733 12C22.1733 6.38667 17.6133 1.82667 12 1.82667Z" fill="white"/>
-        <path d="M11.9999 17.3467C11.7599 17.3467 11.5332 17.2534 11.3599 17.0801L6.9199 12.6401C6.5599 12.2801 6.5599 11.7067 6.9199 11.3467L11.3599 6.90672C11.7199 6.54672 12.2932 6.54672 12.6532 6.90672C13.0132 7.26672 13.0132 7.84005 12.6532 8.20005L8.86657 11.9867L12.6532 15.7734C13.0132 16.1334 13.0132 16.7067 12.6532 17.0667C12.4799 17.2401 12.2399 17.3334 12.0132 17.3334L11.9999 17.3467Z" fill="white"/>
-        <path d="M16.4398 12.9071H7.57317C7.0665 12.9071 6.6665 12.4938 6.6665 12.0004C6.6665 11.5071 7.07984 11.0938 7.57317 11.0938H16.4398C16.9465 11.0938 17.3465 11.5071 17.3465 12.0004C17.3465 12.4938 16.9332 12.9071 16.4398 12.9071Z" fill="white"/>
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M12 24C5.38667 24 0 18.6133 0 12C0 5.38667 5.38667 0 12 0C18.6133 0 24 5.38667 24 12C24 18.6133 18.6133 24 12 24ZM12 1.82667C6.38667 1.82667 1.82667 6.38667 1.82667 12C1.82667 17.6133 6.38667 22.1733 12 22.1733C17.6133 22.1733 22.1733 17.6133 22.1733 12C22.1733 6.38667 17.6133 1.82667 12 1.82667Z"
+          fill="white"></path>
+        <path
+          d="M11.9999 17.3467C11.7599 17.3467 11.5332 17.2534 11.3599 17.0801L6.9199 12.6401C6.5599 12.2801 6.5599 11.7067 6.9199 11.3467L11.3599 6.90672C11.7199 6.54672 12.2932 6.54672 12.6532 6.90672C13.0132 7.26672 13.0132 7.84005 12.6532 8.20005L8.86657 11.9867L12.6532 15.7734C13.0132 16.1334 13.0132 16.7067 12.6532 17.0667C12.4799 17.2401 12.2399 17.3334 12.0132 17.3334L11.9999 17.3467Z"
+          fill="white"></path>
+        <path
+          d="M16.4398 12.9071H7.57317C7.0665 12.9071 6.6665 12.4938 6.6665 12.0004C6.6665 11.5071 7.07984 11.0938 7.57317 11.0938H16.4398C16.9465 11.0938 17.3465 11.5071 17.3465 12.0004C17.3465 12.4938 16.9332 12.9071 16.4398 12.9071Z"
+          fill="white"></path>
       </svg>
       <span class="text-white font-amx-bold text-base">Volver</span>
     </div>
   </button>
   <div class="w-full h-full absolute top-0 left-0">
-    <div class="flex flex-col items-center mx-auto md:max-w-[620px] xl:max-w-[1040px] 2xl:max-w-[1490px] max-h-[360px] md:max-h-[360px] lg:max-h-[560px] xl:max-h-[380px] h-full px-4 mt-16 2xl:mt-30 relative">
+    <div
+      class="flex flex-col items-center mx-auto md:max-w-[620px] xl:max-w-[1040px] 2xl:max-w-[1490px] max-h-[360px] md:max-h-[360px] lg:max-h-[560px] xl:max-h-[413px] h-full px-4 mt-16 2xl:mt-20 relative"
+    >
       <div class="w-full h-full bg-transparent relative">
         <picture>
-          <source srcset={bg_content_desktop.src} type="image/webp" media="(min-width: 1280px)" />
-          <img class="w-full h-full object-cover absolute top-0 left-0 z-0 rounded-4xl overflow-hidden" src={bg_content_mobile.src} alt="Banner Ruleta Ganadora">
+          <source
+            srcset={bg_content_desktop.src}
+            type="image/webp"
+            media="(min-width: 1280px)"
+          />
+          <img
+            class="w-full h-full object-cover absolute top-0 left-0 z-0 rounded-4xl overflow-hidden"
+            src={bg_content_mobile.src}
+            alt="Banner Ruleta Ganadora"
+          />
         </picture>
         <Paso02 />
         <!-- <Paso03 /> -->
       </div>
-      <Icon04/>
-      <Icon05/>
-      <Icon06/>
-      <Icon01/>
-      <Icon02/>
-      <Icon03/>
-      <ChicaAsset/>
+      <Icon04 />
+      <Icon05 />
+      <Icon06 />
+      <Icon01 />
+      <Icon02 />
+      <Icon03 />
+      <Icon07 />
+      <ChicaAsset />
     </div>
   </div>
 </section>
@@ -56,24 +98,24 @@ import Icon06 from "@components/Banner/Icon06.astro"
 <script>
   import AOS from "aos";
   import { applyFloatWithParallax } from "@/utils/animations.js";
-  
+
   const banner = document.querySelector(".banner_sorteo") as HTMLElement;
   const allBTns = banner.querySelectorAll(".btn_step");
   const btnBackStep = banner.querySelector(".btn_back_step") as HTMLElement;
 
   // Funciones de utilidad para animaciones AOS
   const resetAosAnimations = (element: Element) => {
-    const aosElements = element.querySelectorAll('[data-aos]');
-    aosElements.forEach(el => {
-      el.classList.remove('aos-animate', 'aos-init');
+    const aosElements = element.querySelectorAll("[data-aos]");
+    aosElements.forEach((el) => {
+      el.classList.remove("aos-animate", "aos-init");
     });
   };
 
   const preserveAosState = (element: Element) => {
-    const aosElements = element.querySelectorAll('[data-aos]');
-    aosElements.forEach(el => {
-      el.classList.remove('aos-animate');
-      el.classList.add('aos-init');
+    const aosElements = element.querySelectorAll("[data-aos]");
+    aosElements.forEach((el) => {
+      el.classList.remove("aos-animate");
+      el.classList.add("aos-init");
     });
   };
 
@@ -92,14 +134,14 @@ import Icon06 from "@components/Banner/Icon06.astro"
     }
 
     btnBackStep.dataset.prevStep = (nextStep - 1).toString();
-    
+
     currentStepEl.classList.add("hidden", "xl:hidden");
     preserveAosState(currentStepEl);
-    
+
     nextStepEl.classList.remove("hidden");
     banner.dataset.currentStep = nextStep.toString();
     resetAosAnimations(nextStepEl);
-    
+
     setTimeout(() => AOS.refreshHard(), 50);
   };
 
@@ -108,7 +150,7 @@ import Icon06 from "@components/Banner/Icon06.astro"
     nextToStep,
     resetAosAnimations,
     preserveAosState,
-    getCurrentStep: () => Number(banner.dataset.currentStep)
+    getCurrentStep: () => Number(banner.dataset.currentStep),
   };
 
   // Botón de retroceso
@@ -117,21 +159,21 @@ import Icon06 from "@components/Banner/Icon06.astro"
     const btnEl = e.currentTarget as HTMLElement;
     const prevStep = Number(btnEl.dataset.prevStep);
     const currentStep = Number(banner.dataset.currentStep);
-    console.log({prevStep, currentStep});
+    console.log({ prevStep, currentStep });
     nextToStep(currentStep, prevStep);
   });
 
   // Botones de avance (excluir submit buttons para evitar conflicto con validación)
-  allBTns.forEach(btn => {
+  allBTns.forEach((btn) => {
     const btnEl = btn as HTMLElement;
     // Solo agregar listener si NO es un botón de tipo submit
-    if (btnEl.getAttribute('type') !== 'submit') {
+    if (btnEl.getAttribute("type") !== "submit") {
       btn.addEventListener("click", (e) => {
         e.preventDefault();
         const nextStep = Number(btnEl.dataset.nextStep);
         const currentStep = Number(banner.dataset.currentStep);
         btnBackStep.dataset.prevStep = currentStep.toString();
-        console.log({nextStep, currentStep});
+        console.log({ nextStep, currentStep });
         nextToStep(currentStep, nextStep);
       });
     }
@@ -144,14 +186,14 @@ import Icon06 from "@components/Banner/Icon06.astro"
     const iconEl = icon as HTMLElement;
     const delay = parseFloat(iconEl.dataset.delay || "0");
     const invertX = iconEl.dataset.invertX === "true";
-    
+
     applyFloatWithParallax(
       iconEl,
       {
         distance: 25,
         duration: 2,
         ease: "sine.inOut",
-        delay: delay
+        delay: delay,
       },
       {
         container: banner,
@@ -160,8 +202,8 @@ import Icon06 from "@components/Banner/Icon06.astro"
         ease: "power2.out",
         enableX: true,
         enableY: false,
-        invertX: invertX
+        invertX: invertX,
       }
     );
-  });  
+  });
 </script>

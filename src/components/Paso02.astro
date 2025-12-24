@@ -1,191 +1,397 @@
 ---
-import Button from "@UI/Button.astro"
-import iconTooltip from "@/assets/icons/tooltip.svg?raw"
+import Button from "@UI/Button.astro";
+import iconTooltip from "@/assets/icons/tooltip.svg?raw";
 ---
 
-<div class="w-full h-full relative z-10 xl:grid xl:grid-cols-2 items-start" data-step="2">
-  <div class="flex flex-col items-center justify-center py-6 md:py-8 w-full relative xl:top-4 2xl:-right-13">
-    <h1 data-aos="zoom-in-right" class="font-amx-regular text-xl md:text-3xl xl:text-2xl 2xl:text-3xl leading-none italic xl:leading-[0.5] text-center text-claro uppercase">
-      <strong class="block leading-none font-amx-black text-2xl md:text-4xl xl:text-3xl 2xl:text-5xl">¡Gira la Ruleta Ganadora!</strong>
+<div
+  class="w-full h-full relative z-10 xl:grid xl:grid-cols-2 items-start"
+  data-step="2"
+>
+  <div
+    class="flex flex-col items-center justify-center py-6 md:py-8 w-full relative xl:top-4 2xl:-right-13"
+  >
+    <h1
+      data-aos="zoom-in-right"
+      class="font-amx-regular text-xl md:text-3xl xl:text-2xl 2xl:text-3xl leading-none italic xl:leading-[0.5] text-center text-claro uppercase"
+    >
+      <strong
+        class="block leading-none font-amx-black text-2xl md:text-4xl xl:text-3xl 2xl:text-5xl"
+        >¡Gira la Ruleta Ganadora!</strong
+      >
     </h1>
-    <p data-aos="zoom-in-right" class="font-amx-medium text-black text-[11px] md:text-base xl:text-[15px] 2xl:text-base text-balance py-2 md:py-3 px-3 text-center leading-none md:max-w-[570px] mx-auto">Si eres cliente Claro prepago, postpago o fijo con internet, realiza una transacción y autoriza recibir publicidad para participar</p>
-    <p data-aos="zoom-in-right" data-aos-delay="50" class="font-amx-bold italic text-[11px] md:text-sm text-center bg-claro text-white leading-none rounded-full px-2 md:px-3 py-1.5 md:py-2">¡Gira y gana más gigas, accesorios, equipos y muchos premios más!</p>
+    <p
+      data-aos="zoom-in-right"
+      class="font-amx-medium text-black text-[11px] md:text-base xl:text-[15px] 2xl:text-base text-balance py-2 md:py-3 px-3 text-center leading-none md:max-w-[570px] mx-auto"
+    >
+      Si recibiste nuestro mensaje por tu transacción, completa el formulario,
+      solicita recibir publicidad y participa
+    </p>
+    <p
+      data-aos="zoom-in-right"
+      data-aos-delay="50"
+      class="font-amx-bold italic text-[11px] md:text-sm text-center bg-claro text-white leading-none rounded-full px-2 md:px-3 py-1.5 md:py-2 pPremios"
+    >
+      ¡GIRA Y GANA GIGAS, ACCESORIOS, EQUIPOS Y MUCHOS PREMIOS MÁS!
+    </p>
   </div>
-  <form id="form-registro" data-aos="zoom-in-up" class="bg-white px-4 md:px-10 xl:px-7 2xl:px-10 mt-40 lg:mt-62 xl:mt-0 py-8 2xl:py-10 w-full rounded-2xl font-roboto flex flex-col gap-3 md:gap-4 md:max-w-[500px] xl:max-w-[430px] 2xl:max-w-[540px] mx-auto relative xl:-top-7 xl:right-12 2xl:right-4 z-10 shadow-xl/20" action="">
-    <h3 class="text-center font-amx-bold text-xl md:text-3xl xl:text-2xl 2xl:text-3xl leading-none">Valida tus datos para participar</h3>
+  <form
+    id="form-registro"
+    data-aos="zoom-in-up"
+    class="bg-white px-4 md:px-10 xl:px-7 2xl:px-10 mt-40 lg:mt-62 xl:mt-0 py-8 2xl:py-10 w-full rounded-2xl font-roboto flex flex-col gap-3 md:gap-4 md:max-w-[500px] xl:max-w-[430px] 2xl:max-w-[540px] mx-auto relative xl:-top-7 xl:right-12 2xl:right-4 z-10 shadow-xl/20"
+    action=""
+  >
+    <h3
+      class="text-center font-amx-bold text-xl md:text-3xl xl:text-2xl 2xl:text-3xl leading-none"
+    >
+      Valida tus datos para participar
+    </h3>
     <fieldset class="grid grid-cols-2 gap-4">
       <div class="flex flex-col text-black">
-        <label for="typeDoc" class="text-xs md:text-sm font-bold">Tipo de documento</label>
+        <label for="typeDoc" class="text-xs md:text-sm font-bold"
+          >Tipo de documento</label
+        >
         <div class="grid grid-cols-1 text-black">
-          <select id="typeDoc" name="typeDoc" autocomplete="type-document-name" class="col-start-1 row-start-1 appearance-none w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none h-[40px]" required>
+          <select
+            id="typeDoc"
+            name="typeDoc"
+            autocomplete="type-document-name"
+            class="col-start-1 row-start-1 appearance-none w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none h-[40px]"
+            required
+          >
             <option value="" selected>Tipo de doc.</option>
             <option value="DNI">DNI</option>
             <option value="PASAPORTE">Pasaporte</option>
             <option value="CEX">Carné de extranjería</option>
           </select>
-          <svg viewBox="0 0 16 16" fill="currentColor" data-slot="icon" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-900 sm:size-4 z-1">
-            <path d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+          <svg
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            data-slot="icon"
+            aria-hidden="true"
+            class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-900 sm:size-4 z-1"
+          >
+            <path
+              d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+              clip-rule="evenodd"
+              fill-rule="evenodd"></path>
           </svg>
         </div>
       </div>
       <div class="flex flex-col text-black">
-        <label for="dni" class="text-xs md:text-sm font-bold">Número de documento</label>
-        <input type="text" name="dni" id="dni" maxlength="8" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none" placeholder="Número de documento" required disabled>
+        <label for="dni" class="text-xs md:text-sm font-bold"
+          >Número de documento</label
+        >
+        <input
+          type="text"
+          name="dni"
+          id="dni"
+          maxlength="8"
+          class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none"
+          placeholder="Número de documento"
+          required
+          disabled
+        />
       </div>
     </fieldset>
     <fieldset>
-      <label for="name" class="text-xs md:text-sm font-bold">Nombres y Apellidos</label>
-      <input type="text" name="name" id="name" inputmode="text" minlength="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none" placeholder="Nombres y apellidos" required disabled>
+      <label for="name" class="text-xs md:text-sm font-bold"
+        >Nombres y Apellidos</label
+      >
+      <input
+        type="text"
+        name="name"
+        id="name"
+        inputmode="text"
+        minlength="4"
+        class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none"
+        placeholder="Nombres y apellidos"
+        required
+        disabled
+      />
     </fieldset>
     <fieldset class="grid grid-cols-2 gap-4">
       <div class="flex flex-col text-black">
-        <label for="departament" class="text-xs md:text-sm font-bold">Departamento</label>
+        <label for="departament" class="text-xs md:text-sm font-bold"
+          >Departamento</label
+        >
         <div class="grid grid-cols-1 text-black">
-          <select id="departament" name="departament" autocomplete="type-document-name" class="col-start-1 row-start-1 appearance-none w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none h-[40px]" required disabled>
+          <select
+            id="departament"
+            name="departament"
+            autocomplete="type-document-name"
+            class="col-start-1 row-start-1 appearance-none w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none h-[40px]"
+            required
+            disabled
+          >
             <option value="" selected>Departamento</option>
           </select>
-          <svg viewBox="0 0 16 16" fill="currentColor" data-slot="icon" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-900 sm:size-4 z-1">
-            <path d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+          <svg
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            data-slot="icon"
+            aria-hidden="true"
+            class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-900 sm:size-4 z-1"
+          >
+            <path
+              d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+              clip-rule="evenodd"
+              fill-rule="evenodd"></path>
           </svg>
         </div>
       </div>
       <div class="flex flex-col text-black">
-        <label for="province" class="text-xs md:text-sm font-bold">Provincia</label>
+        <label for="province" class="text-xs md:text-sm font-bold"
+          >Provincia</label
+        >
         <div class="grid grid-cols-1 text-black">
-          <select id="province" name="province" autocomplete="type-document-name" class="col-start-1 row-start-1 appearance-none w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none h-[40px]" required disabled>
+          <select
+            id="province"
+            name="province"
+            autocomplete="type-document-name"
+            class="col-start-1 row-start-1 appearance-none w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none h-[40px]"
+            required
+            disabled
+          >
             <option value="" selected>Provincia</option>
           </select>
-          <svg viewBox="0 0 16 16" fill="currentColor" data-slot="icon" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-900 sm:size-4 z-1">
-            <path d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+          <svg
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            data-slot="icon"
+            aria-hidden="true"
+            class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-900 sm:size-4 z-1"
+          >
+            <path
+              d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+              clip-rule="evenodd"
+              fill-rule="evenodd"></path>
           </svg>
         </div>
       </div>
     </fieldset>
     <fieldset>
-      <label for="phone" class="text-xs md:text-sm font-bold">Servicio asociado</label>
+      <label for="phone" class="text-xs md:text-sm font-bold"
+        >Servicio asociado</label
+      >
       <div class="grid grid-cols-1 text-black">
-        <select id="phone" name="phone" autocomplete="phone-name" class="col-start-1 row-start-1 appearance-none w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none h-[40px] disabled:text-gray-500" required disabled>
+        <select
+          id="phone"
+          name="phone"
+          autocomplete="phone-name"
+          class="col-start-1 row-start-1 appearance-none w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none h-[40px] disabled:text-gray-500"
+          required
+          disabled
+        >
           <option value="" selected>Selecciona tu servicio</option>
         </select>
-        <svg viewBox="0 0 16 16" fill="currentColor" data-slot="icon" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-900 sm:size-4 z-1">
-          <path d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
+        <svg
+          viewBox="0 0 16 16"
+          fill="currentColor"
+          data-slot="icon"
+          aria-hidden="true"
+          class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-900 sm:size-4 z-1"
+        >
+          <path
+            d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+            clip-rule="evenodd"
+            fill-rule="evenodd"></path>
         </svg>
       </div>
     </fieldset>
     <fieldset>
-      <label for="email" class="text-xs md:text-sm font-bold flex gap-1 items-center">
+      <label
+        for="email"
+        class="text-xs md:text-sm font-bold flex gap-1 items-center"
+      >
         Correo electrónico
-        <span class="cursor-pointer trigger relative block" data-tooltip="Recibirás la notificación de tu premio en este correo.">
+        <span
+          class="cursor-pointer trigger relative block"
+          data-tooltip="Recibirás la notificación de tu premio en este correo."
+        >
           <Fragment set:html={iconTooltip} />
         </span>
       </label>
-      <input type="email" name="email" id="email" inputmode="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none" placeholder="Ingrese correo electrónico" required disabled>
+      <input
+        type="email"
+        name="email"
+        id="email"
+        inputmode="email"
+        class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none"
+        placeholder="Ingrese correo electrónico"
+        required
+        disabled
+      />
       <div id="email-errors"></div>
     </fieldset>
     <fieldset class="flex flex-col gap-1.5">
       <div class="flex flex-wrap items-center space-x-2">
         <label class="flex items-center space-x-2">
-          <input type="checkbox" name="terms" id="terms" class="accent-claro" checked="" required/>
+          <input
+            type="checkbox"
+            name="terms"
+            id="terms"
+            class="accent-claro"
+            required
+          />
           <div class="text-xs md:text-sm 2xl:text-base text-gray-900">
             Acepto los
           </div>
         </label>
-        <strong class="text-xs md:text-sm 2xl:text-base text-gray-900 underline cursor-pointer openModalTratamiento">términos y condiciones</strong>
+        <strong
+          class="text-xs md:text-sm 2xl:text-base text-gray-900 underline cursor-pointer openModalTratamiento"
+          >términos y condiciones</strong
+        >
       </div>
       <div class="flex flex-wrap items-center space-x-2">
         <label class="flex items-center space-x-2">
-          <input type="checkbox" name="comunicacion" id="comunicacion" class="accent-claro" checked=""/>
+          <input
+            type="checkbox"
+            name="comunicacion"
+            id="comunicacion"
+            class="accent-claro"
+          />
           <div class="text-xs md:text-sm 2xl:text-base text-gray-900">
             Acepto recibir
           </div>
         </label>
-        <strong class="text-xs md:text-sm 2xl:text-base text-gray-900 underline cursor-pointer openModalPromociones">comunicación publicitaria de Claro.</strong>
+        <strong
+          class="text-xs md:text-sm 2xl:text-base text-gray-900 underline cursor-pointer openModalPromociones"
+          >comunicación publicitaria de Claro.</strong
+        >
       </div>
     </fieldset>
-    <Button id="btn-submit-form" data-next-step="3" type="submit" disabled href="https://www.claro.com.pe/personas/app/claro-musica/" classes="min-w-fit px-12 py-2.5 xl:py-3.5 border border-claro cursor-pointer bg-claro hover:bg-claro-dark text-white hover:text-white disabled:bg-gray-200 disabled:border-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed mx-auto" >Continuar</Button>
+    <Button
+      id="btn-submit-form"
+      data-next-step="3"
+      type="submit"
+      disabled
+      href="https://www.claro.com.pe/personas/app/claro-musica/"
+      classes="min-w-fit px-12 py-2.5 xl:py-3.5 border border-claro cursor-pointer bg-claro hover:bg-claro-dark text-white hover:text-white disabled:bg-gray-200 disabled:border-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed mx-auto"
+      >Continuar</Button
+    >
   </form>
   <div class="col-span-2 pt-3 xl:pt-0 xl:-mt-2">
-    <p class="text-[11px] text-white text-center xl:text-left leading-none mx-auto xl:mr-0 xl:ml-auto md:max-w-[500px] xl:max-w-[430px] 2xl:max-w-[520px] relative xl:right-20 2xl:right-32 2xl:px-0">No aplica para RUC 20. Vale hasta 15/01/2026. Conoce los términos y condiciones, detalle de los premios y stock aquí: <a href="https://claro.pe/ruletaganadora" class="underline linktoc20pe">claro.pe/ruletaganadora</a></p>
+    <p
+      class="text-[11px] text-white text-center xl:text-left leading-none mx-auto xl:mr-0 xl:ml-auto md:max-w-[500px] xl:max-w-[430px] 2xl:max-w-[520px] relative xl:right-20 2xl:right-32 2xl:px-0"
+    >
+      No aplica para RUC 20. Vale hasta 15/01/2026. Conoce los términos y
+      condiciones, detalle de los premios y stock aquí: <a
+        href="https://claro.pe/ruletaganadora"
+        class="underline linktoc20pe">claro.pe/ruletaganadora</a
+      >
+    </p>
   </div>
 </div>
 
+<style>
+  @media (max-width: 1599px) {
+    .pPremios {
+      max-width: 390px;
+      margin: 0 20px;
+    }
+  }
+</style>
+
 <script>
-  import JustValidate from 'just-validate';
-  import {autoSuggestEmail} from '@/utils/autosuggestEmail';
+  import JustValidate from "just-validate";
+  import { autoSuggestEmail } from "@/utils/autosuggestEmail";
   import icon_no_cumple from "@/assets/icons/icon_no_cumple.svg";
   import { showCustomModal } from "@/utils/modalHelper";
-  import {preCheck, registerUser, validUserEnabled, verifyCode, getDepartament, getProvince, deleteUserByDni} from '@/utils/endpoints';
-  import { userStore } from '@/store/userStore';
+  import {
+    preCheck,
+    registerUser,
+    validUserEnabled,
+    verifyCode,
+    getDepartament,
+    getProvince,
+    deleteUserByDni,
+  } from "@/utils/endpoints";
+  import { userStore } from "@/store/userStore";
   import { togglePreloadAnimation } from "@/utils/animations";
 
-  
-  document.addEventListener('DOMContentLoaded',async() => {
-    const form = document.querySelector('#form-registro') as HTMLFormElement;
-    const submitBtn = document.querySelector('#btn-submit-form') as HTMLButtonElement;
-    const fieldName = document.querySelector('#name') as HTMLInputElement;
-    const fieldEmail = document.querySelector('#email') as HTMLInputElement;
-    const fieldDni = document.querySelector('#dni') as HTMLInputElement;
-    const fieldPhone = document.querySelector('#phone') as HTMLSelectElement;
-    const fieldTypeDoc = document.querySelector('#typeDoc') as HTMLInputElement;
-    const fieldDepartament = document.querySelector('#departament') as HTMLSelectElement;
-    const fieldProvince = document.querySelector('#province') as HTMLSelectElement;
-  
-    const handleModal = (btnsOpenSelector, modalsSelector, closesSubSelector, closesBtnSelector) => {
+  document.addEventListener("DOMContentLoaded", async () => {
+    const form = document.querySelector("#form-registro") as HTMLFormElement;
+    const submitBtn = document.querySelector(
+      "#btn-submit-form"
+    ) as HTMLButtonElement;
+    const fieldName = document.querySelector("#name") as HTMLInputElement;
+    const fieldEmail = document.querySelector("#email") as HTMLInputElement;
+    const fieldDni = document.querySelector("#dni") as HTMLInputElement;
+    const fieldPhone = document.querySelector("#phone") as HTMLSelectElement;
+    const fieldTypeDoc = document.querySelector("#typeDoc") as HTMLInputElement;
+    const fieldDepartament = document.querySelector(
+      "#departament"
+    ) as HTMLSelectElement;
+    const fieldProvince = document.querySelector(
+      "#province"
+    ) as HTMLSelectElement;
+
+    const handleModal = (
+      btnsOpenSelector,
+      modalsSelector,
+      closesSubSelector,
+      closesBtnSelector
+    ) => {
       const modals = document.querySelectorAll(modalsSelector);
       const btnsOpen = document.querySelectorAll(btnsOpenSelector);
       const closesSub = document.querySelectorAll(closesSubSelector);
       const closesBtn = document.querySelectorAll(closesBtnSelector);
-  
+
       btnsOpen.forEach((btn, i) => {
         btn.onclick = () => {
-          modals[i].classList.add('active');
+          modals[i].classList.add("active");
           //console.log("CLICK");
           window.onclick = (event) => {
             if (event.target === modals[i]) {
-              modals.forEach(modal => modal.classList.remove('active'));
+              modals.forEach((modal) => modal.classList.remove("active"));
             }
           };
         };
       });
-  
-      closesSub.forEach(close => {
+
+      closesSub.forEach((close) => {
         close.onclick = () => {
-          modals.forEach(modal => modal.classList.remove('active'));
+          modals.forEach((modal) => modal.classList.remove("active"));
         };
       });
-  
-      closesBtn.forEach(close => {
+
+      closesBtn.forEach((close) => {
         close.onclick = () => {
-          modals.forEach(modal => modal.classList.remove('active'));
+          modals.forEach((modal) => modal.classList.remove("active"));
         };
       });
     };
-  
+
     // Restricciones de entrada en los campos
     const restrictInput = (selector, allowedRegex) => {
-      const element = document.querySelector(selector) as HTMLInputElement | null;
+      const element = document.querySelector(
+        selector
+      ) as HTMLInputElement | null;
       if (!element) return;
-  
+
       // Si ya existe un handler previo, lo removemos para no acumular listeners
       const anyElement = element as any;
       if (anyElement._restrictHandler) {
         element.removeEventListener("input", anyElement._restrictHandler);
       }
-  
+
       const handler = (event: Event) => {
         const input = event.target as HTMLInputElement;
         input.value = input.value.replace(allowedRegex, "");
       };
-  
+
       element.addEventListener("input", handler);
       anyElement._restrictHandler = handler;
     };
-  
+
     const errorFindUser = (message = "") => {
       togglePreloadAnimation(false);
       //console.log({message})
-      const messageDefault = `<p>Para participar debes realizar una recarga desde s/7 soles en Mi Claro App, activar una línea , renovar o migrar a Claro.</p>`
-      const messageShow = message === "Ya estás registrado y verificado." ? `<p>${message}</p>` : messageDefault;
+      const messageDefault = `<p>Para participar debes realizar una recarga desde s/7 soles en Mi Claro App, activar una línea , renovar o migrar a Claro.</p>`;
+      const messageShow =
+        message === "Ya estás registrado y verificado."
+          ? `<p>${message}</p>`
+          : messageDefault;
       showCustomModal({
         iconSrc: icon_no_cumple.src,
         title: "Lo sentimos, no puedes participar en estos momentos 👇",
@@ -198,7 +404,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
         },
       });
     };
-  
+
     const setValuesForm = (user) => {
       fieldName.value = user.fullName;
       fieldName.disabled = false;
@@ -208,8 +414,8 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
       fieldProvince.disabled = false;
       fieldPhone.innerHTML = `<option value="">Selecciona tu servicio</option>`;
       if (Array.isArray(user.services) && user.services.length > 0) {
-        user.services.forEach(({id, phone}) => {
-          const option = document.createElement('option');
+        user.services.forEach(({ id, phone }) => {
+          const option = document.createElement("option");
           option.value = id;
           option.textContent = phone;
           fieldPhone.appendChild(option);
@@ -219,19 +425,26 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
       fieldPhone.disabled = false;
       //submitBtn.disabled = false;
       if (validator) {
-        validator.revalidateField('#name');
-        validator.revalidateField('#email');
-        validator.revalidateField('#departament');
-        validator.revalidateField('#province');
-        validator.revalidateField('#phone');
-        validator.revalidateField('#dni');
-        validator.revalidateField('#typeDoc');
-        validator.revalidateField('#terms');
+        validator.revalidateField("#name");
+        validator.revalidateField("#email");
+        validator.revalidateField("#departament");
+        validator.revalidateField("#province");
+        validator.revalidateField("#phone");
+        validator.revalidateField("#dni");
+        validator.revalidateField("#typeDoc");
+        validator.revalidateField("#terms");
       }
-      
     };
-  
-    const createLocalStorageUser = (nameForm, emailForm, phoneForm, typeDocForm, dniForm, serviceForm, provinceForm) => {
+
+    const createLocalStorageUser = (
+      nameForm,
+      emailForm,
+      phoneForm,
+      typeDocForm,
+      dniForm,
+      serviceForm,
+      provinceForm
+    ) => {
       const user = {
         fullName: nameForm,
         email: emailForm,
@@ -239,28 +452,27 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
         typeDocument: typeDocForm,
         dni: dniForm,
         serviceId: serviceForm,
-        provinceId: provinceForm
-      }
-      localStorage.setItem('user', JSON.stringify(user));
-    }
-  
+        provinceId: provinceForm,
+      };
+      localStorage.setItem("user", JSON.stringify(user));
+    };
+
     const getLocalStorageUser = () => {
-      const user = localStorage.getItem('user');
+      const user = localStorage.getItem("user");
       return user ? JSON.parse(user) : null;
-    }
-  
+    };
+
     const getParameterByUrl = (param: string) => {
       const url = new URL(window.location.href);
       return url.searchParams.get(param);
-    }
-  
+    };
+
     const deleteParameterByUrl = (param: string) => {
       const url = new URL(window.location.href);
       url.searchParams.delete(param);
       window.history.replaceState(null, "", url);
-    }
-  
-  
+    };
+
     const debounce = (fn, delay = 600) => {
       let timeoutId: number | undefined;
       return (...args: any[]) => {
@@ -272,12 +484,11 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
         }, delay);
       };
     };
-    
-  
+
     const handlePreCheckByDni = async () => {
       if (!fieldDni || !fieldTypeDoc) return;
       if (fieldTypeDoc.value === "") {
-        fieldTypeDoc.dispatchEvent(new Event('change'));
+        fieldTypeDoc.dispatchEvent(new Event("change"));
         return;
       }
       const typeDocument = fieldTypeDoc.value;
@@ -286,13 +497,16 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
         if (dniValue.length !== 8) return;
       } else if (typeDocument === "CEX") {
         if (dniValue.length < 9) return;
-      } else if(typeDocument === "PASAPORTE"){
+      } else if (typeDocument === "PASAPORTE") {
         if (dniValue.length !== 9) return;
       }
       togglePreloadAnimation(true);
       try {
-        const {allowed, reason, user} = await preCheck(dniValue);
-        if ( (!allowed || !user) && reason !== "Ya estás registrado y verificado.") {
+        const { allowed, reason, user } = await preCheck(dniValue);
+        if (
+          (!allowed || !user) &&
+          reason !== "Ya estás registrado y verificado."
+        ) {
           errorFindUser(reason);
           return;
         }
@@ -300,22 +514,22 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
         //seteamos los datos del user en el store
         userStore.setState({ user });
       } catch (error) {
-        console.error('Error en preCheck desde DNI:', error);
-      }finally{
+        console.error("Error en preCheck desde DNI:", error);
+      } finally {
         togglePreloadAnimation(false);
       }
     };
-  
+
     if (fieldDni) {
       const debouncedPreCheck = debounce(handlePreCheckByDni, 600);
-      fieldDni.addEventListener('input', () => {
+      fieldDni.addEventListener("input", () => {
         debouncedPreCheck();
       });
     }
-  
+
     // Validación dinámica para el campo de documento
     let dniFieldRegistered = false;
-  
+
     const updateDocumentValidation = (typeDocument) => {
       if (dniFieldRegistered) {
         validator.removeField("#dni");
@@ -323,11 +537,22 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
       if (typeDocument === "DNI") {
         fieldDni.setAttribute("maxlength", "8");
         fieldDni.setAttribute("inputmode", "numeric");
-        
+
         validator.addField("#dni", [
-          { rule: "required", errorMessage: "*Ingresa el número de documento." },
-          { rule: "minLength", value: 8, errorMessage: "El DNI debe tener 8 dígitos." },
-          { rule: "maxLength", value: 8, errorMessage: "El DNI debe tener 8 dígitos." },
+          {
+            rule: "required",
+            errorMessage: "*Ingresa el número de documento.",
+          },
+          {
+            rule: "minLength",
+            value: 8,
+            errorMessage: "El DNI debe tener 8 dígitos.",
+          },
+          {
+            rule: "maxLength",
+            value: 8,
+            errorMessage: "El DNI debe tener 8 dígitos.",
+          },
           {
             validator: (value) => /^\d+$/.test(value),
             errorMessage: "Solo se permiten números.",
@@ -339,9 +564,20 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
         fieldDni.setAttribute("maxlength", "20");
         fieldDni.setAttribute("inputmode", "text");
         validator.addField("#dni", [
-          { rule: "required", errorMessage: "*Ingresa el número de documento." },
-          { rule: "minLength", value: 9, errorMessage: "El CEX debe tener mínimo 9 dígitos." },
-          { rule: "maxLength", value: 20, errorMessage: "El CEX debe tener máximo 20 dígitos." },
+          {
+            rule: "required",
+            errorMessage: "*Ingresa el número de documento.",
+          },
+          {
+            rule: "minLength",
+            value: 9,
+            errorMessage: "El CEX debe tener mínimo 9 dígitos.",
+          },
+          {
+            rule: "maxLength",
+            value: 20,
+            errorMessage: "El CEX debe tener máximo 20 dígitos.",
+          },
           {
             validator: (value) => /^[a-zA-Z0-9]+$/.test(value),
             errorMessage: "Solo se permiten caracteres alfanuméricos.",
@@ -353,9 +589,20 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
         fieldDni.setAttribute("maxlength", "9");
         fieldDni.setAttribute("inputmode", "numeric");
         validator.addField("#dni", [
-          { rule: "required", errorMessage: "*Ingresa el número de documento." },
-          { rule: "minLength", value: 9, errorMessage: "El pasaporte debe de tener 9 dígitos." },
-          { rule: "maxLength", value: 9, errorMessage: "El pasaporte debe de tener 9 dígitos." },
+          {
+            rule: "required",
+            errorMessage: "*Ingresa el número de documento.",
+          },
+          {
+            rule: "minLength",
+            value: 9,
+            errorMessage: "El pasaporte debe de tener 9 dígitos.",
+          },
+          {
+            rule: "maxLength",
+            value: 9,
+            errorMessage: "El pasaporte debe de tener 9 dígitos.",
+          },
           {
             validator: (value) => /^[0-9]+$/.test(value),
             errorMessage: "Solo se permiten caracteres numéricos.",
@@ -363,12 +610,12 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
         ]);
         dniFieldRegistered = true;
         restrictInput("#dni", /[^0-9]/g); // Solo permite numéricos
-      } 
+      }
     };
-  
+
     if (fieldTypeDoc) {
-      fieldTypeDoc.addEventListener('change', () => {
-        if(fieldTypeDoc.value === ""){
+      fieldTypeDoc.addEventListener("change", () => {
+        if (fieldTypeDoc.value === "") {
           fieldDni.disabled = true;
           return;
         }
@@ -376,26 +623,26 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
         updateDocumentValidation(fieldTypeDoc.value);
       });
     }
-  
-    if(fieldPhone){
+
+    if (fieldPhone) {
       fieldPhone.addEventListener("change", () => {
         if (validator) {
-          validator.revalidateField('#phone');
-          validator.revalidateField('#name');
-          validator.revalidateField('#email');
-          validator.revalidateField('#dni');
-          validator.revalidateField('#typeDoc');
+          validator.revalidateField("#phone");
+          validator.revalidateField("#name");
+          validator.revalidateField("#email");
+          validator.revalidateField("#dni");
+          validator.revalidateField("#typeDoc");
         }
       });
     }
-  
+
     if (fieldDepartament) {
       const getResponseDepartment = await getDepartament();
       if (getResponseDepartment.success) {
         const departments = getResponseDepartment.data;
         fieldDepartament.innerHTML = `<option value="">Departamento</option>`;
-        departments.forEach(({id, name, isActive}) => {
-          const option = document.createElement('option');
+        departments.forEach(({ id, name, isActive }) => {
+          const option = document.createElement("option");
           option.value = id;
           option.textContent = name;
           if (isActive) {
@@ -404,15 +651,15 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
         });
       }
     }
-  
-    fieldDepartament.addEventListener('change', async () => {
+
+    fieldDepartament.addEventListener("change", async () => {
       const departmentId = fieldDepartament.value;
       const getResponseProvince = await getProvince(departmentId);
       if (getResponseProvince.success) {
         const provinces = getResponseProvince.data;
         fieldProvince.innerHTML = `<option value="">Provincia</option>`;
-        provinces.forEach(({id, name, isActive}) => {
-          const option = document.createElement('option');
+        provinces.forEach(({ id, name, isActive }) => {
+          const option = document.createElement("option");
           option.value = id;
           option.textContent = name;
           if (isActive) {
@@ -421,110 +668,139 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
         });
       }
       if (validator) {
-        validator.revalidateField('#province');
+        validator.revalidateField("#province");
       }
     });
-  
-  
-    const validator = new JustValidate('#form-registro', {
-      errorFieldCssClass: 'border-red-500',
-      errorLabelCssClass: 'text-red-500 text-xs mt-1',
-      successFieldCssClass: 'border-green-500',
+
+    const validator = new JustValidate("#form-registro", {
+      errorFieldCssClass: "border-red-500",
+      errorLabelCssClass: "text-red-500 text-xs mt-1",
+      successFieldCssClass: "border-green-500",
       validateBeforeSubmitting: true,
     });
-  
+
     validator
-      .addField('#name', [
+      .addField("#name", [
         { rule: "required", errorMessage: "*Ingresa tus nombres y apellidos." },
-          { rule: "minLength", value: 3, errorMessage: "*Ingresa como mínimo 3 caracteres." },
-          { rule: "maxLength", value: 60, errorMessage: "El nombre no puede superar los 60 caracteres." },
-          {
-            validator: (value) => /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value),
-            errorMessage: "Solo se permiten letras.",
-          }
-      ])
-      .addField('#typeDoc', [
         {
-          rule: 'required',
-          errorMessage: '*Selecciona el tipo de documento.',
-        }
-      ])
-      .addField('#departament', [
+          rule: "minLength",
+          value: 3,
+          errorMessage: "*Ingresa como mínimo 3 caracteres.",
+        },
         {
-          rule: 'required',
-          errorMessage: '*Selecciona el departamento.',
-        }
-      ])
-      .addField('#province', [
+          rule: "maxLength",
+          value: 60,
+          errorMessage: "El nombre no puede superar los 60 caracteres.",
+        },
         {
-          rule: 'required',
-          errorMessage: '*Selecciona la provincia.',
-        }
+          validator: (value) => /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value),
+          errorMessage: "Solo se permiten letras.",
+        },
       ])
-      .addField('#phone', [
+      .addField("#typeDoc", [
+        {
+          rule: "required",
+          errorMessage: "*Selecciona el tipo de documento.",
+        },
+      ])
+      .addField("#departament", [
+        {
+          rule: "required",
+          errorMessage: "*Selecciona el departamento.",
+        },
+      ])
+      .addField("#province", [
+        {
+          rule: "required",
+          errorMessage: "*Selecciona la provincia.",
+        },
+      ])
+      .addField("#phone", [
         {
           validator: () => {
             if (!fieldPhone) return true;
             // Si está deshabilitado, no lo consideramos para la validación
             if (fieldPhone.disabled) return true;
             // Cuando está habilitado, debe tener un valor distinto de ""
-            return fieldPhone.value !== '';
+            return fieldPhone.value !== "";
           },
-          errorMessage: '*Selecciona tu servicio asociado.',
+          errorMessage: "*Selecciona tu servicio asociado.",
         },
       ])
-      .addField('#email', [
+      .addField(
+        "#email",
+        [
+          {
+            rule: "email",
+            errorMessage: "*Ingrese un correo electrónico válido.",
+          },
+          {
+            rule: "required",
+            errorMessage: "El correo electrónico es obligatorio",
+          },
+        ],
         {
-          rule: 'email',
-          errorMessage: '*Ingrese un correo electrónico válido.',
-        },
-        {
-          rule: 'required',
-          errorMessage: 'El correo electrónico es obligatorio',
+          errorsContainer: "#email-errors",
         }
-      ], {
-        errorsContainer: '#email-errors',
-      })
-      .addField('#terms', [
+      )
+      .addField("#terms", [
         {
-          rule: 'required',
-          errorMessage: '*Acepta los términos y condiciones para participar.',
+          rule: "required",
+          errorMessage: "*Acepta los términos y condiciones para participar.",
         },
       ])
-      .onValidate(({ isValid, isSubmitted, fields, errors, failedRules, failedRulesCount }) => {     
-        if (isValid) {
-          submitBtn.disabled = !isValid;
-        }else{
-          submitBtn.disabled = !isValid;
+      .onValidate(
+        ({
+          isValid,
+          isSubmitted,
+          fields,
+          errors,
+          failedRules,
+          failedRulesCount,
+        }) => {
+          if (isValid) {
+            submitBtn.disabled = !isValid;
+          } else {
+            submitBtn.disabled = !isValid;
+          }
         }
-      })
-      .addField('#comunicacion', [
+      )
+      .addField("#comunicacion", [
         {
-          rule: 'required',
-          errorMessage: '*Acepta recibir comunicación publicitaria de Claro.',
+          rule: "required",
+          errorMessage: "*Acepta recibir comunicación publicitaria de Claro.",
         },
       ])
       .onSuccess(async (event) => {
         event.preventDefault();
         const dataForm = new FormData(form);
-        const fieldPhoneIDForm = dataForm.get('phone') as string;
-        const fieldPhoneNameForm = fieldPhone.options[fieldPhone.selectedIndex].text;
-        const fieldEmailForm = dataForm.get('email') as string;
-        const fieldNameForm = dataForm.get('name') as string
-        const fielDNIForm = dataForm.get('dni') as string;
-        const fieldProvinceForm = dataForm.get('province') as string;
+        const fieldPhoneIDForm = dataForm.get("phone") as string;
+        const fieldPhoneNameForm =
+          fieldPhone.options[fieldPhone.selectedIndex].text;
+        const fieldEmailForm = dataForm.get("email") as string;
+        const fieldNameForm = dataForm.get("name") as string;
+        const fielDNIForm = dataForm.get("dni") as string;
+        const fieldProvinceForm = dataForm.get("province") as string;
         const nextStep = Number(submitBtn.dataset.nextStep);
         submitBtn.disabled = true;
         togglePreloadAnimation(true);
-  
+
         try {
           const { user } = userStore.getState();
-          userStore.setState({ user: { ...user, serviceId: fieldPhoneIDForm, provinceId: fieldProvinceForm } });
+          userStore.setState({
+            user: {
+              ...user,
+              serviceId: fieldPhoneIDForm,
+              provinceId: fieldProvinceForm,
+            },
+          });
           if (!user) {
-            throw new Error('User no está definido en el store antes de registerUser');
+            throw new Error(
+              "User no está definido en el store antes de registerUser"
+            );
           }
-  
-          const {email, docType, docNumber } = user;
+
+          const { email, docType, docNumber } = user;
           const registerUserResponse = await registerUser(
             fieldNameForm,
             fieldEmailForm,
@@ -535,24 +811,43 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
             fieldProvinceForm
           );
           //console.log('registerUserResponse:', registerUserResponse);
-  
+
           if (registerUserResponse?.success) {
-            if (registerUserResponse?.message === 'Ya estás registrado y verificado. Puedes jugar ahora.') {
-              const userEnabledResponse = await validUserEnabled(fieldPhoneIDForm);
-              const { canSpin, remainingPlays, playsAllowed, playsUsed, reason } = userEnabledResponse || {};
+            if (
+              registerUserResponse?.message ===
+              "Ya estás registrado y verificado. Puedes jugar ahora."
+            ) {
+              const userEnabledResponse =
+                await validUserEnabled(fieldPhoneIDForm);
+              const {
+                canSpin,
+                remainingPlays,
+                playsAllowed,
+                playsUsed,
+                reason,
+              } = userEnabledResponse || {};
               if (canSpin) {
                 //console.log('Usuario puede jugar, iniciando ruleta');
                 const eventInitRuleta = new CustomEvent("ruleta:enter");
                 document.dispatchEvent(eventInitRuleta);
-                createLocalStorageUser(fieldNameForm, fieldEmailForm, fieldPhoneNameForm, docType, fielDNIForm, fieldPhoneIDForm, fieldProvinceForm);
+                createLocalStorageUser(
+                  fieldNameForm,
+                  fieldEmailForm,
+                  fieldPhoneNameForm,
+                  docType,
+                  fielDNIForm,
+                  fieldPhoneIDForm,
+                  fieldProvinceForm
+                );
                 //Animate scrollTop
                 window.scrollTo({
                   top: 0,
-                  behavior: "smooth"
+                  behavior: "smooth",
                 });
-              }else{
+              } else {
                 showCustomModal({
-                  title: "Lo sentimos, no puedes participar en estos momentos 👇",
+                  title:
+                    "Lo sentimos, no puedes participar en estos momentos 👇",
                   html: `<p>${reason}</p>`,
                   iconSrc: icon_no_cumple.src,
                   confirmButtonText: "Entendido",
@@ -563,12 +858,20 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
                 });
               }
               return;
-            }else{
+            } else {
               // if ((window as any).bannerStepTransition) {
               //   const currentStep = (window as any).bannerStepTransition.getCurrentStep();
               //   (window as any).bannerStepTransition.nextToStep(currentStep, nextStep);
               // }
-              createLocalStorageUser(fieldNameForm, fieldEmailForm, fieldPhoneNameForm, docType, fielDNIForm, fieldPhoneIDForm, fieldProvinceForm);
+              createLocalStorageUser(
+                fieldNameForm,
+                fieldEmailForm,
+                fieldPhoneNameForm,
+                docType,
+                fielDNIForm,
+                fieldPhoneIDForm,
+                fieldProvinceForm
+              );
               togglePreloadAnimation(false);
               showCustomModal({
                 title: "¡Ya casi terminamos!",
@@ -584,15 +887,14 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
           }
           submitBtn.disabled = false;
           resetForm();
-  
         } catch (error) {
-          console.error('Error en onSuccess Paso02:', error);
+          console.error("Error en onSuccess Paso02:", error);
           togglePreloadAnimation(false);
           showCustomModal({
             iconSrc: icon_no_cumple.src,
-            title: 'Error en la validación',
-            html: '',
-            confirmButtonText: 'Entendido',
+            title: "Error en la validación",
+            html: "",
+            confirmButtonText: "Entendido",
             showCloseButton: true,
             onConfirm: () => {
               resetForm();
@@ -600,7 +902,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
           });
         }
       });
-  
+
     //Crea una funcion para restear el formulario y poder usarlo en onSuccess
     const resetForm = () => {
       form.reset();
@@ -611,19 +913,19 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
       fieldDni.disabled = true;
       submitBtn.disabled = true;
     };
-    
+
     // #name solo se permiten letras
     restrictInput("#name", /[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g);
     //#email solo se permiten caracteres validos
     restrictInput("#email", /[^a-zA-Z0-9@.]/g);
-  
+
     //Agrega una función debounde para el input fieldDNi para cuando el usuario termine de escribir llamar al api preCheck
-  
+
     // Inicializar autoSuggestEmail para sugerencias de correo
     new autoSuggestEmail(fieldEmail, {
       domains: [
         "gmail.com",
-        "hotmail.com", 
+        "hotmail.com",
         "yahoo.com",
         "icloud.com",
         "outlook.com",
@@ -631,75 +933,87 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
       priority: [
         "gmail.com",
         "hotmail.com",
-        "outlook.com", 
+        "outlook.com",
         "icloud.com",
         "yahoo.com",
       ],
     });
-  
+
     handleModal(
-      '.openModalTratamiento',
-      '#modaltratamiento',
-      '#modaltratamiento .section__modals__modal-close',
-      '#modaltratamiento .section__modals__modal-footer-close'
+      ".openModalTratamiento",
+      "#modaltratamiento",
+      "#modaltratamiento .section__modals__modal-close",
+      "#modaltratamiento .section__modals__modal-footer-close"
     );
-  
+
     handleModal(
-      '.openModalPromociones',
-      '#modalpromociones',
-      '#modalpromociones .section__modals__modal-close',
-      '#modalpromociones .section__modals__modal-footer-close'
+      ".openModalPromociones",
+      "#modalpromociones",
+      "#modalpromociones .section__modals__modal-close",
+      "#modalpromociones .section__modals__modal-footer-close"
     );
-  
-  
-    const triggers = document.querySelectorAll('.trigger') as NodeListOf<HTMLElement>;
-  
+
+    const triggers = document.querySelectorAll(
+      ".trigger"
+    ) as NodeListOf<HTMLElement>;
+
     const openTooltip = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      const tooltip = target.querySelector('[role=tooltip]') as HTMLElement;
-      tooltip.classList.add('active');
+      const tooltip = target.querySelector("[role=tooltip]") as HTMLElement;
+      tooltip.classList.add("active");
     };
-  
+
     const closeTooltip = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      const tooltip = target.querySelector('[role=tooltip]') as HTMLElement;
-      tooltip.classList.remove('active');
+      const tooltip = target.querySelector("[role=tooltip]") as HTMLElement;
+      tooltip.classList.remove("active");
     };
-  
+
     if (triggers) {
       triggers.forEach((trigger) => {
-        let tooltip = document.createElement('span');
-  
-        tooltip.setAttribute('role', 'tooltip');
-        tooltip.setAttribute('inert', 'true');
+        let tooltip = document.createElement("span");
+
+        tooltip.setAttribute("role", "tooltip");
+        tooltip.setAttribute("inert", "true");
         tooltip.textContent = trigger.dataset.tooltip;
-  
+
         trigger.appendChild(tooltip);
-  
-        trigger.addEventListener('mouseenter', openTooltip);
-        trigger.addEventListener('mouseleave', closeTooltip);
+
+        trigger.addEventListener("mouseenter", openTooltip);
+        trigger.addEventListener("mouseleave", closeTooltip);
       });
     }
-    const getParameter = getParameterByUrl('code');
+    const getParameter = getParameterByUrl("code");
     const userLocal = getLocalStorageUser();
     //console.log(getParameter);
     if (getParameter && userLocal) {
       togglePreloadAnimation(true);
       try {
-        const verifyCodeResponse = await verifyCode(userLocal.email, getParameter, userLocal.dni);
+        const verifyCodeResponse = await verifyCode(
+          userLocal.email,
+          getParameter,
+          userLocal.dni
+        );
         const { verified, message, status } = verifyCodeResponse || {};
         const verifyMockup = true;
         if (verified) {
           userStore.setState({ user: { ...userLocal, verified: true } });
-          const userEnabledResponse = await validUserEnabled(userLocal.serviceId);
-          const { canSpin, remainingPlays, playsAllowed, playsUsed, reason } = userEnabledResponse || {};
+          const userEnabledResponse = await validUserEnabled(
+            userLocal.serviceId
+          );
+          const { canSpin, remainingPlays, playsAllowed, playsUsed, reason } =
+            userEnabledResponse || {};
           const canSpinMockup = true;
           if (canSpin) {
-            document.querySelectorAll(".section_hidden").forEach(section => section.classList.add("hidden"));
-            document.querySelector(".ruletaGanadora").classList.remove("hidden");
+            document
+              .querySelectorAll(".section_hidden")
+              .forEach((section) => section.classList.add("hidden"));
+            document
+              .querySelector(".ruletaGanadora")
+              .classList.remove("hidden");
             const eventInitRuleta = new CustomEvent("ruleta:enter");
             document.dispatchEvent(eventInitRuleta);
-          }else{
+          } else {
             showCustomModal({
               title: "Lo sentimos, no puedes participar en estos momentos 👇",
               html: `<p>${reason}</p>`,
@@ -724,48 +1038,60 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw"
           });
         }
       } catch (error) {
-        console.error('Error en verifyCode:', error);
+        console.error("Error en verifyCode:", error);
         showCustomModal({
           title: "Error en la validación",
-          html: '',
+          html: "",
           iconSrc: icon_no_cumple.src,
-          confirmButtonText: 'Entendido',
+          confirmButtonText: "Entendido",
           showCloseButton: true,
           onConfirm: () => {
             resetForm();
           },
         });
-      }finally{
-        deleteParameterByUrl('code');
+      } finally {
+        deleteParameterByUrl("code");
         togglePreloadAnimation(false);
       }
     }
 
-    const getDniByParameter = getParameterByUrl('dnihavas');
+    const getDniByParameter = getParameterByUrl("dnihavas");
     if (getDniByParameter) {
       try {
-        const deleteUserByDniResponse = await deleteUserByDni(getDniByParameter);
+        const deleteUserByDniResponse =
+          await deleteUserByDni(getDniByParameter);
         console.log(deleteUserByDniResponse);
         alert("DNI eliminado correctamente");
-        deleteParameterByUrl('dnihavas');
+        deleteParameterByUrl("dnihavas");
       } catch (error) {
         alert("Error al eliminar el DNI");
       }
     }
 
-    const linkToC20pe = document.querySelector(".linktoc20pe") as HTMLAnchorElement;
+    const linkToC20pe = document.querySelector(
+      ".linktoc20pe"
+    ) as HTMLAnchorElement;
     linkToC20pe.addEventListener("click", (e) => {
       e.preventDefault();
       const c20peElement = document.querySelector(".c20pe") as HTMLElement;
       if (c20peElement) {
         const yOffset = -80;
-        const y = c20peElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        const y =
+          c20peElement.getBoundingClientRect().top +
+          window.pageYOffset +
+          yOffset;
         window.scrollTo({
           top: y,
-          behavior: "smooth"
+          behavior: "smooth",
         });
-      }
-    })
-  })
+        setTimeout(() => {
+          const actBtn = c20peElement.querySelector(
+            ".actBtn"
+          ) as HTMLElement | null;
 
+          actBtn?.click();
+        }, 600);
+      }
+    });
+  });
 </script>
