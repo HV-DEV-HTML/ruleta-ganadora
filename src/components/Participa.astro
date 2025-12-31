@@ -3,6 +3,7 @@ import card_01 from "@/assets/images/card_01.webp";
 import card_01_postpago from "@/assets/images/card_01_postpago.webp";
 import card_02 from "@/assets/images/card_02.webp";
 import card_03 from "@/assets/images/card_03.webp";
+import card_04 from "@/assets/images/card_04.webp";
 import CardSlider from "./CardSlider.astro";
 
 const prepagoCards = [
@@ -29,28 +30,34 @@ const prepagoCards = [
 
 const postpagoCards = [
   {
-    image: card_02.src,
+    image: card_04.src,
     alt: "Paso 1 Postpago",
     step: 1,
     title:
-      "Realiza una de estas transacciones clic <span class='linkToC20pe2'>aquí</span>",
+      "Realiza una de estas <br><span class='btnOpenModal'>transacciones</span>",
   },
   {
-    image: card_03.src,
+    image: card_02.src,
     alt: "Paso 2 Postpago",
     step: 2,
     title: "Ingresa tus datos y valida tu servicio Claro.",
   },
   {
-    image: card_01_postpago.src,
+    image: card_03.src,
     alt: "Paso 3 Postpago",
     step: 3,
     title: "Gira la ruleta y participa por grandes premios.",
   },
+  {
+    image: card_01_postpago.src,
+    alt: "Paso 4 Postpago",
+    step: 4,
+    title: "Te llegará un correo de confirmación del premio ganado",
+  },
 ];
 ---
 
-<section class="relative pt-60 lg:pt-30 xl:pt-58 bg-transparent text-white">
+<section class="relative bg-transparent text-white secparticipa">
   <div class="container">
     <h2 class="text-center font-amx-bold text-3xl xl:text-4xl pb-6 md:pb-8">
       ¡Participar es muy fácil!
@@ -83,6 +90,210 @@ const postpagoCards = [
     </div>
   </div>
 </section>
+
+<div class="modalTransacciones">
+  <div class="container">
+    <div class="content">
+      <div class="close">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="22"
+          height="22"
+          viewBox="0 0 22 22"
+          fill="none"
+        >
+          <path
+            d="M0.707153 0.707031L20.7072 20.707"
+            stroke="black"
+            stroke-width="2"></path>
+          <path
+            d="M20.7072 0.707031L0.707153 20.707"
+            stroke="black"
+            stroke-width="2"></path>
+        </svg>
+      </div>
+      <h3>Transacciones</h3>
+      <div class="ptext">
+        <div class="columns">
+          <div class="part1">
+            <p><b>Cliente Prepago</b></p>
+            <ul>
+              <li>Recargar, aceptar y activar un CTR desde S/10</li>
+              <li>Realizar un <b>alta</b>, porta o renovación.</li>
+              <li>Comprar paquete desde S/10</li>
+            </ul>
+          </div>
+          <div class="part2">
+            <p><b>Cliente Postpago</b></p>
+            <ul>
+              <li>Comprar paquetes desde S/10</li>
+              <li>Realizar un <b>alta</b>, porta o renovación</li>
+              <li>Recargar desde S/10</li>
+            </ul>
+          </div>
+        </div>
+        <div class="part3">
+          <p><b>Cliente Fija</b></p>
+          <ul>
+            <li>
+              Realizar un <b>alta</b> en 1, 2 y/o 3 play que incluyan el servicio
+              de Internet
+            </li>
+            <li>
+              Realizar una <b>actualización de tecnología</b> de internet (HFC a FTTH)
+            </li>
+          </ul>
+        </div>
+        <button>Entendido</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .secparticipa {
+    padding-top: 234px !important;
+  }
+  @media (max-width: 1599px) {
+    .secparticipa {
+      padding-top: 384px !important;
+    }
+  }
+  @media (max-width: 1279px) {
+    .secparticipa {
+      padding-top: 312px !important;
+    }
+  }
+  @media (max-width: 1023px) {
+    .secparticipa {
+      padding-top: 371px !important;
+    }
+  }
+  @media (max-width: 500px) {
+    .secparticipa {
+      padding-top: 410px !important;
+    }
+  }
+  .modalTransacciones {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    display: none;
+  }
+  .modalTransacciones .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  .modalTransacciones .content {
+    background-color: #fff;
+    border-radius: 30px;
+    max-width: 784px;
+    padding: 60px 60px 40px 60px;
+    position: relative;
+  }
+  .modalTransacciones .content .close {
+    position: absolute;
+    top: 27px;
+    right: 30px;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  .modalTransacciones .content .close svg {
+    width: 20px;
+    height: 20px;
+  }
+  .modalTransacciones .content h3 {
+    color: #000;
+    text-align: center;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+  .modalTransacciones .content .ptext button {
+    color: #fff;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    width: 150px;
+    height: 40px;
+    background: #da291c;
+    border-radius: 25px;
+    margin: 0 auto;
+    margin-top: 20px;
+    display: block;
+    cursor: pointer;
+  }
+  .modalTransacciones .content .ptext {
+    margin-top: 20px;
+  }
+
+  .modalTransacciones .content .ptext ul li {
+    color: #000;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 25px;
+    list-style: disc;
+  }
+
+  .modalTransacciones .content .ptext p,
+  .modalTransacciones .content .ptext ul li b {
+    color: #000;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+
+  .modalTransacciones .content .ptext ul {
+    margin-left: 25px;
+    margin-top: 7px;
+  }
+
+  .modalTransacciones .content .ptext .columns {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 500px) {
+    .modalTransacciones .content {
+      padding: 30px 20px 20px 20px;
+    }
+    .modalTransacciones .content .ptext .columns {
+      flex-direction: column;
+      gap: 15px;
+    }
+    .modalTransacciones .content h3 {
+      font-size: 24px;
+    }
+    .modalTransacciones .content .ptext p,
+    .modalTransacciones .content .ptext ul li,
+    .modalTransacciones .content .ptext ul li b {
+      font-size: 16px;
+    }
+    .modalTransacciones .content .close {
+      top: 20px;
+      right: 20px;
+    }
+    .modalTransacciones .content .close svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+</style>
 
 <script>
   const tabButtons = document.querySelectorAll(".tab-btn");
@@ -121,5 +332,40 @@ const postpagoCards = [
         }
       });
     });
+  });
+</script>
+
+<script>
+  const modal = document.querySelector(".modalTransacciones");
+  const body = document.body;
+
+  // Abrir modal (delegación de eventos)
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest(".btnOpenModal");
+    if (!btn) return;
+
+    e.preventDefault();
+
+    // 🔴 Cerrar cualquier SweetAlert abierto
+    document.querySelectorAll(".swal2-close").forEach((closeBtn) => {
+      closeBtn.click();
+    });
+
+    modal.classList.add("active");
+    modal.style.display = "flex";
+
+    // 🔒 Bloquear scroll
+    body.classList.add("scrollHidden");
+  });
+
+  // Cerrar modal (X o botón "Entendido")
+  modal.addEventListener("click", (e) => {
+    if (e.target.closest(".close") || e.target.tagName === "BUTTON") {
+      modal.classList.remove("active");
+      modal.style.display = "none";
+
+      // 🔓 Restaurar scroll
+      body.classList.remove("scrollHidden");
+    }
   });
 </script>

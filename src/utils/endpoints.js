@@ -1,7 +1,7 @@
 const URL_API = 'https://api_ruleta.claromarketingcloud.pe/api'
 
 
-export async function getDepartament(){
+export async function getDepartament() {
   try {
     const response = await fetch(`${URL_API}/Provinces/departments`, {
       method: 'GET',
@@ -16,14 +16,14 @@ export async function getDepartament(){
     }
 
     const data = await response.json();
-    return data;    
+    return data;
   } catch (error) {
     console.error('Error en getDepartament:', error);
     throw error;
   }
 }
 
-export async function getProvince(departmentId){
+export async function getProvince(departmentId) {
   try {
     const response = await fetch(`${URL_API}/Provinces/departments/${departmentId}/provinces`, {
       method: 'GET',
@@ -38,14 +38,14 @@ export async function getProvince(departmentId){
     }
 
     const data = await response.json();
-    return data;    
+    return data;
   } catch (error) {
     console.error('Error en getProvince:', error);
     throw error;
   }
 }
 
-export async function preCheck(phone){
+export async function preCheck(phone) {
   try {
     const response = await fetch(`${URL_API}/Auth/precheck`, {
       method: 'POST',
@@ -53,7 +53,7 @@ export async function preCheck(phone){
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        "docNumber" : phone
+        "docNumber": phone
       })
     });
 
@@ -70,39 +70,56 @@ export async function preCheck(phone){
   }
 }
 
-export async function registerUser(name, email, phone, serviceId, docType, docNumber, provinceId){
+export async function registerUser({
+  name,
+  emailConfirm,
+  serviceId,
+  docType,
+  docNumber,
+  provinceId,
+  telefono = ""
+}) {
   try {
-   const response = await fetch(`${URL_API}/Auth/register`, {
-      method: 'POST',
+    const bodyData = {
+      name,
+      email: emailConfirm, // email final
+      serviceId,
+      telefono: telefono || "", // siempre string
+      docType,
+      docNumber,
+      provinceId
+    };
+
+    console.log("=== DATOS QUE SE ENVIAN DESDE registerUser ===");
+    console.log("URL:", `${URL_API}/Auth/register`);
+    console.log("Body que se enviará:", bodyData);
+    console.log("JSON que se enviará:", JSON.stringify(bodyData));
+    console.log("==============================================");
+
+    const response = await fetch(`${URL_API}/Auth/register`, {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify({
-        name,
-        email,
-        phone,
-        serviceId,
-        docType,
-        docNumber,
-        provinceId
-      })
+      body: JSON.stringify(bodyData)
     });
 
     if (!response.ok) {
-      const errorBody = await response.text().catch(() => '');
+      const errorBody = await response.text().catch(() => "");
       throw new Error(`Error registerUser (${response.status}): ${errorBody}`);
     }
 
-    const data = await response.json();
-    return data;    
-    
+    return await response.json();
+
   } catch (error) {
-    console.error('Error en registerUser:', error);
+    console.error("Error en registerUser:", error);
     throw error;
   }
 }
 
-export async function verifyCode(email, code, docNumber){
+
+
+export async function verifyCode(email, code, docNumber) {
   try {
     const response = await fetch(`${URL_API}/Auth/verify`, {
       method: 'POST',
@@ -130,19 +147,19 @@ export async function verifyCode(email, code, docNumber){
       throw new Error(`Error verifyCode (${response.status}): ${errorBody}`);
     }
 
-    return data;    
-    
+    return data;
+
   } catch (error) {
     console.error('Error en verifyCode:', error);
     throw error;
   }
 }
 
-export async function getListProducts(provinceId){
+export async function getListProducts(provinceId) {
   try {
     const response = await fetch(`${URL_API}/Provinces/${provinceId}/allowed-prize-types`, {
       method: 'GET',
-      credentials: 'include', 
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json'
       }
@@ -154,19 +171,19 @@ export async function getListProducts(provinceId){
     }
 
     const data = await response.json();
-    return data;    
-    
+    return data;
+
   } catch (error) {
     console.error('Error en getListProducts:', error);
     throw error;
   }
 }
 
-export async function validUserEnabled(serviceId){
+export async function validUserEnabled(serviceId) {
   try {
     const response = await fetch(`${URL_API}/Spin/eligibility?serviceId=${serviceId}`, {
       method: 'GET',
-      credentials: 'include', 
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json'
       }
@@ -178,17 +195,17 @@ export async function validUserEnabled(serviceId){
     }
 
     const data = await response.json();
-    return data;    
-    
+    return data;
+
   } catch (error) {
     console.error('Error en validUserEnabled:', error);
     throw error;
   }
 }
 
-export async function spinSaveResult(serviceId, prizeTypeId){
+export async function spinSaveResult(serviceId, prizeTypeId) {
   try {
-   const response = await fetch(`${URL_API}/Spin/execute-by-type`, {
+    const response = await fetch(`${URL_API}/Spin/execute-by-type`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -206,8 +223,8 @@ export async function spinSaveResult(serviceId, prizeTypeId){
     }
 
     const data = await response.json();
-    return data;    
-    
+    return data;
+
   } catch (error) {
     console.error('Error en spinSaveResult:', error);
     throw error;
@@ -215,7 +232,7 @@ export async function spinSaveResult(serviceId, prizeTypeId){
 }
 
 
-export async function deleteUserByDni(docNumber){
+export async function deleteUserByDni(docNumber) {
   try {
     const response = await fetch(`${URL_API}/auth/cleanup-by-dni`, {
       method: 'POST',
@@ -232,7 +249,7 @@ export async function deleteUserByDni(docNumber){
     }
     const data = await response.json();
     return data;
-    
+
   } catch (error) {
     console.error('Error en deleteUserByDni:', error);
     throw error;

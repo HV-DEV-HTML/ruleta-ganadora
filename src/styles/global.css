@@ -50,9 +50,30 @@
   --swiper-pagination-color: #da291c;
 }
 
-span.linkToC20pe2 {
+span.linkToC20pe2,
+.btnOpenModal,
+.btnOpenModal2 {
   text-decoration: underline;
   cursor: pointer;
+  color: #7cccd0;
+}
+.mensajeModal {
+  margin-top: 5px;
+}
+.mensajeModal b {
+  font-weight: 700;
+}
+.mensajeModal b span {
+  color: #011eff;
+}
+.mensajeModal strong {
+  font-weight: 400;
+  font-size: 15px;
+  color: #787878;
+}
+.swal2-html-container .btnOpenModal,
+.swal2-html-container .btnOpenModal2 {
+  color: #000;
 }
 .swiperPremios {
   & .swiper-pagination-bullet {
@@ -85,6 +106,16 @@ input.border-green-500,
 select.border-green-500,
 textarea.border-green-500 {
   border-color: #10b981 !important;
+}
+
+.btnOpenModal,
+.btnOpenModal2 {
+  text-decoration: underline !important;
+  cursor: pointer;
+}
+
+.modalTransacciones.active {
+  display: block !important;
 }
 
 .just-validate-error-label {
@@ -253,6 +284,11 @@ textarea.border-green-500 {
   .section__modals__modal-footer-close {
     width: calc(100% - 80px);
   }
+}
+
+body.scrollhidden {
+  overflow: hidden !important;
+  position: fixed !important;
 }
 
 /* Premios orbit */

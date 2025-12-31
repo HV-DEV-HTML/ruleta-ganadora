@@ -23,15 +23,14 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
       data-aos="zoom-in-right"
       class="font-amx-medium text-black text-[11px] md:text-base xl:text-[15px] 2xl:text-base text-balance py-2 md:py-3 px-3 text-center leading-none md:max-w-[570px] mx-auto"
     >
-      Si recibiste nuestro mensaje por tu transacción, completa el formulario,
-      solicita recibir publicidad y participa
+      Contrata un servicio móvil o fijo de Claro.
     </p>
     <p
       data-aos="zoom-in-right"
       data-aos-delay="50"
-      class="font-amx-bold italic text-[11px] md:text-sm text-center bg-claro text-white leading-none rounded-full px-2 md:px-3 py-1.5 md:py-2 pPremios"
+      class="font-amx-bold italic text-[11px] md:text-[12px] text-center bg-claro text-white leading-none rounded-full px-2 md:px-3 py-1.5 md:py-2 pPremios"
     >
-      ¡GIRA Y GANA GIGAS, ACCESORIOS, EQUIPOS Y MUCHOS PREMIOS MÁS!
+      ¡JUEGA POR GIGAS, ACCESORIOS, EQUIPOS y muchos PREMIOS MÁS SEGÚN TU PLAN!
     </p>
   </div>
   <form
@@ -41,9 +40,9 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
     action=""
   >
     <h3
-      class="text-center font-amx-bold text-xl md:text-3xl xl:text-2xl 2xl:text-3xl leading-none"
+      class="text-center font-amx-bold text-xl md:text-3xl xl:text-[26px] 2xl:text-[26px] leading-none"
     >
-      Valida tus datos para participar
+      Solicita recibir publicidad de Claro para participar:
     </h3>
     <fieldset class="grid grid-cols-2 gap-4">
       <div class="flex flex-col text-black">
@@ -85,7 +84,6 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
           type="text"
           name="dni"
           id="dni"
-          maxlength="8"
           class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none"
           placeholder="Número de documento"
           required
@@ -198,6 +196,21 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
         </svg>
       </div>
     </fieldset>
+    <fieldset class="inputCasual" style="display: none;">
+      <label for="phone" class="text-xs md:text-sm font-bold"
+        >Ingresa el número móvil de contacto</label
+      >
+      <input
+        type="text"
+        name="telefono"
+        id="telefono"
+        maxlength="9"
+        class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none"
+        placeholder="Ingrese su número de teléfono"
+        required
+        disabled
+      />
+    </fieldset>
     <fieldset>
       <label
         for="email"
@@ -221,6 +234,36 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
         required
         disabled
       />
+      <div id="email-errors"></div>
+    </fieldset>
+
+    <fieldset>
+      <label
+        for="email"
+        class="text-xs md:text-sm font-bold flex gap-1 items-center"
+      >
+        Confirma o cambia tu correo electrónico
+        <span
+          class="cursor-pointer trigger relative block"
+          data-tooltip="Recibirás la notificación de tu premio en este correo."
+        >
+          <Fragment set:html={iconTooltip} />
+        </span>
+      </label>
+      <input
+        type="email"
+        name="emaildos"
+        id="emaildos"
+        inputmode="email"
+        class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-[15px] focus:outline-none"
+        placeholder="Valida o actualiza tu correo electrónico"
+        required
+        disabled
+      />
+      <div class="indicacion">
+        *Puedes confirmar este correo o ingresar otro que estés usando
+        actualmente.
+      </div>
       <div id="email-errors"></div>
     </fieldset>
     <fieldset class="flex flex-col gap-1.5">
@@ -251,12 +294,12 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
             class="accent-claro"
           />
           <div class="text-xs md:text-sm 2xl:text-base text-gray-900">
-            Acepto recibir
+            Solicito recibir
           </div>
         </label>
         <strong
           class="text-xs md:text-sm 2xl:text-base text-gray-900 underline cursor-pointer openModalPromociones"
-          >comunicación publicitaria de Claro.</strong
+          >publicidad de Claro.</strong
         >
       </div>
     </fieldset>
@@ -274,11 +317,11 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
     <p
       class="text-[11px] text-white text-center xl:text-left leading-none mx-auto xl:mr-0 xl:ml-auto md:max-w-[500px] xl:max-w-[430px] 2xl:max-w-[520px] relative xl:right-20 2xl:right-32 2xl:px-0"
     >
-      No aplica para RUC 20. Vale hasta 15/01/2026. Conoce los términos y
-      condiciones, detalle de los premios y stock aquí: <a
-        href="https://claro.pe/ruletaganadora"
-        class="underline linktoc20pe">claro.pe/ruletaganadora</a
-      >
+      No aplica para RUC 20. Vale del 01/01/26 al 20/01/26 y/o hasta agotar
+      stock. Stock de premios: 1536033. Max. 1 premio por línea o play Claro
+      Hogar. Premio de celulares no disponible para prepago. También participan
+      clientes actuales que realicen las operaciones de la promoción. Tipos de
+      premios según plan y restricciones en sección "Nos gusta hablar claro"
     </p>
   </div>
 </div>
@@ -289,6 +332,14 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
       max-width: 390px;
       margin: 0 20px;
     }
+  }
+  .indicacion {
+    color: #75787c;
+    font-size: 11px;
+    font-style: italic;
+    font-weight: 500;
+    line-height: normal;
+    margin-top: 5px;
   }
 </style>
 
@@ -318,6 +369,10 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
     const fieldEmail = document.querySelector("#email") as HTMLInputElement;
     const fieldDni = document.querySelector("#dni") as HTMLInputElement;
     const fieldPhone = document.querySelector("#phone") as HTMLSelectElement;
+    const inputCasual = document.querySelector(".inputCasual") as HTMLElement;
+    const inputTelefono = document.querySelector(
+      "#telefono"
+    ) as HTMLInputElement;
     const fieldTypeDoc = document.querySelector("#typeDoc") as HTMLInputElement;
     const fieldDepartament = document.querySelector(
       "#departament"
@@ -325,6 +380,57 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
     const fieldProvince = document.querySelector(
       "#province"
     ) as HTMLSelectElement;
+    const inputcorreo2 = document.querySelector("#emaildos") as HTMLElement;
+
+    let realDniValue = "";
+    let realNameValue = "";
+    let realEmailValue = "";
+    let realEmail2Value = "";
+
+    let originalEmailLocalLength = 0;
+    let emailWasPrefilled = false;
+
+    const maskDni = (value: string) => {
+      if (value.length <= 2) return value;
+      return "*".repeat(value.length - 2) + value.slice(-2);
+    };
+
+    const maskName = (value: string) => {
+      return value
+        .split(" ")
+        .map((word) => {
+          if (word.length <= 3) return word;
+
+          const first = word.slice(0, 2);
+          const last = word.slice(-1);
+          const masked = "*".repeat(word.length - 3);
+
+          return `${first}${masked}${last}`;
+        })
+        .join(" ");
+    };
+
+    const maskEmail = (value: string) => {
+      if (!value.includes("@")) return value;
+
+      const [local, domain] = value.split("@");
+
+      // 🔐 Si vino del backend y aún hay contenido → mantener máscara
+      const maskLength = emailWasPrefilled
+        ? Math.max(originalEmailLocalLength, local.length)
+        : local.length;
+
+      if (maskLength <= 2) {
+        return `${local}@${domain}`;
+      }
+
+      const first = local[0] || "";
+      const last = local[local.length - 1] || "";
+
+      const masked = "*".repeat(maskLength - 2);
+
+      return `${first}${masked}${last}@${domain}`;
+    };
 
     const handleModal = (
       btnsOpenSelector,
@@ -362,6 +468,81 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
       });
     };
 
+    const checkIfPhoneOptionHasPlus = () => {
+      if (!fieldPhone) return false;
+
+      const selectedOption = fieldPhone.options[fieldPhone.selectedIndex];
+      if (!selectedOption) return false;
+
+      // Verificar si el texto de la opción contiene "+"
+      return (
+        selectedOption.textContent?.includes("Fija") ||
+        selectedOption.textContent?.includes("fija") ||
+        selectedOption.textContent?.includes("Play") ||
+        selectedOption.textContent?.includes("play") ||
+        false
+      );
+    };
+
+    const handlePhoneChange = () => {
+      const hasPlus = checkIfPhoneOptionHasPlus();
+
+      if (hasPlus) {
+        // Mostrar el campo y habilitar el input
+        inputCasual.style.display = "block";
+        inputTelefono.disabled = false;
+        inputTelefono.required = true;
+
+        // Si el validador existe, agregar validación para el teléfono
+        if (validator) {
+          validator.addField("#telefono", [
+            {
+              rule: "required",
+              errorMessage: "*Ingresa el número de teléfono.",
+            },
+            {
+              rule: "minLength",
+              value: 9,
+              errorMessage: "El teléfono debe tener 9 dígitos.",
+            },
+            {
+              rule: "maxLength",
+              value: 9,
+              errorMessage: "El teléfono debe tener 9 dígitos.",
+            },
+            {
+              validator: (value) => /^\d+$/.test(value),
+              errorMessage: "Solo se permiten números.",
+            },
+          ]);
+
+          // Revalidar el campo teléfono
+          validator.revalidateField("#telefono");
+        }
+      } else {
+        // Ocultar el campo y deshabilitar el input
+        inputCasual.style.display = "none";
+        inputTelefono.disabled = true;
+        inputTelefono.required = false;
+        inputTelefono.value = ""; // Limpiar el valor
+
+        // Si el validador existe, remover la validación del teléfono
+        if (validator) {
+          validator.removeField("#telefono");
+        }
+      }
+
+      // Revalidar todos los campos para actualizar el estado del botón submit
+      if (validator) {
+        validator.revalidate();
+      }
+    };
+
+    // Agregar evento change al select de servicio
+    if (fieldPhone) {
+      fieldPhone.addEventListener("change", handlePhoneChange);
+    }
+
     // Restricciones de entrada en los campos
     const restrictInput = (selector, allowedRegex) => {
       const element = document.querySelector(
@@ -387,7 +568,8 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
     const errorFindUser = (message = "") => {
       togglePreloadAnimation(false);
       //console.log({message})
-      const messageDefault = `<p>Para participar debes realizar una recarga desde s/7 soles en Mi Claro App, activar una línea , renovar o migrar a Claro.</p>`;
+      const messageDefault =
+        '<p class="mensajeModal"><b>Entérate cómo participar <span class="btnOpenModal2">aquí</span>.</b><br> <strong>*Si cumples con las condiciones tu participación se habilitará en un máximo de 72h.</strong></p>';
       const messageShow =
         message === "Ya estás registrado y verificado."
           ? `<p>${message}</p>`
@@ -406,13 +588,22 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
     };
 
     const setValuesForm = (user) => {
-      fieldName.value = user.fullName;
+      realNameValue = user.fullName;
+      fieldName.value = maskName(realNameValue);
       fieldName.disabled = false;
-      fieldEmail.value = user.email;
-      fieldEmail.disabled = false;
+      realEmailValue = user.email.trim();
+
+      const [local] = realEmailValue.split("@");
+      originalEmailLocalLength = local.length;
+      emailWasPrefilled = true;
+
+      fieldEmail.value = maskEmail(realEmailValue);
+      /*fieldEmail.disabled = false;*/
       fieldDepartament.disabled = false;
       fieldProvince.disabled = false;
+      inputcorreo2.disabled = false;
       fieldPhone.innerHTML = `<option value="">Selecciona tu servicio</option>`;
+
       if (Array.isArray(user.services) && user.services.length > 0) {
         user.services.forEach(({ id, phone }) => {
           const option = document.createElement("option");
@@ -420,10 +611,18 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
           option.textContent = phone;
           fieldPhone.appendChild(option);
         });
-        //fieldPhone.value = user.phones[0];
+
+        // Seleccionar el primer servicio por defecto
+        /*if (user.services.length > 0) {
+          fieldPhone.value = user.services[0].id;
+          // Verificar si la opción seleccionada tiene "+" y mostrar/ocultar campos
+          setTimeout(() => {
+            handlePhoneChange();
+          }, 100);
+        }*/
       }
       fieldPhone.disabled = false;
-      //submitBtn.disabled = false;
+
       if (validator) {
         validator.revalidateField("#name");
         validator.revalidateField("#email");
@@ -492,7 +691,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
         return;
       }
       const typeDocument = fieldTypeDoc.value;
-      const dniValue = fieldDni.value.trim();
+      const dniValue = realDniValue.trim();
       if (typeDocument === "DNI") {
         if (dniValue.length !== 8) return;
       } else if (typeDocument === "CEX") {
@@ -519,13 +718,202 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
         togglePreloadAnimation(false);
       }
     };
+    const sanitizeDniByType = (value: string, type: string) => {
+      if (type === "DNI" || type === "PASAPORTE") {
+        return value.replace(/\D/g, ""); // solo números
+      }
+      if (type === "CEX") {
+        return value.replace(/[^a-zA-Z0-9]/g, ""); // alfanumérico
+      }
+      return "";
+    };
 
     if (fieldDni) {
       const debouncedPreCheck = debounce(handlePreCheckByDni, 600);
-      fieldDni.addEventListener("input", () => {
+
+      fieldDni.addEventListener("input", (e: InputEvent) => {
+        const input = e.target as HTMLInputElement;
+        const typeDoc = fieldTypeDoc.value;
+
+        // Quitamos los * visibles
+        let visibleValue = input.value.replace(/\*/g, "");
+
+        // 🔒 Sanitizamos según tipo de documento
+        visibleValue = sanitizeDniByType(visibleValue, typeDoc);
+
+        // 🧠 Autofill / pegado / reemplazo masivo
+        if (
+          e.inputType === "insertFromPaste" ||
+          e.inputType === "insertReplacementText" ||
+          visibleValue.length > realDniValue.length + 1
+        ) {
+          realDniValue = visibleValue;
+        }
+
+        // 🧠 Borrado
+        else if (e.inputType === "deleteContentBackward") {
+          realDniValue = realDniValue.slice(0, -1);
+        }
+
+        // 🧠 Escritura normal
+        else if (e.inputType === "insertText" && e.data) {
+          const char = sanitizeDniByType(e.data, typeDoc);
+          if (!char) return;
+          realDniValue += char;
+        }
+
+        // 🔒 Longitud máxima
+        if (typeDoc === "DNI") {
+          realDniValue = realDniValue.slice(0, 8);
+        } else if (typeDoc === "PASAPORTE") {
+          realDniValue = realDniValue.slice(0, 9);
+        } else if (typeDoc === "CEX") {
+          realDniValue = realDniValue.slice(0, 20);
+        }
+
+        // 🎭 Aplicar máscara
+        input.value = maskDni(realDniValue);
+
+        // 🚀 Validación
         debouncedPreCheck();
       });
     }
+    fieldTypeDoc.addEventListener("change", () => {
+      realDniValue = "";
+      fieldDni.value = "";
+    });
+    if (fieldName) {
+      fieldName.addEventListener("input", (e: InputEvent) => {
+        const input = e.target as HTMLInputElement;
+
+        // Borrado
+        if (e.inputType === "deleteContentBackward") {
+          realNameValue = realNameValue.slice(0, -1);
+        }
+
+        // Escritura normal
+        if (e.inputType === "insertText" && e.data) {
+          const char = e.data;
+
+          // Solo letras y espacio
+          if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]$/.test(char)) return;
+
+          realNameValue += char;
+        }
+
+        // Normalizar espacios múltiples
+        realNameValue = realNameValue.replace(/\s+/g, " ");
+
+        // Aplicar máscara visual
+        input.value = maskName(realNameValue);
+      });
+    }
+
+    if (fieldEmail) {
+      fieldEmail.addEventListener("input", (e: InputEvent) => {
+        const input = e.target as HTMLInputElement;
+
+        if (e.inputType === "deleteContentBackward") {
+          realEmailValue = realEmailValue.slice(0, -1);
+        }
+
+        if (e.inputType === "insertText" && e.data) {
+          const char = e.data;
+          if (!/^[a-zA-Z0-9@._-]$/.test(char)) return;
+          realEmailValue += char;
+        }
+
+        // 🧹 Si el usuario borra todo, recién liberamos el masking
+        if (realEmailValue.length === 0) {
+          emailWasPrefilled = false;
+          originalEmailLocalLength = 0;
+        }
+
+        input.value = maskEmail(realEmailValue);
+      });
+    }
+
+    const fieldEmailDos = document.querySelector(
+      "#emaildos"
+    ) as HTMLInputElement;
+
+    const normalizeEmail = (value: string) => {
+      return value
+        .trim()
+        .replace(/\s+/g, "")
+        .replace(/[^a-zA-Z0-9@._-]/g, "");
+    };
+
+    const validateEmailDosRealtime = () => {
+      const rawValue = fieldEmailDos.value;
+      realEmail2Value = normalizeEmail(rawValue);
+
+      // sincroniza visualmente (solo si hubo limpieza)
+      if (rawValue !== realEmail2Value) {
+        fieldEmailDos.value = realEmail2Value;
+      }
+
+      const isValid = isValidEmailBasic(realEmail2Value);
+
+      fieldEmailDos.classList.toggle("success", isValid);
+      fieldEmailDos.classList.toggle("error", !isValid);
+
+      if (validator) {
+        validator.revalidateField("#emaildos");
+      }
+    };
+
+    if (fieldEmailDos) {
+      // escritura normal, pegar, borrar
+      fieldEmailDos.addEventListener("input", validateEmailDosRealtime);
+
+      // autofill / autocomplete del navegador
+      fieldEmailDos.addEventListener("change", validateEmailDosRealtime);
+
+      // blur para casos edge
+      fieldEmailDos.addEventListener("blur", validateEmailDosRealtime);
+    }
+
+    function isValidEmailBasic(value: string): boolean {
+      const atIndex = value.indexOf("@");
+      const dotIndex = value.lastIndexOf(".");
+
+      return (
+        atIndex > 0 && dotIndex > atIndex + 1 && dotIndex < value.length - 1
+      );
+    }
+
+    if (isValidEmailBasic(realEmail2Value)) {
+      fieldEmailDos.classList.remove("error");
+      fieldEmailDos.classList.add("success");
+    } else {
+      fieldEmailDos.classList.remove("success");
+      fieldEmailDos.classList.add("error");
+    }
+
+    if (realEmail2Value.length === 0) {
+      fieldEmailDos.value = "";
+    }
+
+    /*
+    if (fieldEmailDos) {
+      new autoSuggestEmail(fieldEmailDos, {
+        domains: [
+          "gmail.com",
+          "hotmail.com",
+          "yahoo.com",
+          "icloud.com",
+          "outlook.com",
+        ],
+        priority: [
+          "gmail.com",
+          "hotmail.com",
+          "outlook.com",
+          "icloud.com",
+          "yahoo.com",
+        ],
+      });
+    }*/
 
     // Validación dinámica para el campo de documento
     let dniFieldRegistered = false;
@@ -535,7 +923,6 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
         validator.removeField("#dni");
       }
       if (typeDocument === "DNI") {
-        fieldDni.setAttribute("maxlength", "8");
         fieldDni.setAttribute("inputmode", "numeric");
 
         validator.addField("#dni", [
@@ -544,24 +931,12 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
             errorMessage: "*Ingresa el número de documento.",
           },
           {
-            rule: "minLength",
-            value: 8,
+            validator: () => realDniValue.length === 8,
             errorMessage: "El DNI debe tener 8 dígitos.",
-          },
-          {
-            rule: "maxLength",
-            value: 8,
-            errorMessage: "El DNI debe tener 8 dígitos.",
-          },
-          {
-            validator: (value) => /^\d+$/.test(value),
-            errorMessage: "Solo se permiten números.",
           },
         ]);
         dniFieldRegistered = true;
-        restrictInput("#dni", /[^0-9]/g); // Solo permite números
       } else if (typeDocument === "CEX") {
-        fieldDni.setAttribute("maxlength", "20");
         fieldDni.setAttribute("inputmode", "text");
         validator.addField("#dni", [
           {
@@ -569,24 +944,12 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
             errorMessage: "*Ingresa el número de documento.",
           },
           {
-            rule: "minLength",
-            value: 9,
-            errorMessage: "El CEX debe tener mínimo 9 dígitos.",
-          },
-          {
-            rule: "maxLength",
-            value: 20,
-            errorMessage: "El CEX debe tener máximo 20 dígitos.",
-          },
-          {
-            validator: (value) => /^[a-zA-Z0-9]+$/.test(value),
-            errorMessage: "Solo se permiten caracteres alfanuméricos.",
+            validator: () => realDniValue.length >= 9,
+            errorMessage: "El CEX debe tener mínimo 9 caracteres.",
           },
         ]);
         dniFieldRegistered = true;
-        restrictInput("#dni", /[^a-zA-Z0-9]/g); // Solo permite alfanumericos
       } else if (typeDocument === "PASAPORTE") {
-        fieldDni.setAttribute("maxlength", "9");
         fieldDni.setAttribute("inputmode", "numeric");
         validator.addField("#dni", [
           {
@@ -594,22 +957,11 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
             errorMessage: "*Ingresa el número de documento.",
           },
           {
-            rule: "minLength",
-            value: 9,
-            errorMessage: "El pasaporte debe de tener 9 dígitos.",
-          },
-          {
-            rule: "maxLength",
-            value: 9,
-            errorMessage: "El pasaporte debe de tener 9 dígitos.",
-          },
-          {
-            validator: (value) => /^[0-9]+$/.test(value),
-            errorMessage: "Solo se permiten caracteres numéricos.",
+            validator: () => realDniValue.length === 9,
+            errorMessage: "El pasaporte debe tener 9 dígitos.",
           },
         ]);
         dniFieldRegistered = true;
-        restrictInput("#dni", /[^0-9]/g); // Solo permite numéricos
       }
     };
 
@@ -681,19 +1033,20 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
 
     validator
       .addField("#name", [
-        { rule: "required", errorMessage: "*Ingresa tus nombres y apellidos." },
         {
-          rule: "minLength",
-          value: 3,
+          rule: "required",
+          errorMessage: "*Ingresa tus nombres y apellidos.",
+        },
+        {
+          validator: () => realNameValue.length >= 3,
           errorMessage: "*Ingresa como mínimo 3 caracteres.",
         },
         {
-          rule: "maxLength",
-          value: 60,
+          validator: () => realNameValue.length <= 60,
           errorMessage: "El nombre no puede superar los 60 caracteres.",
         },
         {
-          validator: (value) => /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value),
+          validator: () => /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(realNameValue),
           errorMessage: "Solo se permiten letras.",
         },
       ])
@@ -727,22 +1080,26 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
           errorMessage: "*Selecciona tu servicio asociado.",
         },
       ])
-      .addField(
-        "#email",
-        [
-          {
-            rule: "email",
-            errorMessage: "*Ingrese un correo electrónico válido.",
-          },
-          {
-            rule: "required",
-            errorMessage: "El correo electrónico es obligatorio",
-          },
-        ],
+      .addField("#email", [
         {
-          errorsContainer: "#email-errors",
-        }
-      )
+          rule: "required",
+          errorMessage: "*Ingresa tu correo electrónico.",
+        },
+        {
+          validator: () => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(realEmailValue),
+          errorMessage: "Correo electrónico inválido.",
+        },
+      ])
+      .addField("#emaildos", [
+        {
+          rule: "required",
+          errorMessage: "*Ingresa tu correo electrónico.",
+        },
+        {
+          validator: () => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(realEmail2Value),
+          errorMessage: "Correo electrónico inválido.",
+        },
+      ])
       .addField("#terms", [
         {
           rule: "required",
@@ -777,10 +1134,18 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
         const fieldPhoneIDForm = dataForm.get("phone") as string;
         const fieldPhoneNameForm =
           fieldPhone.options[fieldPhone.selectedIndex].text;
-        const fieldEmailForm = dataForm.get("email") as string;
-        const fieldNameForm = dataForm.get("name") as string;
-        const fielDNIForm = dataForm.get("dni") as string;
+        const fieldEmailForm = realEmailValue;
+        const fieldEmail2Form = realEmail2Value;
+        const fieldNameForm = realNameValue;
+        const fielDNIForm = realDniValue;
         const fieldProvinceForm = dataForm.get("province") as string;
+
+        // Obtener el teléfono adicional si el campo está visible
+        let telefonoAdicional = "";
+        if (inputCasual.style.display !== "none") {
+          telefonoAdicional = dataForm.get("telefono") as string;
+        }
+
         const nextStep = Number(submitBtn.dataset.nextStep);
         submitBtn.disabled = true;
         togglePreloadAnimation(true);
@@ -792,6 +1157,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
               ...user,
               serviceId: fieldPhoneIDForm,
               provinceId: fieldProvinceForm,
+              telefonoAdicional: telefonoAdicional,
             },
           });
           if (!user) {
@@ -801,15 +1167,15 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
           }
 
           const { email, docType, docNumber } = user;
-          const registerUserResponse = await registerUser(
-            fieldNameForm,
-            fieldEmailForm,
-            fieldPhoneNameForm,
-            fieldPhoneIDForm,
+          const registerUserResponse = await registerUser({
+            name: fieldNameForm,
+            emailConfirm: fieldEmail2Form, // este será el email final
+            serviceId: fieldPhoneIDForm,
             docType,
-            fielDNIForm,
-            fieldProvinceForm
-          );
+            docNumber: fielDNIForm,
+            provinceId: fieldProvinceForm,
+            telefono: telefonoAdicional,
+          });
           //console.log('registerUserResponse:', registerUserResponse);
 
           if (registerUserResponse?.success) {
@@ -903,6 +1269,14 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
         }
       });
 
+    if (fieldEmailDos) {
+      fieldEmailDos.addEventListener("input", () => {
+        if (validator) {
+          validator.revalidateField("#emaildos");
+        }
+      });
+    }
+
     //Crea una funcion para restear el formulario y poder usarlo en onSuccess
     const resetForm = () => {
       form.reset();
@@ -911,18 +1285,23 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
       fieldName.disabled = true;
       fieldEmail.disabled = true;
       fieldDni.disabled = true;
+      inputTelefono.disabled = true;
+      inputCasual.style.display = "none";
       submitBtn.disabled = true;
+      realDniValue = "";
+      realEmail2Value = "";
+      inputcorreo2.disabled = true;
+      if (validator) {
+        validator.removeField("#telefono");
+      }
     };
 
-    // #name solo se permiten letras
-    restrictInput("#name", /[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g);
-    //#email solo se permiten caracteres validos
-    restrictInput("#email", /[^a-zA-Z0-9@.]/g);
+    restrictInput("#telefono", /[^0-9]/g);
 
     //Agrega una función debounde para el input fieldDNi para cuando el usuario termine de escribir llamar al api preCheck
 
     // Inicializar autoSuggestEmail para sugerencias de correo
-    new autoSuggestEmail(fieldEmail, {
+    /*new autoSuggestEmail(fieldEmail, {
       domains: [
         "gmail.com",
         "hotmail.com",
@@ -937,7 +1316,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
         "icloud.com",
         "yahoo.com",
       ],
-    });
+    });*/
 
     handleModal(
       ".openModalTratamiento",
@@ -1068,30 +1447,41 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
       }
     }
 
-    const linkToC20pe = document.querySelector(
-      ".linktoc20pe"
-    ) as HTMLAnchorElement;
-    linkToC20pe.addEventListener("click", (e) => {
+    document.addEventListener("click", (e) => {
+      const target = e.target as HTMLElement;
+
+      const btn = target.closest(".btnOpenModal2") as HTMLAnchorElement | null;
+      if (!btn) return;
+
       e.preventDefault();
-      const c20peElement = document.querySelector(".c20pe") as HTMLElement;
-      if (c20peElement) {
-        const yOffset = -80;
-        const y =
-          c20peElement.getBoundingClientRect().top +
-          window.pageYOffset +
-          yOffset;
+
+      const closeModal = document.querySelector(
+        ".swal2-close"
+      ) as HTMLElement | null;
+      closeModal?.click();
+
+      const c20peElement = document.querySelector(
+        ".c20pe"
+      ) as HTMLElement | null;
+      if (!c20peElement) return;
+
+      const yOffset = -80;
+      const y =
+        c20peElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+      setTimeout(() => {
         window.scrollTo({
           top: y,
           behavior: "smooth",
         });
-        setTimeout(() => {
-          const actBtn = c20peElement.querySelector(
-            ".actBtn"
-          ) as HTMLElement | null;
+      }, 1000);
 
-          actBtn?.click();
-        }, 600);
-      }
+      setTimeout(() => {
+        const actBtn = c20peElement.querySelector(
+          ".actBtn"
+        ) as HTMLElement | null;
+        actBtn?.click();
+      }, 600);
     });
   });
 </script>

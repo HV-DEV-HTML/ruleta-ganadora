@@ -289,43 +289,43 @@ const { cards, tabId } = Astro.props;
     };
 
     const initDesktop = () => {
-      const rotations = [-10, 5, 10];
-      const xOffsets = [20, 0, -20];
-      const yOffsets = [-20, 30, 10];
+      const rotations = [-12, -4, 6, -3];
+      const xOffsets = [30, 10, -10, -20];
+      const yOffsets = [-20, 10, 30, 10];
+      const ZIndexArr = [4, 3, 2, 5];
 
-      // Posición base de las cards
       cards.forEach((card, i) => {
-        const originalZIndex = i === 1 ? 10 : 1;
-        const ZIndexArr = [4, 2, 1];
+        const rot = rotations[i] ?? 0;
+        const x = xOffsets[i] ?? 0;
+        const y = yOffsets[i] ?? 0;
+        const z = ZIndexArr[i] ?? 1;
 
         gsap.set(card, {
-          rotation: rotations[i],
-          x: xOffsets[i],
-          zIndex: ZIndexArr[i],
+          x,
+          y,
+          rotation: rot,
+          zIndex: z,
         });
 
         const enterHandler = () => {
-          const getStep = Number(card.getAttribute("data-index")) + 1;
-          //sliderParticipaSteps.querySelector(`[data-step="${getStep}"]`).classList.remove("xl:opacity-50");
           gsap.to(card, {
             rotation: 0,
             scale: 1.08,
-            duration: 0.3,
-            zIndex: 20,
             y: 0,
+            zIndex: 20,
+            duration: 0.3,
             ease: "power2.out",
           });
         };
 
         const leaveHandler = () => {
-          const getStep = Number(card.getAttribute("data-index")) + 1;
-          //sliderParticipaSteps.querySelector(`[data-step="${getStep}"]`).classList.add("xl:opacity-50");
           gsap.to(card, {
-            rotation: rotations[i],
+            x,
+            y,
+            rotation: rot,
             scale: 1,
+            zIndex: z,
             duration: 0.3,
-            zIndex: ZIndexArr[i],
-            y: yOffsets[i],
             ease: "power2.out",
           });
         };
@@ -340,33 +340,27 @@ const { cards, tabId } = Astro.props;
         });
       });
 
-      // Animación de entrada tipo baraja (más desordenada)
       const deckIntro = () => {
         if (currentMode !== "desktop") return;
 
         cards.forEach((card, i) => {
-          // Offsets aleatorios suaves para que el efecto se sienta más caótico
-          const randomX = (Math.random() - 0.5) * 320; // -40 a 40
-          const randomY = (Math.random() - 0.5) * 100; // -20 a 20
-          const randomRot = (Math.random() - 0.5) * 20; // -7 a 7
-
-          const fromX = xOffsets[i] - 200 + randomX;
-          const fromY = -50 + randomY;
-          const fromRotation = rotations[i] - 20 + randomRot;
+          const rot = rotations[i] ?? 0;
+          const x = xOffsets[i] ?? 0;
+          const y = yOffsets[i] ?? 0;
 
           gsap.fromTo(
             card,
             {
-              x: fromX,
-              y: fromY,
-              rotation: fromRotation,
+              x: x - 200,
+              y: y - 60,
+              rotation: rot - 20,
               opacity: 0,
               scale: 0.85,
             },
             {
-              x: xOffsets[i],
-              y: yOffsets[i],
-              rotation: rotations[i],
+              x,
+              y,
+              rotation: rot,
               opacity: 1,
               scale: 1,
               duration: 0.7,
@@ -377,12 +371,8 @@ const { cards, tabId } = Astro.props;
         });
       };
 
-      // Llamar una vez al entrar en desktop
       deckIntro();
-
-      // Permitir re-disparar la animación desde fuera (por ejemplo, al cambiar de tab)
       root.addEventListener("cards:enter", deckIntro);
-
       updateStep(0, false);
     };
 
@@ -416,7 +406,7 @@ const { cards, tabId } = Astro.props;
   const sliders = document.querySelectorAll<HTMLElement>(".card-slider");
   sliders.forEach((root) => initSlider(root));
 
-  const linkToC20pe2 = document.querySelector(
+  /*const linkToC20pe2 = document.querySelector(
     ".linkToC20pe2"
   ) as HTMLAnchorElement;
   linkToC20pe2.addEventListener("click", (e) => {
@@ -438,5 +428,5 @@ const { cards, tabId } = Astro.props;
         actBtn?.click();
       }, 600);
     }
-  });
+  });*/
 </script>
