@@ -60,7 +60,7 @@ const postpagoCards = [
 <section class="relative bg-transparent text-white secparticipa">
   <div class="container">
     <h2 class="text-center font-amx-bold text-3xl xl:text-4xl pb-6 md:pb-8">
-      ¡Participar es muy fácil!
+      ¿Cómo participar del sorteo?
     </h2>
     <div
       class="tabs-container hidden justify-center gap-4 pt-8 pb-8 md:max-w-[500px] mx-auto"
@@ -333,21 +333,19 @@ const postpagoCards = [
       });
     });
   });
-</script>
-
-<script>
-  const modal = document.querySelector(".modalTransacciones");
+  const modal = document.querySelector(".modalTransacciones") as HTMLElement | null;
   const body = document.body;
 
   // Abrir modal (delegación de eventos)
   document.addEventListener("click", (e) => {
-    const btn = e.target.closest(".btnOpenModal");
-    if (!btn) return;
+    const btn = e.target as HTMLElement;
+    if (!btn.closest(".btnOpenModal")) return;
 
     e.preventDefault();
 
     // 🔴 Cerrar cualquier SweetAlert abierto
-    document.querySelectorAll(".swal2-close").forEach((closeBtn) => {
+    document.querySelectorAll(".swal2-close").forEach((btnClose) => {
+      const closeBtn = btnClose as HTMLElement;
       closeBtn.click();
     });
 
@@ -360,12 +358,33 @@ const postpagoCards = [
 
   // Cerrar modal (X o botón "Entendido")
   modal.addEventListener("click", (e) => {
-    if (e.target.closest(".close") || e.target.tagName === "BUTTON") {
+    const target = e.target as HTMLElement;
+    if (target.closest(".close") || target.tagName === "BUTTON") {
       modal.classList.remove("active");
       modal.style.display = "none";
 
       // 🔓 Restaurar scroll
       body.classList.remove("scrollHidden");
     }
+  });
+
+  const getParameterByUrl = (param: string) => {
+    const url = new URL(window.location.href);
+    return url.searchParams.get(param);
+  };
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const getPasosTab = getParameterByUrl("tabpasos");
+    if (!getPasosTab) return;
+    const sectionParticipa = document.querySelector(".secparticipa") as HTMLElement | null;
+    if (!sectionParticipa) return;
+    const yOffset = 100;
+    const y = sectionParticipa.getBoundingClientRect().top + window.pageYOffset + yOffset;
+    setTimeout(() => {
+      window.scrollTo({
+        top: y,
+        behavior: "smooth",
+      });
+    }, 1000);
   });
 </script>
