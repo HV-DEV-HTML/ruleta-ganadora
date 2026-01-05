@@ -376,9 +376,9 @@ const postpagoCards = [
   document.addEventListener("DOMContentLoaded", () => {
     const getPasosTab = getParameterByUrl("tabpasos");
     if (!getPasosTab) return;
-    const sectionParticipa = document.querySelector(".secparticipa") as HTMLElement | null;
+    const sectionParticipa = document.querySelector(".secparticipa .container") as HTMLElement | null;
     if (!sectionParticipa) return;
-    const yOffset = 100;
+    const yOffset = -135;
     const y = sectionParticipa.getBoundingClientRect().top + window.pageYOffset + yOffset;
     setTimeout(() => {
       window.scrollTo({
