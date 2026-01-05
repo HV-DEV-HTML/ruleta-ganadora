@@ -1,4 +1,4 @@
-const URL_API = 'https://api_ruleta.claromarketingcloud.pe/api'
+const URL_API = import.meta.env.API_URL_RULETA || 'https://api_ruleta.claromarketingcloud.pe/api'
 
 
 export async function getDepartament() {

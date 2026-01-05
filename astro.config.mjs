@@ -3,10 +3,12 @@ import { defineConfig } from 'astro/config';
 
 import tailwindcss from '@tailwindcss/vite';
 
-const isProduction = process.env.NODE_ENV === 'production';
-const isGitHubPages = process.env.GITHUB_ACTIONS === 'true';
-
 // https://astro.build/config
+const isGitHubPages = process.env.GITHUB_ACTIONS === 'true';
+const isDevelopment = process.env.npm_lifecycle_event === 'develop';
+const apiUrlRuleta = isDevelopment ? 'https://api-ruleta.dev-limprod.com/api' : 'https://api_ruleta.claromarketingcloud.pe/api';
+console.log(isDevelopment);
+
 export default defineConfig({
   // Solo aplicar site y base en GitHub Pages
   site: isGitHubPages ? 'https://havas-media.github.io' : undefined,
@@ -14,9 +16,12 @@ export default defineConfig({
   compressHTML: false,
   build: {
     assets: '_assets',
-    assetsPrefix: 'https://www.claro.com.pe/assets/havas/ruleta'
+    assetsPrefix: isDevelopment ? 'https://www.claro.com.pe/assets/havas/ruleta-test' : 'https://www.claro.com.pe/assets/havas/ruleta'
   },
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    define: {
+      'import.meta.env.API_URL_RULETA': JSON.stringify(apiUrlRuleta)
+    }
   }
 });
