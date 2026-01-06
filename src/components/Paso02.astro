@@ -600,7 +600,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
       emailWasPrefilled = true;
 
       fieldEmail.value = maskEmail(realEmailValue);
-      /*fieldEmail.disabled = false;*/
+      fieldEmail.disabled = realEmailValue.length > 0 ? true : false;
       fieldDepartament.disabled = false;
       fieldProvince.disabled = false;
       inputcorreo2.disabled = false;
