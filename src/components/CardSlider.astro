@@ -79,12 +79,12 @@ const { cards, tabId } = Astro.props;
           <p class="text-center font-amx-black text-3xl">Paso {card.step}</p>
           {card.title && (
             <p
-              class="text-center md:text-xs xl:text-lg leading-tight font-amx-regular text-balance xl:text-wrap"
+              class="text-center md:text-xs xl:text-lg leading-tight font-amx-bold text-balance xl:text-wrap"
               set:html={card.title}
             />
           )}
           {card.description && (
-            <p class="text-center md:text-xs xl:text-lg leading-tight font-amx-regular text-balance">
+            <p class="text-center md:text-xs xl:text-sm leading-tight font-amx-regular text-balance pt-4">
               {card.description}
             </p>
           )}

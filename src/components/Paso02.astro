@@ -628,6 +628,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
       if (validator) {
         validator.revalidateField("#name");
         validator.revalidateField("#email");
+        validator.revalidateField("#emaildos");
         validator.revalidateField("#departament");
         validator.revalidateField("#province");
         validator.revalidateField("#phone");
@@ -882,10 +883,10 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
       const isValid = isValidEmailBasic(realEmail2Value);
 
       fieldEmailDos.classList.toggle("success", isValid);
-      fieldEmailDos.classList.toggle("error", !isValid);
+      fieldEmailDos.classList.toggle("error_email_dos", !isValid);
 
       if (validator) {
-        validator.revalidateField("#emaildos");
+        //validator.revalidateField("#emaildos");
       }
     };
 
@@ -910,11 +911,11 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
     }
 
     if (isValidEmailBasic(realEmail2Value)) {
-      fieldEmailDos.classList.remove("error");
+      fieldEmailDos.classList.remove("error_email_dos");
       fieldEmailDos.classList.add("success");
     } else {
       fieldEmailDos.classList.remove("success");
-      fieldEmailDos.classList.add("error");
+      fieldEmailDos.classList.add("error_email_dos");
     }
 
     if (realEmail2Value.length === 0) {

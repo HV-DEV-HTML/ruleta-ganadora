@@ -51,11 +51,10 @@
 }
 
 span.linkToC20pe2,
-.btnOpenModal,
 .btnOpenModal2 {
   text-decoration: underline;
   cursor: pointer;
-  color: #7cccd0;
+  color: white;
 }
 .mensajeModal {
   margin-top: 5px;
@@ -108,7 +107,6 @@ textarea.border-green-500 {
   border-color: #10b981 !important;
 }
 
-.btnOpenModal,
 .btnOpenModal2 {
   text-decoration: underline !important;
   cursor: pointer;
