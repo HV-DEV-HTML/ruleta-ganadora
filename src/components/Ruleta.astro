@@ -1014,7 +1014,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
       const isotipo = isotipoWrapper?.querySelector("svg");
       // Animar el isotipo cuando se hace clic en el botón de entrada
       const forseCanSpin = true;
-      if (forseCanSpin) {
+      if (canSpin) {
         const listProductsResponse = await getListProducts(user.provinceId);
         const dataProducts = listProductsResponse.data;
         const totalStockProducts = listProductsResponse.count;
