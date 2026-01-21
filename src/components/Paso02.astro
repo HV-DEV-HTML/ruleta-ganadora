@@ -364,7 +364,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
   document.addEventListener("DOMContentLoaded", async () => {
     const form = document.querySelector("#form-registro") as HTMLFormElement;
     const submitBtn = document.querySelector(
-      "#btn-submit-form"
+      "#btn-submit-form",
     ) as HTMLButtonElement;
     const fieldName = document.querySelector("#name") as HTMLInputElement;
     const fieldEmail = document.querySelector("#email") as HTMLInputElement;
@@ -372,16 +372,18 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
     const fieldPhone = document.querySelector("#phone") as HTMLSelectElement;
     const inputCasual = document.querySelector(".inputCasual") as HTMLElement;
     const inputTelefono = document.querySelector(
-      "#telefono"
+      "#telefono",
     ) as HTMLInputElement;
     const fieldTypeDoc = document.querySelector("#typeDoc") as HTMLInputElement;
     const fieldDepartament = document.querySelector(
-      "#departament"
+      "#departament",
     ) as HTMLSelectElement;
     const fieldProvince = document.querySelector(
-      "#province"
+      "#province",
     ) as HTMLSelectElement;
-    const inputcorreo2 = document.querySelector("#emaildos") as HTMLInputElement;
+    const inputcorreo2 = document.querySelector(
+      "#emaildos",
+    ) as HTMLInputElement;
 
     let realDniValue = "";
     let realNameValue = "";
@@ -437,7 +439,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
       btnsOpenSelector,
       modalsSelector,
       closesSubSelector,
-      closesBtnSelector
+      closesBtnSelector,
     ) => {
       const modals = document.querySelectorAll(modalsSelector);
       const btnsOpen = document.querySelectorAll(btnsOpenSelector);
@@ -547,7 +549,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
     // Restricciones de entrada en los campos
     const restrictInput = (selector, allowedRegex) => {
       const element = document.querySelector(
-        selector
+        selector,
       ) as HTMLInputElement | null;
       if (!element) return;
 
@@ -568,13 +570,19 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
 
     const errorFindUser = (message = "") => {
       togglePreloadAnimation(false);
-      //console.log({message})
+      /*console.log({ message });*/
       const messageDefault =
         '<p class="mensajeModal"><b>Entérate cómo participar <span class="btnOpenModal2">aquí</span>.</b><br> <strong>*Si cumples con las condiciones tu participación se habilitará en un máximo de 72h.</strong></p>';
-      const messageShow =
-        message === "Ya estás registrado y verificado."
-          ? `<p>${message}</p>`
-          : messageDefault;
+
+      let messageShow = message;
+      if (message === "Ya estás registrado y verificado.") {
+        messageShow = `<p>${message}</p>`;
+      } else if (
+        message === "No estás en la lista de participantes elegibles."
+      ) {
+        messageShow = messageDefault;
+      }
+
       showCustomModal({
         iconSrc: icon_no_cumple.src,
         title: "Lo sentimos, no puedes participar en estos momentos 👇",
@@ -645,7 +653,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
       typeDocForm,
       dniForm,
       serviceForm,
-      provinceForm
+      provinceForm,
     ) => {
       const user = {
         fullName: nameForm,
@@ -861,7 +869,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
     }
 
     const fieldEmailDos = document.querySelector(
-      "#emaildos"
+      "#emaildos",
     ) as HTMLInputElement;
 
     const normalizeEmail = (value: string) => {
@@ -1147,7 +1155,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
           } else {
             submitBtn.disabled = !isValid;
           }
-        }
+        },
       )
       .addField("#comunicacion", [
         {
@@ -1189,7 +1197,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
           });
           if (!user) {
             throw new Error(
-              "User no está definido en el store antes de registerUser"
+              "User no está definido en el store antes de registerUser",
             );
           }
 
@@ -1260,7 +1268,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
                   docType,
                   fielDNIForm,
                   fieldPhoneIDForm,
-                  fieldProvinceForm
+                  fieldProvinceForm,
                 );
 
                 // Scroll hacia arriba
@@ -1297,7 +1305,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
                 docType,
                 fielDNIForm,
                 fieldPhoneIDForm,
-                fieldProvinceForm
+                fieldProvinceForm,
               );
               togglePreloadAnimation(false);
               showCustomModal({
@@ -1383,18 +1391,18 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
       ".openModalTratamiento",
       "#modaltratamiento",
       "#modaltratamiento .section__modals__modal-close",
-      "#modaltratamiento .section__modals__modal-footer-close"
+      "#modaltratamiento .section__modals__modal-footer-close",
     );
 
     handleModal(
       ".openModalPromociones",
       "#modalpromociones",
       "#modalpromociones .section__modals__modal-close",
-      "#modalpromociones .section__modals__modal-footer-close"
+      "#modalpromociones .section__modals__modal-footer-close",
     );
 
     const triggers = document.querySelectorAll(
-      ".trigger"
+      ".trigger",
     ) as NodeListOf<HTMLElement>;
 
     const openTooltip = (e: MouseEvent) => {
@@ -1432,14 +1440,14 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
         const verifyCodeResponse = await verifyCode(
           userLocal.email,
           getParameter,
-          userLocal.dni
+          userLocal.dni,
         );
         const { verified, message, status } = verifyCodeResponse || {};
         const verifyMockup = true;
         if (verified) {
           userStore.setState({ user: { ...userLocal, verified: true } });
           const userEnabledResponse = await validUserEnabled(
-            userLocal.serviceId
+            userLocal.serviceId,
           );
           const { canSpin, remainingPlays, playsAllowed, playsUsed, reason } =
             userEnabledResponse || {};
@@ -1517,12 +1525,12 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
       e.preventDefault();
 
       const closeModal = document.querySelector(
-        ".swal2-close"
+        ".swal2-close",
       ) as HTMLElement | null;
       closeModal?.click();
 
       const c20peElement = document.querySelector(
-        ".c20pe"
+        ".c20pe",
       ) as HTMLElement | null;
       if (!c20peElement) return;
 
@@ -1539,7 +1547,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
 
       setTimeout(() => {
         const actBtn = c20peElement.querySelector(
-          ".actBtn"
+          ".actBtn",
         ) as HTMLElement | null;
         actBtn?.click();
       }, 600);
