@@ -1,0 +1,1329 @@
+---
+import Button from "@UI/Button.astro";
+import iconTooltip from "@/assets/icons/tooltip.svg?raw";
+import iconCono from "@/assets/icons/conoFiesta.svg";
+---
+
+<div
+  class="w-full h-full relative z-10 xl:grid xl:grid-cols-2 items-start"
+  data-step="2"
+>
+  <div
+    class="flex flex-col items-center justify-center py-6 md:py-8 w-full relative xl:top-4 2xl:-right-13"
+  >
+    <h1
+      data-aos="zoom-in-right"
+      class="font-amx-regular text-xl md:text-3xl xl:text-2xl 2xl:text-3xl leading-none italic xl:leading-[0.5] text-center text-claro uppercase"
+    >
+      <strong
+        class="block leading-none font-amx-black text-2xl md:text-4xl xl:text-3xl 2xl:text-5xl"
+        >¡Gira la Ruleta Ganadora!</strong
+      >
+    </h1>
+    <p
+      data-aos="zoom-in-right"
+      class="font-amx-medium text-black text-[11px] md:text-base xl:text-[15px] 2xl:text-base text-balance py-2 md:py-3 px-3 text-center leading-none md:max-w-[570px] mx-auto"
+    >
+      Contrata un servicio Móvil o Internet Hogar.
+    </p>
+    <p
+      data-aos="zoom-in-right"
+      data-aos-delay="50"
+      class="font-amx-bold italic text-[11px] md:text-[12px] text-center bg-claro text-white leading-none rounded-full px-2 md:px-3 py-1.5 md:py-2 pPremios"
+    >
+      ¡JUEGA POR GIGAS, ACCESORIOS, EQUIPOS y muchos PREMIOS MÁS SEGÚN TU PLAN!
+    </p>
+  </div>
+  <div class="pantallaCierre">
+    <h2><img src={iconCono.src} alt="" />¡Gracias por participar!</h2>
+    <p>
+      Sigue atento a nuestras promociones y no te pierdas las próximas
+      oportunidades que Claro tiene para ti.
+    </p>
+  </div>
+</div>
+
+<style>
+  .pantallaCierre {
+    margin: 0 auto;
+    margin-top: 117px;
+    max-width: 450px;
+    width: 100%;
+    padding: 36px 40px;
+    border-radius: 20.25px;
+    border: 0.81px solid rgba(227, 242, 246, 0.35);
+    background: rgba(0, 0, 0, 0.35);
+    background-blend-mode: multiply;
+    box-shadow:
+      0 18.63px 41.31px 0 rgba(0, 0, 0, 0.25),
+      0 75.33px 75.33px 0 rgba(0, 0, 0, 0.17);
+    backdrop-filter: blur(60.75px);
+  }
+  .pantallaCierre h2 {
+    color: #fff;
+    text-align: center;
+    font-family: AMX;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .pantallaCierre p {
+    color: #fff;
+    font-family: AMX;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: normal;
+    text-align: center;
+  }
+  @media (max-width: 1279px) {
+    .pantallaCierre {
+      margin-top: 289px;
+    }
+  }
+  @media (max-width: 1023px) {
+    .pantallaCierre {
+      margin-top: 158px;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .pantallaCierre {
+      margin-top: 158px;
+      padding: 32px 21px;
+      width: 95%;
+    }
+    .pantallaCierre h2 {
+      font-size: 22px;
+    }
+  }
+  @media (max-width: 1599px) {
+    .pPremios {
+      max-width: 390px;
+      margin: 0 20px;
+    }
+  }
+  .indicacion {
+    color: #75787c;
+    font-size: 11px;
+    font-style: italic;
+    font-weight: 500;
+    line-height: normal;
+    margin-top: 5px;
+  }
+</style>
+
+<script>
+  import JustValidate from "just-validate";
+  import { autoSuggestEmail } from "@/utils/autosuggestEmail";
+  import icon_no_cumple from "@/assets/icons/icon_no_cumple.svg";
+  import { showCustomModal } from "@/utils/modalHelper";
+  import {
+    preCheck,
+    registerUser,
+    validUserEnabled,
+    verifyCode,
+    getDepartament,
+    getProvince,
+    deleteUserByDni,
+  } from "@/utils/endpoints";
+  import { userStore } from "@/store/userStore";
+  import { togglePreloadAnimation } from "@/utils/animations";
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    const form = document.querySelector("#form-registro") as HTMLFormElement;
+    const submitBtn = document.querySelector(
+      "#btn-submit-form",
+    ) as HTMLButtonElement;
+    const fieldName = document.querySelector("#name") as HTMLInputElement;
+    const fieldEmail = document.querySelector("#email") as HTMLInputElement;
+    const fieldDni = document.querySelector("#dni") as HTMLInputElement;
+    const fieldPhone = document.querySelector("#phone") as HTMLSelectElement;
+    const inputCasual = document.querySelector(".inputCasual") as HTMLElement;
+    const inputTelefono = document.querySelector(
+      "#telefono",
+    ) as HTMLInputElement;
+    const fieldTypeDoc = document.querySelector("#typeDoc") as HTMLInputElement;
+    const fieldDepartament = document.querySelector(
+      "#departament",
+    ) as HTMLSelectElement;
+    const fieldProvince = document.querySelector(
+      "#province",
+    ) as HTMLSelectElement;
+    const inputcorreo2 = document.querySelector(
+      "#emaildos",
+    ) as HTMLInputElement;
+
+    let realDniValue = "";
+    let realNameValue = "";
+    let realEmailValue = "";
+    let realEmail2Value = "";
+
+    let originalEmailLocalLength = 0;
+    let emailWasPrefilled = false;
+
+    const maskDni = (value: string) => {
+      if (value.length <= 2) return value;
+      return "*".repeat(value.length - 2) + value.slice(-2);
+    };
+
+    const maskName = (value: string) => {
+      return value
+        .split(" ")
+        .map((word) => {
+          if (word.length <= 3) return word;
+
+          const first = word.slice(0, 2);
+          const last = word.slice(-1);
+          const masked = "*".repeat(word.length - 3);
+
+          return `${first}${masked}${last}`;
+        })
+        .join(" ");
+    };
+
+    const maskEmail = (value: string) => {
+      if (!value.includes("@")) return value;
+
+      const [local, domain] = value.split("@");
+
+      // 🔐 Si vino del backend y aún hay contenido → mantener máscara
+      const maskLength = emailWasPrefilled
+        ? Math.max(originalEmailLocalLength, local.length)
+        : local.length;
+
+      if (maskLength <= 2) {
+        return `${local}@${domain}`;
+      }
+
+      const first = local[0] || "";
+      const last = local[local.length - 1] || "";
+
+      const masked = "*".repeat(maskLength - 2);
+
+      return `${first}${masked}${last}@${domain}`;
+    };
+
+    const handleModal = (
+      btnsOpenSelector,
+      modalsSelector,
+      closesSubSelector,
+      closesBtnSelector,
+    ) => {
+      const modals = document.querySelectorAll(modalsSelector);
+      const btnsOpen = document.querySelectorAll(btnsOpenSelector);
+      const closesSub = document.querySelectorAll(closesSubSelector);
+      const closesBtn = document.querySelectorAll(closesBtnSelector);
+
+      btnsOpen.forEach((btn, i) => {
+        btn.onclick = () => {
+          modals[i].classList.add("active");
+          //console.log("CLICK");
+          window.onclick = (event) => {
+            if (event.target === modals[i]) {
+              modals.forEach((modal) => modal.classList.remove("active"));
+            }
+          };
+        };
+      });
+
+      closesSub.forEach((close) => {
+        close.onclick = () => {
+          modals.forEach((modal) => modal.classList.remove("active"));
+        };
+      });
+
+      closesBtn.forEach((close) => {
+        close.onclick = () => {
+          modals.forEach((modal) => modal.classList.remove("active"));
+        };
+      });
+    };
+
+    const checkIfPhoneOptionHasPlus = () => {
+      if (!fieldPhone) return false;
+
+      const selectedOption = fieldPhone.options[fieldPhone.selectedIndex];
+      if (!selectedOption) return false;
+
+      // Verificar si el texto de la opción contiene "+"
+      return (
+        selectedOption.textContent?.includes("Fija") ||
+        selectedOption.textContent?.includes("fija") ||
+        selectedOption.textContent?.includes("Play") ||
+        selectedOption.textContent?.includes("play") ||
+        false
+      );
+    };
+
+    const handlePhoneChange = () => {
+      const hasPlus = checkIfPhoneOptionHasPlus();
+
+      if (hasPlus) {
+        // Mostrar el campo y habilitar el input
+        inputCasual.style.display = "block";
+        inputTelefono.disabled = false;
+        inputTelefono.required = true;
+
+        // Si el validador existe, agregar validación para el teléfono
+        if (validator) {
+          validator.addField("#telefono", [
+            {
+              rule: "required",
+              errorMessage: "*Ingresa el número de teléfono.",
+            },
+            {
+              rule: "minLength",
+              value: 9,
+              errorMessage: "El teléfono debe tener 9 dígitos.",
+            },
+            {
+              rule: "maxLength",
+              value: 9,
+              errorMessage: "El teléfono debe tener 9 dígitos.",
+            },
+            {
+              validator: (value) => /^\d+$/.test(value),
+              errorMessage: "Solo se permiten números.",
+            },
+          ]);
+
+          // Revalidar el campo teléfono
+          validator.revalidateField("#telefono");
+        }
+      } else {
+        // Ocultar el campo y deshabilitar el input
+        inputCasual.style.display = "none";
+        inputTelefono.disabled = true;
+        inputTelefono.required = false;
+        inputTelefono.value = ""; // Limpiar el valor
+
+        // Si el validador existe, remover la validación del teléfono
+        if (validator) {
+          validator.removeField("#telefono");
+        }
+      }
+
+      // Revalidar todos los campos para actualizar el estado del botón submit
+      if (validator) {
+        validator.revalidate();
+      }
+    };
+
+    // Agregar evento change al select de servicio
+    if (fieldPhone) {
+      fieldPhone.addEventListener("change", handlePhoneChange);
+    }
+
+    // Restricciones de entrada en los campos
+    const restrictInput = (selector, allowedRegex) => {
+      const element = document.querySelector(
+        selector,
+      ) as HTMLInputElement | null;
+      if (!element) return;
+
+      // Si ya existe un handler previo, lo removemos para no acumular listeners
+      const anyElement = element as any;
+      if (anyElement._restrictHandler) {
+        element.removeEventListener("input", anyElement._restrictHandler);
+      }
+
+      const handler = (event: Event) => {
+        const input = event.target as HTMLInputElement;
+        input.value = input.value.replace(allowedRegex, "");
+      };
+
+      element.addEventListener("input", handler);
+      anyElement._restrictHandler = handler;
+    };
+
+    const errorFindUser = (message = "") => {
+      togglePreloadAnimation(false);
+      /*console.log({ message });*/
+      const messageDefault =
+        '<p class="mensajeModal"><b>Entérate cómo participar <span class="btnOpenModal2">aquí</span>.</b><br> <strong>*Si cumples con las condiciones tu participación se habilitará en un máximo de 72h.</strong></p>';
+
+      let messageShow = message;
+      if (message === "Ya estás registrado y verificado.") {
+        messageShow = `<p>${message}</p>`;
+      } else if (
+        message === "No estás en la lista de participantes elegibles."
+      ) {
+        messageShow = messageDefault;
+      }
+
+      showCustomModal({
+        iconSrc: icon_no_cumple.src,
+        title: "Lo sentimos, no puedes participar en estos momentos 👇",
+        html: messageShow,
+        confirmButtonText: "Entendido",
+        showCloseButton: true,
+        onConfirm: () => {
+          // aquí haces el callback que quieras, por ejemplo:
+          resetForm();
+        },
+      });
+    };
+
+    const setValuesForm = (user) => {
+      realNameValue = user.fullName;
+      fieldName.value = maskName(realNameValue);
+      fieldName.disabled = false;
+      realEmailValue = user.email.trim();
+      realEmail2Value = user.email.trim(); // 🔥 CLAVE
+
+      const [local] = realEmailValue.split("@");
+      originalEmailLocalLength = local.length;
+      emailWasPrefilled = true;
+
+      fieldEmail.value = maskEmail(realEmailValue);
+      fieldEmail.disabled = realEmailValue.length > 0 ? true : false;
+      fieldDepartament.disabled = false;
+      fieldProvince.disabled = false;
+      inputcorreo2.disabled = false;
+      fieldPhone.innerHTML = `<option value="">Selecciona tu servicio</option>`;
+
+      if (Array.isArray(user.services) && user.services.length > 0) {
+        user.services.forEach(({ id, phone }) => {
+          const option = document.createElement("option");
+          option.value = id;
+          option.textContent = phone;
+          fieldPhone.appendChild(option);
+        });
+
+        // Seleccionar el primer servicio por defecto
+        /*if (user.services.length > 0) {
+          fieldPhone.value = user.services[0].id;
+          // Verificar si la opción seleccionada tiene "+" y mostrar/ocultar campos
+          setTimeout(() => {
+            handlePhoneChange();
+          }, 100);
+        }*/
+      }
+      fieldPhone.disabled = false;
+
+      if (validator) {
+        validator.revalidateField("#name");
+        validator.revalidateField("#email");
+        validator.revalidateField("#emaildos");
+        validator.revalidateField("#departament");
+        validator.revalidateField("#province");
+        validator.revalidateField("#phone");
+        validator.revalidateField("#dni");
+        validator.revalidateField("#typeDoc");
+        validator.revalidateField("#terms");
+      }
+    };
+
+    const createLocalStorageUser = (
+      nameForm,
+      emailForm,
+      phoneForm,
+      typeDocForm,
+      dniForm,
+      serviceForm,
+      provinceForm,
+    ) => {
+      const user = {
+        fullName: nameForm,
+        email: emailForm,
+        phone: phoneForm,
+        typeDocument: typeDocForm,
+        dni: dniForm,
+        serviceId: serviceForm,
+        provinceId: provinceForm,
+      };
+      localStorage.setItem("user", JSON.stringify(user));
+    };
+
+    const getLocalStorageUser = () => {
+      const user = localStorage.getItem("user");
+      return user ? JSON.parse(user) : null;
+    };
+
+    const getParameterByUrl = (param: string) => {
+      const url = new URL(window.location.href);
+      return url.searchParams.get(param);
+    };
+
+    const deleteParameterByUrl = (param: string) => {
+      const url = new URL(window.location.href);
+      url.searchParams.delete(param);
+      window.history.replaceState(null, "", url);
+    };
+
+    const debounce = (fn, delay = 600) => {
+      let timeoutId: number | undefined;
+      return (...args: any[]) => {
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
+        timeoutId = window.setTimeout(() => {
+          fn(...args);
+        }, delay);
+      };
+    };
+
+    const handlePreCheckByDni = async () => {
+      if (!fieldDni || !fieldTypeDoc) return;
+      if (fieldTypeDoc.value === "") {
+        fieldTypeDoc.dispatchEvent(new Event("change"));
+        return;
+      }
+      const typeDocument = fieldTypeDoc.value;
+      const dniValue = realDniValue.trim();
+      if (typeDocument === "DNI") {
+        if (dniValue.length !== 8) return;
+      } else if (typeDocument === "CEX") {
+        if (dniValue.length < 9) return;
+      } else if (typeDocument === "PASAPORTE") {
+        if (dniValue.length !== 9) return;
+      }
+      togglePreloadAnimation(true);
+      try {
+        const { allowed, reason, user } = await preCheck(dniValue);
+
+        if (user) {
+          user.verified = true; // 👈 FORZAMOS ESTADO CORRECTO
+        }
+        if (
+          (!allowed || !user) &&
+          reason !== "Ya estás registrado y verificado."
+        ) {
+          errorFindUser(reason);
+          return;
+        }
+        setValuesForm(user);
+        //seteamos los datos del user en el store
+        userStore.setState({ user });
+      } catch (error) {
+        console.error("Error en preCheck desde DNI:", error);
+      } finally {
+        togglePreloadAnimation(false);
+      }
+    };
+    const sanitizeDniByType = (value: string, type: string) => {
+      if (type === "DNI" || type === "PASAPORTE") {
+        return value.replace(/\D/g, ""); // solo números
+      }
+      if (type === "CEX") {
+        return value.replace(/[^a-zA-Z0-9]/g, ""); // alfanumérico
+      }
+      return "";
+    };
+
+    if (fieldDni) {
+      const debouncedPreCheck = debounce(handlePreCheckByDni, 600);
+
+      fieldDni.addEventListener("input", (e: InputEvent) => {
+        const input = e.target as HTMLInputElement;
+        const typeDoc = fieldTypeDoc.value;
+
+        // Quitamos los * visibles
+        let visibleValue = input.value.replace(/\*/g, "");
+
+        // 🔒 Sanitizamos según tipo de documento
+        visibleValue = sanitizeDniByType(visibleValue, typeDoc);
+
+        // 🧠 Autofill / pegado / reemplazo masivo
+        if (
+          e.inputType === "insertFromPaste" ||
+          e.inputType === "insertReplacementText" ||
+          visibleValue.length > realDniValue.length + 1
+        ) {
+          realDniValue = visibleValue;
+        }
+
+        // 🧠 Borrado
+        else if (e.inputType === "deleteContentBackward") {
+          realDniValue = realDniValue.slice(0, -1);
+        }
+
+        // 🧠 Escritura normal
+        else if (e.inputType === "insertText" && e.data) {
+          const char = sanitizeDniByType(e.data, typeDoc);
+          if (!char) return;
+          realDniValue += char;
+        }
+
+        // 🔒 Longitud máxima
+        if (typeDoc === "DNI") {
+          realDniValue = realDniValue.slice(0, 8);
+        } else if (typeDoc === "PASAPORTE") {
+          realDniValue = realDniValue.slice(0, 9);
+        } else if (typeDoc === "CEX") {
+          realDniValue = realDniValue.slice(0, 20);
+        }
+
+        // 🎭 Aplicar máscara
+        input.value = maskDni(realDniValue);
+
+        // 🚀 Validación
+        debouncedPreCheck();
+      });
+      fieldDni.addEventListener("beforeinput", (e: InputEvent) => {
+        const typeDoc = fieldTypeDoc.value;
+        const data = e.data;
+
+        // Borrado, navegación, etc.
+        if (!data) return;
+
+        // DNI y PASAPORTE → solo números
+        if (
+          (typeDoc === "DNI" || typeDoc === "PASAPORTE") &&
+          !/^\d$/.test(data)
+        ) {
+          e.preventDefault();
+        }
+
+        // CEX → letras y números
+        if (typeDoc === "CEX" && !/^[a-zA-Z0-9]$/.test(data)) {
+          e.preventDefault();
+        }
+      });
+    }
+    fieldTypeDoc.addEventListener("change", () => {
+      realDniValue = "";
+      fieldDni.value = "";
+    });
+    if (fieldName) {
+      fieldName.addEventListener("input", (e: InputEvent) => {
+        const input = e.target as HTMLInputElement;
+
+        // Borrado
+        if (e.inputType === "deleteContentBackward") {
+          realNameValue = realNameValue.slice(0, -1);
+        }
+
+        // Escritura normal
+        if (e.inputType === "insertText" && e.data) {
+          const char = e.data;
+
+          // Solo letras y espacio
+          if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]$/.test(char)) return;
+
+          realNameValue += char;
+        }
+
+        // Normalizar espacios múltiples
+        realNameValue = realNameValue.replace(/\s+/g, " ");
+
+        // Aplicar máscara visual
+        input.value = maskName(realNameValue);
+      });
+    }
+
+    if (fieldEmail) {
+      fieldEmail.addEventListener("input", (e: InputEvent) => {
+        const input = e.target as HTMLInputElement;
+
+        if (e.inputType === "deleteContentBackward") {
+          realEmailValue = realEmailValue.slice(0, -1);
+        }
+
+        if (e.inputType === "insertText" && e.data) {
+          const char = e.data;
+          if (!/^[a-zA-Z0-9@._-]$/.test(char)) return;
+          realEmailValue += char;
+        }
+
+        // 🧹 Si el usuario borra todo, recién liberamos el masking
+        if (realEmailValue.length === 0) {
+          emailWasPrefilled = false;
+          originalEmailLocalLength = 0;
+        }
+
+        input.value = maskEmail(realEmailValue);
+      });
+    }
+
+    const fieldEmailDos = document.querySelector(
+      "#emaildos",
+    ) as HTMLInputElement;
+
+    const normalizeEmail = (value: string) => {
+      return value
+        .trim()
+        .replace(/\s+/g, "")
+        .replace(/[^a-zA-Z0-9@._-]/g, "");
+    };
+
+    const validateEmailDosRealtime = () => {
+      const rawValue = fieldEmailDos.value;
+      realEmail2Value = normalizeEmail(rawValue);
+
+      // sincroniza visualmente (solo si hubo limpieza)
+      if (rawValue !== realEmail2Value) {
+        fieldEmailDos.value = realEmail2Value;
+      }
+
+      const isValid = isValidEmailBasic(realEmail2Value);
+
+      fieldEmailDos.classList.toggle("success", isValid);
+      fieldEmailDos.classList.toggle("error_email_dos", !isValid);
+
+      if (validator) {
+        //validator.revalidateField("#emaildos");
+      }
+    };
+
+    if (fieldEmailDos) {
+      // escritura normal, pegar, borrar
+      fieldEmailDos.addEventListener("input", validateEmailDosRealtime);
+
+      // autofill / autocomplete del navegador
+      fieldEmailDos.addEventListener("change", validateEmailDosRealtime);
+
+      // blur para casos edge
+      fieldEmailDos.addEventListener("blur", validateEmailDosRealtime);
+    }
+
+    function isValidEmailBasic(value: string): boolean {
+      const atIndex = value.indexOf("@");
+      const dotIndex = value.lastIndexOf(".");
+
+      return (
+        atIndex > 0 && dotIndex > atIndex + 1 && dotIndex < value.length - 1
+      );
+    }
+
+    if (isValidEmailBasic(realEmail2Value)) {
+      fieldEmailDos.classList.remove("error_email_dos");
+      fieldEmailDos.classList.add("success");
+    } else {
+      fieldEmailDos.classList.remove("success");
+      fieldEmailDos.classList.add("error_email_dos");
+    }
+
+    if (realEmail2Value.length === 0) {
+      fieldEmailDos.value = "";
+    }
+
+    /*
+    if (fieldEmailDos) {
+      new autoSuggestEmail(fieldEmailDos, {
+        domains: [
+          "gmail.com",
+          "hotmail.com",
+          "yahoo.com",
+          "icloud.com",
+          "outlook.com",
+        ],
+        priority: [
+          "gmail.com",
+          "hotmail.com",
+          "outlook.com",
+          "icloud.com",
+          "yahoo.com",
+        ],
+      });
+    }*/
+
+    // Validación dinámica para el campo de documento
+    let dniFieldRegistered = false;
+
+    const updateDocumentValidation = (typeDocument) => {
+      if (dniFieldRegistered) {
+        validator.removeField("#dni");
+      }
+      if (typeDocument === "DNI") {
+        fieldDni.setAttribute("inputmode", "numeric");
+
+        validator.addField("#dni", [
+          {
+            rule: "required",
+            errorMessage: "*Ingresa el número de documento.",
+          },
+          {
+            validator: () => realDniValue.length === 8,
+            errorMessage: "El DNI debe tener 8 dígitos.",
+          },
+        ]);
+        dniFieldRegistered = true;
+      } else if (typeDocument === "CEX") {
+        fieldDni.setAttribute("inputmode", "text");
+        validator.addField("#dni", [
+          {
+            rule: "required",
+            errorMessage: "*Ingresa el número de documento.",
+          },
+          {
+            validator: () => realDniValue.length >= 9,
+            errorMessage: "El CEX debe tener mínimo 9 caracteres.",
+          },
+        ]);
+        dniFieldRegistered = true;
+      } else if (typeDocument === "PASAPORTE") {
+        fieldDni.setAttribute("inputmode", "numeric");
+        validator.addField("#dni", [
+          {
+            rule: "required",
+            errorMessage: "*Ingresa el número de documento.",
+          },
+          {
+            validator: () => realDniValue.length === 9,
+            errorMessage: "El pasaporte debe tener 9 dígitos.",
+          },
+        ]);
+        dniFieldRegistered = true;
+      }
+    };
+
+    if (fieldTypeDoc) {
+      fieldTypeDoc.addEventListener("change", () => {
+        if (fieldTypeDoc.value === "") {
+          fieldDni.disabled = true;
+          return;
+        }
+        fieldDni.disabled = false;
+        updateDocumentValidation(fieldTypeDoc.value);
+      });
+    }
+
+    if (fieldPhone) {
+      fieldPhone.addEventListener("change", () => {
+        if (validator) {
+          validator.revalidateField("#phone");
+          validator.revalidateField("#name");
+          validator.revalidateField("#email");
+          validator.revalidateField("#dni");
+          validator.revalidateField("#typeDoc");
+        }
+      });
+    }
+
+    if (fieldDepartament) {
+      const getResponseDepartment = await getDepartament();
+      if (getResponseDepartment.success) {
+        const departments = getResponseDepartment.data;
+        fieldDepartament.innerHTML = `<option value="">Departamento</option>`;
+        departments.forEach(({ id, name, isActive }) => {
+          const option = document.createElement("option");
+          option.value = id;
+          option.textContent = name;
+          if (isActive) {
+            fieldDepartament.appendChild(option);
+          }
+        });
+      }
+    }
+
+    fieldDepartament.addEventListener("change", async () => {
+      const departmentId = fieldDepartament.value;
+      const getResponseProvince = await getProvince(departmentId);
+      if (getResponseProvince.success) {
+        const provinces = getResponseProvince.data;
+        fieldProvince.innerHTML = `<option value="">Provincia</option>`;
+        provinces.forEach(({ id, name, isActive }) => {
+          const option = document.createElement("option");
+          option.value = id;
+          option.textContent = name;
+          if (isActive) {
+            fieldProvince.appendChild(option);
+          }
+        });
+      }
+      if (validator) {
+        validator.revalidateField("#province");
+      }
+    });
+
+    const validator = new JustValidate("#form-registro", {
+      errorFieldCssClass: "border-red-500",
+      errorLabelCssClass: "text-red-500 text-xs mt-1",
+      successFieldCssClass: "border-green-500",
+      validateBeforeSubmitting: true,
+    });
+
+    validator
+      .addField("#name", [
+        {
+          rule: "required",
+          errorMessage: "*Ingresa tus nombres y apellidos.",
+        },
+        {
+          validator: () => realNameValue.length >= 3,
+          errorMessage: "*Ingresa como mínimo 3 caracteres.",
+        },
+        {
+          validator: () => realNameValue.length <= 60,
+          errorMessage: "El nombre no puede superar los 60 caracteres.",
+        },
+        {
+          validator: () => /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(realNameValue),
+          errorMessage: "Solo se permiten letras.",
+        },
+      ])
+      .addField("#typeDoc", [
+        {
+          rule: "required",
+          errorMessage: "*Selecciona el tipo de documento.",
+        },
+      ])
+      .addField("#departament", [
+        {
+          rule: "required",
+          errorMessage: "*Selecciona el departamento.",
+        },
+      ])
+      .addField("#province", [
+        {
+          rule: "required",
+          errorMessage: "*Selecciona la provincia.",
+        },
+      ])
+      .addField("#phone", [
+        {
+          validator: () => {
+            if (!fieldPhone) return true;
+            // Si está deshabilitado, no lo consideramos para la validación
+            if (fieldPhone.disabled) return true;
+            // Cuando está habilitado, debe tener un valor distinto de ""
+            return fieldPhone.value !== "";
+          },
+          errorMessage: "*Selecciona tu servicio asociado.",
+        },
+      ])
+      .addField("#email", [
+        {
+          rule: "required",
+          errorMessage: "*Ingresa tu correo electrónico.",
+        },
+        {
+          validator: () => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(realEmailValue),
+          errorMessage: "Correo electrónico inválido.",
+        },
+      ])
+      .addField("#emaildos", [
+        {
+          rule: "required",
+          errorMessage: "*Ingresa tu correo electrónico.",
+        },
+        {
+          validator: () => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(realEmail2Value),
+          errorMessage: "Correo electrónico inválido.",
+        },
+      ])
+      .addField("#terms", [
+        {
+          rule: "required",
+          errorMessage: "*Acepta los términos y condiciones para participar.",
+        },
+      ])
+      .onValidate(
+        ({
+          isValid,
+          isSubmitted,
+          fields,
+          errors,
+          failedRules,
+          failedRulesCount,
+        }) => {
+          if (isValid) {
+            submitBtn.disabled = !isValid;
+          } else {
+            submitBtn.disabled = !isValid;
+          }
+        },
+      )
+      .addField("#comunicacion", [
+        {
+          rule: "required",
+          errorMessage: "*Acepta recibir comunicación publicitaria de Claro.",
+        },
+      ])
+      .onSuccess(async (event) => {
+        event.preventDefault();
+        const dataForm = new FormData(form);
+        const fieldPhoneIDForm = dataForm.get("phone") as string;
+        const fieldPhoneNameForm =
+          fieldPhone.options[fieldPhone.selectedIndex].text;
+        const fieldEmailForm = realEmailValue;
+        const fieldEmail2Form = realEmail2Value;
+        const fieldNameForm = realNameValue;
+        const fielDNIForm = realDniValue;
+        const fieldProvinceForm = dataForm.get("province") as string;
+
+        // Obtener el teléfono adicional si el campo está visible
+        let telefonoAdicional = "";
+        if (inputCasual.style.display !== "none") {
+          telefonoAdicional = dataForm.get("telefono") as string;
+        }
+
+        const nextStep = Number(submitBtn.dataset.nextStep);
+        submitBtn.disabled = true;
+        togglePreloadAnimation(true);
+
+        try {
+          const { user } = userStore.getState();
+          userStore.setState({
+            user: {
+              ...user,
+              serviceId: fieldPhoneIDForm,
+              provinceId: fieldProvinceForm,
+              telefonoAdicional: telefonoAdicional,
+            },
+          });
+          if (!user) {
+            throw new Error(
+              "User no está definido en el store antes de registerUser",
+            );
+          }
+
+          const { email, docType, docNumber } = user;
+          const registerUserResponse = await registerUser({
+            name: fieldNameForm,
+            emailConfirm: fieldEmail2Form, // este será el email final
+            serviceId: fieldPhoneIDForm,
+            docType,
+            docNumber: fielDNIForm,
+            provinceId: fieldProvinceForm,
+            telefono: telefonoAdicional,
+          });
+          //console.log('registerUserResponse:', registerUserResponse);
+
+          if (registerUserResponse?.success) {
+            // ✅ Si canPlay=true, el usuario ya está validado y puede jugar inmediatamente
+            if (
+              registerUserResponse?.canPlay === true &&
+              registerUserResponse?.token
+            ) {
+              console.log("✅ Usuario ya validado - Auto-login activado");
+
+              // Guardar token si el backend lo envía
+              if (registerUserResponse.token) {
+                localStorage.setItem("authToken", registerUserResponse.token);
+              }
+
+              // Actualizar el store con el userId retornado
+              const { user } = userStore.getState();
+              userStore.setState({
+                user: {
+                  ...user,
+                  id: registerUserResponse.userId,
+                  verified: true,
+                },
+              });
+
+              // Validar si puede girar la ruleta usando el serviceId del formulario
+              const userEnabledResponse =
+                await validUserEnabled(fieldPhoneIDForm);
+              const {
+                canSpin,
+                remainingPlays,
+                playsAllowed,
+                playsUsed,
+                reason,
+              } = userEnabledResponse || {};
+
+              if (canSpin) {
+                console.log("Usuario puede jugar, iniciando ruleta");
+
+                // Ocultar formularios y mostrar ruleta
+                document
+                  .querySelectorAll(".section_hidden")
+                  .forEach((section) => section.classList.add("hidden"));
+                document
+                  .querySelector(".ruletaGanadora")
+                  ?.classList.remove("hidden");
+
+                const eventInitRuleta = new CustomEvent("ruleta:enter");
+                document.dispatchEvent(eventInitRuleta);
+
+                createLocalStorageUser(
+                  fieldNameForm,
+                  fieldEmail2Form, // Usar el email confirmado
+                  fieldPhoneNameForm,
+                  docType,
+                  fielDNIForm,
+                  fieldPhoneIDForm,
+                  fieldProvinceForm,
+                );
+
+                // Scroll hacia arriba
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                });
+
+                togglePreloadAnimation(false);
+              } else {
+                togglePreloadAnimation(false);
+                showCustomModal({
+                  title:
+                    "Lo sentimos, no puedes participar en estos momentos 👇",
+                  html: `<p>${reason}</p>`,
+                  iconSrc: icon_no_cumple.src,
+                  confirmButtonText: "Entendido",
+                  showCloseButton: false,
+                  onConfirm: () => {
+                    resetForm();
+                  },
+                });
+              }
+              return;
+            } else {
+              // if ((window as any).bannerStepTransition) {
+              //   const currentStep = (window as any).bannerStepTransition.getCurrentStep();
+              //   (window as any).bannerStepTransition.nextToStep(currentStep, nextStep);
+              // }
+              createLocalStorageUser(
+                fieldNameForm,
+                fieldEmailForm,
+                fieldPhoneNameForm,
+                docType,
+                fielDNIForm,
+                fieldPhoneIDForm,
+                fieldProvinceForm,
+              );
+              togglePreloadAnimation(false);
+              showCustomModal({
+                title: "¡Ya casi terminamos!",
+                html: `<p>Te hemos enviado un correo para validar tu cuenta.<br><span class="font-amx-bold">Revisa tu bandeja de entrada o spam.</span></p>`,
+                iconSrc: icon_no_cumple.src,
+                confirmButtonText: "Entendido",
+                showCloseButton: false,
+                onConfirm: () => {
+                  resetForm();
+                },
+              });
+            }
+          }
+          submitBtn.disabled = false;
+          resetForm();
+        } catch (error) {
+          console.error("Error en onSuccess Paso02:", error);
+          togglePreloadAnimation(false);
+          showCustomModal({
+            iconSrc: icon_no_cumple.src,
+            title: "Error en la validación",
+            html: "",
+            confirmButtonText: "Entendido",
+            showCloseButton: true,
+            onConfirm: () => {
+              resetForm();
+            },
+          });
+        }
+      });
+
+    if (fieldEmailDos) {
+      fieldEmailDos.addEventListener("input", () => {
+        if (validator) {
+          validator.revalidateField("#emaildos");
+        }
+      });
+    }
+
+    //Crea una funcion para restear el formulario y poder usarlo en onSuccess
+    const resetForm = () => {
+      form.reset();
+      validator.refresh();
+      fieldPhone.disabled = true;
+      fieldName.disabled = true;
+      fieldEmail.disabled = true;
+      fieldDni.disabled = true;
+      inputTelefono.disabled = true;
+      inputCasual.style.display = "none";
+      submitBtn.disabled = true;
+      realDniValue = "";
+      realEmail2Value = "";
+      inputcorreo2.disabled = true;
+      if (validator) {
+        validator.removeField("#telefono");
+      }
+    };
+
+    restrictInput("#telefono", /[^0-9]/g);
+
+    //Agrega una función debounde para el input fieldDNi para cuando el usuario termine de escribir llamar al api preCheck
+
+    // Inicializar autoSuggestEmail para sugerencias de correo
+    /*new autoSuggestEmail(fieldEmail, {
+      domains: [
+        "gmail.com",
+        "hotmail.com",
+        "yahoo.com",
+        "icloud.com",
+        "outlook.com",
+      ],
+      priority: [
+        "gmail.com",
+        "hotmail.com",
+        "outlook.com",
+        "icloud.com",
+        "yahoo.com",
+      ],
+    });*/
+
+    handleModal(
+      ".openModalTratamiento",
+      "#modaltratamiento",
+      "#modaltratamiento .section__modals__modal-close",
+      "#modaltratamiento .section__modals__modal-footer-close",
+    );
+
+    handleModal(
+      ".openModalPromociones",
+      "#modalpromociones",
+      "#modalpromociones .section__modals__modal-close",
+      "#modalpromociones .section__modals__modal-footer-close",
+    );
+
+    const triggers = document.querySelectorAll(
+      ".trigger",
+    ) as NodeListOf<HTMLElement>;
+
+    const openTooltip = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const tooltip = target.querySelector("[role=tooltip]") as HTMLElement;
+      tooltip.classList.add("active");
+    };
+
+    const closeTooltip = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const tooltip = target.querySelector("[role=tooltip]") as HTMLElement;
+      tooltip.classList.remove("active");
+    };
+
+    if (triggers) {
+      triggers.forEach((trigger) => {
+        let tooltip = document.createElement("span");
+
+        tooltip.setAttribute("role", "tooltip");
+        tooltip.setAttribute("inert", "true");
+        tooltip.textContent = trigger.dataset.tooltip;
+
+        trigger.appendChild(tooltip);
+
+        trigger.addEventListener("mouseenter", openTooltip);
+        trigger.addEventListener("mouseleave", closeTooltip);
+      });
+    }
+    const getParameter = getParameterByUrl("code");
+    const userLocal = getLocalStorageUser();
+    //console.log(getParameter);
+    if (getParameter && userLocal) {
+      togglePreloadAnimation(true);
+      try {
+        const verifyCodeResponse = await verifyCode(
+          userLocal.email,
+          getParameter,
+          userLocal.dni,
+        );
+        const { verified, message, status } = verifyCodeResponse || {};
+        const verifyMockup = true;
+        if (verified) {
+          userStore.setState({ user: { ...userLocal, verified: true } });
+          const userEnabledResponse = await validUserEnabled(
+            userLocal.serviceId,
+          );
+          const { canSpin, remainingPlays, playsAllowed, playsUsed, reason } =
+            userEnabledResponse || {};
+          const canSpinMockup = true;
+          if (canSpin) {
+            document
+              .querySelectorAll(".section_hidden")
+              .forEach((section) => section.classList.add("hidden"));
+            document
+              .querySelector(".ruletaGanadora")
+              .classList.remove("hidden");
+            const eventInitRuleta = new CustomEvent("ruleta:enter");
+            document.dispatchEvent(eventInitRuleta);
+          } else {
+            showCustomModal({
+              title: "Lo sentimos, no puedes participar en estos momentos 👇",
+              html: `<p>${reason}</p>`,
+              iconSrc: icon_no_cumple.src,
+              confirmButtonText: "Entendido",
+              showCloseButton: false,
+              onConfirm: () => {
+                togglePreloadAnimation(false);
+              },
+            });
+          }
+        } else {
+          showCustomModal({
+            title: "Token inválido y/o expirado",
+            html: message || "El token ingresado no es válido",
+            iconSrc: icon_no_cumple.src,
+            confirmButtonText: "Aceptar",
+            showCloseButton: false,
+            onConfirm: () => {
+              resetForm();
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error en verifyCode:", error);
+        showCustomModal({
+          title: "Error en la validación",
+          html: "",
+          iconSrc: icon_no_cumple.src,
+          confirmButtonText: "Entendido",
+          showCloseButton: true,
+          onConfirm: () => {
+            resetForm();
+          },
+        });
+      } finally {
+        deleteParameterByUrl("code");
+        togglePreloadAnimation(false);
+      }
+    }
+
+    const getDniByParameter = getParameterByUrl("dnihavas");
+    if (getDniByParameter) {
+      try {
+        const deleteUserByDniResponse =
+          await deleteUserByDni(getDniByParameter);
+        console.log(deleteUserByDniResponse);
+        alert("DNI eliminado correctamente");
+        deleteParameterByUrl("dnihavas");
+      } catch (error) {
+        alert("Error al eliminar el DNI");
+      }
+    }
+
+    document.addEventListener("click", (e) => {
+      const target = e.target as HTMLElement;
+
+      const btn = target.closest(".btnOpenModal2") as HTMLAnchorElement | null;
+      if (!btn) return;
+
+      e.preventDefault();
+
+      const closeModal = document.querySelector(
+        ".swal2-close",
+      ) as HTMLElement | null;
+      closeModal?.click();
+
+      const c20peElement = document.querySelector(
+        ".c20pe",
+      ) as HTMLElement | null;
+      if (!c20peElement) return;
+
+      const yOffset = -80;
+      const y =
+        c20peElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+      setTimeout(() => {
+        window.scrollTo({
+          top: y,
+          behavior: "smooth",
+        });
+      }, 1000);
+
+      setTimeout(() => {
+        const actBtn = c20peElement.querySelector(
+          ".actBtn",
+        ) as HTMLElement | null;
+        actBtn?.click();
+      }, 600);
+    });
+  });
+</script>

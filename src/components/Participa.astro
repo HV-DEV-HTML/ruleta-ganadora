@@ -40,21 +40,26 @@ const postpagoCards = [
     image: card_02.src,
     alt: "Paso 2 Postpago",
     step: 2,
-    title: "Recibirás el mensaje de CLARO confirmándote que puedes participar de la ruleta.",
-    description: "*Si tu línea o play Claro Hogar ya recibió un premio, no recibirás más invitaciones a la ruleta.",
+    title:
+      "Recibirás el mensaje de CLARO confirmándote que puedes participar de la ruleta.",
+    description:
+      "*Si tu línea o play Claro Hogar ya recibió un premio, no recibirás más invitaciones a la ruleta.",
   },
   {
     image: card_03.src,
     alt: "Paso 3 Postpago",
     step: 3,
-    title: "Ingresa a link, completa el formulario para recibir publicidad y gira la ruleta hasta el 20/01/26.",
-    description: "*Recuerda que se mostraran los premios disponibles para tu plan. Premio de celulares no disponible para prepago."
+    title:
+      "Ingresa a link, completa el formulario para recibir publicidad y gira la ruleta hasta el 20/01/26.",
+    description:
+      "*Recuerda que se mostraran los premios disponibles para tu plan. Premio de celulares no disponible para prepago.",
   },
   {
     image: card_01_postpago.src,
     alt: "Paso 4 Postpago",
     step: 4,
-    title: "Descubrirás el premio que ganaste y CLARO te enviará correo con el detalle.",
+    title:
+      "Descubrirás el premio que ganaste y CLARO te enviará correo con el detalle.",
   },
 ];
 ---
@@ -120,8 +125,12 @@ const postpagoCards = [
           <div class="part1">
             <p><b>Cliente Prepago</b></p>
             <ul>
-              <li>Recargar, aceptar y activar un “Crece tu recarga” desde S/10</li>
-              <li>Contratar un servicio, Portabilidad o Renovación de equipo.</li>
+              <li>
+                Recargar, aceptar y activar un “Crece tu recarga” desde S/10
+              </li>
+              <li>
+                Contratar un servicio, Portabilidad o Renovación de equipo.
+              </li>
               <li>Comprar paquete desde S/10</li>
             </ul>
           </div>
@@ -129,7 +138,9 @@ const postpagoCards = [
             <p><b>Cliente Postpago</b></p>
             <ul>
               <li>Comprar paquetes desde S/10</li>
-              <li>Contratar un servicio, Portabilidad o Renovación de equipo.</li>
+              <li>
+                Contratar un servicio, Portabilidad o Renovación de equipo.
+              </li>
               <li>Recargar desde S/10</li>
             </ul>
           </div>
@@ -137,8 +148,13 @@ const postpagoCards = [
         <div class="part3">
           <p><b>Cliente Fija</b></p>
           <ul>
-            <li>Contratar un servicio en 1, 2 y/o 3 play que incluyan el servicio de Internet.</li>
-            <li>Realizar una actualización de tecnología de internet (HFC a FTTH).</li>
+            <li>
+              Contratar un servicio en 1, 2 y/o 3 play que incluyan el servicio
+              de Internet.
+            </li>
+            <li>
+              Realizar una actualización de tecnología de internet (HFC a FTTH).
+            </li>
           </ul>
         </div>
         <button>Entendido</button>
@@ -149,26 +165,26 @@ const postpagoCards = [
 
 <style>
   .secparticipa {
-    padding-top: 234px !important;
+    padding-top: 165px !important;
   }
   @media (max-width: 1599px) {
     .secparticipa {
-      padding-top: 384px !important;
+      padding-top: 237px !important;
     }
   }
   @media (max-width: 1279px) {
     .secparticipa {
-      padding-top: 312px !important;
+      padding-top: 100px !important;
     }
   }
   @media (max-width: 1023px) {
     .secparticipa {
-      padding-top: 371px !important;
+      padding-top: 58px !important;
     }
   }
   @media (max-width: 500px) {
     .secparticipa {
-      padding-top: 410px !important;
+      padding-top: 53px !important;
     }
   }
   .modalTransacciones {
@@ -330,7 +346,9 @@ const postpagoCards = [
       });
     });
   });
-  const modal = document.querySelector(".modalTransacciones") as HTMLElement | null;
+  const modal = document.querySelector(
+    ".modalTransacciones",
+  ) as HTMLElement | null;
   const body = document.body;
 
   // Abrir modal (delegación de eventos)
@@ -373,10 +391,15 @@ const postpagoCards = [
   document.addEventListener("DOMContentLoaded", () => {
     const getPasosTab = getParameterByUrl("tabpasos");
     if (!getPasosTab) return;
-    const sectionParticipa = document.querySelector(".secparticipa .container") as HTMLElement | null;
+    const sectionParticipa = document.querySelector(
+      ".secparticipa .container",
+    ) as HTMLElement | null;
     if (!sectionParticipa) return;
     const yOffset = -135;
-    const y = sectionParticipa.getBoundingClientRect().top + window.pageYOffset + yOffset;
+    const y =
+      sectionParticipa.getBoundingClientRect().top +
+      window.pageYOffset +
+      yOffset;
     setTimeout(() => {
       window.scrollTo({
         top: y,

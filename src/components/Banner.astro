@@ -1,6 +1,6 @@
 ---
 import Paso01 from "@components/Paso01.astro";
-import Paso02 from "@components/Paso02.astro";
+import Paso02 from "@components/Paso02-cierre.astro";
 import Paso03 from "@components/Paso03.astro";
 import bg_mobile from "@/assets/images/banner_mobile.webp";
 import bg_tablet from "@/assets/images/banner_tablet.webp";
@@ -18,7 +18,7 @@ import Icon07 from "@components/Banner/Icon07.astro";
 ---
 
 <section
-  class="p-0 relative banner_sorteo section_hidden bg-transparent h-[800px] md:h-[1000px] lg:h-[1200px] xl:h-[740px] 2xl:h-[900px]"
+  class="p-0 relative banner_sorteo section_hidden bg-transparent h-[600px] md:h-[800px] lg:h-[950px] xl:h-[740px] 2xl:h-[900px]"
   data-current-step="2"
 >
   <picture class="bg-claro">
@@ -203,7 +203,7 @@ import Icon07 from "@components/Banner/Icon07.astro";
         enableX: true,
         enableY: false,
         invertX: invertX,
-      }
+      },
     );
   });
 </script>
