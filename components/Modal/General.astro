@@ -1,0 +1,172 @@
+---
+
+---
+
+<script>
+  import icon_no_cumple from "@/assets/icons/icon_no_cumple.svg";
+  import icon_gano_premio from "@/assets/icons/icon_gano_premio.svg";
+  import icon_no_gano from "@/assets/icons/icon_no_gano.svg";
+
+  import Swal from "sweetalert2";
+  const openModalNoCumple = () => {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        popup: "rounded-[20px] max-w-[640px] w-full pb-8 lg:p-4 lg:pb-8",
+        actions: "gap-2",
+        icon: "rounded-[0px] border-0",
+        title:
+          "font-amx-bold text-2xl xl:text-3xl text-black pt-0 text-balance",
+        htmlContainer:
+          "font-roboto text-base text-black !flex flex-col gap-2 xl:gap-3 px-10",
+        cancelButton: "",
+        confirmButton:
+          "font-amx-bold min-w-[124px] max-w-fit cursor-pointer outline-none py-3 px-6 font-medium text-base rounded-[40px] transition duration-300 flex items-center justify-center gap-1 leading-none h-fit bg-claro hover:bg-claro-dark text-white",
+      },
+      buttonsStyling: false,
+    });
+    swalWithBootstrapButtons.fire({
+      iconHtml: "<img src='" + icon_no_cumple.src + "'>",
+      title: "Lo sentimos, no puedes participar en estos momentos 👇",
+      html: '<p>"Entérate cómo participar <span class="btnOpenModal">aquí</span>." *Si cumples con las condiciones tu participación se habilitará en un máximo de 72h.</p>',
+      showCancelButton: false,
+      showConfirmButton: true,
+      confirmButtonText: "Volver al inicio",
+      cancelButtonText: "",
+      reverseButtons: false,
+      showCloseButton: true,
+      preConfirm: async () => {
+        Swal.showLoading();
+      },
+    });
+  };
+
+  const openModalYaGanoAntes = () => {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        popup: "rounded-[20px] max-w-[640px] w-full pb-8 lg:p-4 lg:pb-8",
+        actions: "gap-2",
+        icon: "rounded-[0px] border-0",
+        title:
+          "font-amx-bold text-2xl xl:text-3xl text-black pt-0 text-balance",
+        htmlContainer:
+          "font-roboto text-base text-black !flex flex-col gap-2 xl:gap-3 px-10",
+        cancelButton: "",
+        confirmButton:
+          "font-amx-bold min-w-[124px] max-w-fit cursor-pointer outline-none py-3 px-6 font-medium text-base rounded-[40px] transition duration-300 flex items-center justify-center gap-1 leading-none h-fit bg-claro hover:bg-claro-dark text-white",
+      },
+      buttonsStyling: false,
+    });
+    swalWithBootstrapButtons.fire({
+      iconHtml: "<img src='" + icon_no_cumple.src + "'>",
+      title: "¡Ya participaste! Gracias por ser parte de la ruleta ganadora 💫",
+      html: "",
+      showCancelButton: false,
+      showConfirmButton: true,
+      confirmButtonText: "Volver al inicio",
+      cancelButtonText: "",
+      reverseButtons: false,
+      showCloseButton: true,
+      preConfirm: async () => {
+        Swal.showLoading();
+      },
+    });
+  };
+
+  const openModalGanoFisico = () => {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        popup: "rounded-[20px] max-w-[640px] w-full pb-8 lg:p-4 lg:pb-8",
+        actions: "gap-2",
+        icon: "rounded-[0px] border-0",
+        title:
+          "font-amx-bold text-2xl xl:text-3xl text-black pt-0 text-balance",
+        htmlContainer:
+          "font-roboto text-base text-black !flex flex-col gap-2 xl:gap-3 px-10",
+        cancelButton: "",
+        confirmButton:
+          "font-amx-bold min-w-[124px] max-w-fit cursor-pointer outline-none py-3 px-6 font-medium text-base rounded-[40px] transition duration-300 flex items-center justify-center gap-1 leading-none h-fit bg-claro hover:bg-claro-dark text-white",
+      },
+      buttonsStyling: false,
+    });
+    swalWithBootstrapButtons.fire({
+      iconHtml: "<img src='" + icon_gano_premio.src + "'>",
+      title: "🎁 ¡Felicitaciones! Ganaste unos (nombre de premio)",
+      html: "<p>Te llegará un correo de confirmación, revisa tu bandeja de entrada.</p>",
+      showCancelButton: false,
+      showConfirmButton: true,
+      confirmButtonText: "Volver al inicio",
+      cancelButtonText: "",
+      reverseButtons: false,
+      showCloseButton: true,
+      preConfirm: async () => {
+        Swal.showLoading();
+      },
+    });
+  };
+
+  const openModalGanoVirtual = () => {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        popup: "rounded-[20px] max-w-[640px] w-full pb-8 lg:p-4 lg:pb-8",
+        actions: "gap-2",
+        icon: "rounded-[0px] border-0",
+        title:
+          "font-amx-bold text-2xl xl:text-3xl text-black pt-0 text-balance",
+        htmlContainer:
+          "font-roboto text-base text-black !flex flex-col gap-2 xl:gap-3 px-10",
+        cancelButton: "",
+        confirmButton:
+          "font-amx-bold min-w-[124px] max-w-fit cursor-pointer outline-none py-3 px-6 font-medium text-base rounded-[40px] transition duration-300 flex items-center justify-center gap-1 leading-none h-fit bg-claro hover:bg-claro-dark text-white",
+      },
+      buttonsStyling: false,
+    });
+    swalWithBootstrapButtons.fire({
+      iconHtml: "<img src='" + icon_gano_premio.src + "'>",
+      title:
+        "🎉 ¡Felicidades! Ganaste 5 GB para seguir disfrutando de tu conexión",
+      html: "<p>Se activarán en un máximo de <strong>72 horas</strong>.</p>",
+      showCancelButton: false,
+      showConfirmButton: true,
+      confirmButtonText: "Volver al inicio",
+      cancelButtonText: "",
+      reverseButtons: false,
+      showCloseButton: true,
+      preConfirm: async () => {
+        Swal.showLoading();
+      },
+    });
+  };
+
+  const openModalNoGano = () => {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        popup: "rounded-[20px] max-w-[640px] w-full pb-8 lg:p-4 lg:pb-8",
+        actions: "gap-2",
+        icon: "rounded-[0px] border-0",
+        title:
+          "font-amx-bold text-2xl xl:text-3xl text-black pt-0 text-balance",
+        htmlContainer:
+          "font-roboto text-base text-black !flex flex-col gap-2 xl:gap-3 px-10",
+        cancelButton: "",
+        confirmButton:
+          "font-amx-bold min-w-[124px] max-w-fit cursor-pointer outline-none py-3 px-6 font-medium text-base rounded-[40px] transition duration-300 flex items-center justify-center gap-1 leading-none h-fit bg-claro hover:bg-claro-dark text-white",
+      },
+      buttonsStyling: false,
+    });
+    swalWithBootstrapButtons.fire({
+      iconHtml: "<img src='" + icon_no_gano.src + "'>",
+      title:
+        "¡Sigue participando y deja que la suerte siga girando a tu favor! 🍀🎁",
+      html: "<p>Recuerda que por cada recarga, compra o activación, obtienes una nueva oportunidad para girar la ruleta.</p>",
+      showCancelButton: false,
+      showConfirmButton: true,
+      confirmButtonText: "Volver al inicio",
+      cancelButtonText: "",
+      reverseButtons: false,
+      showCloseButton: true,
+      preConfirm: async () => {
+        Swal.showLoading();
+      },
+    });
+  };
+</script>

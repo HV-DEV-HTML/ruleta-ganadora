@@ -1,0 +1,166 @@
+---
+import Button from "@UI/Button.astro"
+---
+
+<div class="w-full h-full hidden" data-step="3">
+  <form id="form-code" data-aos="zoom-in-up" class="bg-white px-4 md:px-10 py-8 md:py-10 xl:py-9 2xl:py-10 w-full rounded-2xl font-roboto flex flex-col gap-3 md:gap-4 md:max-w-[540px] mx-auto relative top-5 md:top-0 xl:top-8 xl:-right-30 z-10 shadow-lg" action="">
+    <h3 class="text-center font-amx-bold text-xl md:text-3xl leading-none">Ingresa tu código de validación</h3>
+    <p class="font-amx-regular text-sm text-balance text-center leading-tight">Se te ha enviado un código de validación al correo electrónico ingresado. Revisa tu bandeja de entrada o spam.</p>
+    <fieldset>
+      <label for="codeClaro" class="text-xs md:text-sm font-bold">Código de validación</label>
+      <input type="text" name="codeClaro" id="codeClaro" maxlength="6" inputmode="numeric" class="w-full px-3 py-2 border border-gray-300 rounded-lg placeholder:text-[#75787C] text-black text-base focus:outline-none" placeholder="Ingrese código (Ejm: 10935)" required>
+    </fieldset>
+    
+    <Button id="btn-submit-code" data-next-step="4" data-aos="zoom-in-up" data-aos-delay="100" type="submit" disabled href="https://www.claro.com.pe/personas/app/claro-musica/" classes="min-w-fit bg-white px-12 py-2.5 xl:py-3.5 border border-claro text-claro cursor-pointer hover:bg-claro hover:text-white disabled:bg-gray-200 disabled:border-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed mx-auto" >Validar y girar la ruleta</Button>
+  </form>
+</div>
+
+<script>
+  import AOS from "aos";
+  import JustValidate from 'just-validate';
+  import { togglePreloadAnimation } from "@/utils/animations";
+  import { userStore } from '@/store/userStore';
+  import { verifyCode, validUserEnabled } from '@/utils/endpoints';
+  import { showCustomModal } from '@/utils/modalHelper';
+  import icon_no_cumple from "@/assets/icons/icon_no_cumple.svg";
+  import {getListProducts} from '@/utils/endpoints';
+
+  // Restricciones de entrada en los campos
+  const restrictInput = (selector, allowedRegex) => {
+    const element = document.querySelector(selector);
+    if (element) {
+      element.addEventListener("input", (event) => {
+        const input = event.target as HTMLInputElement;
+        input.value = input.value.replace(allowedRegex, "");
+      });
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('#form-code') as HTMLFormElement;
+    const submitBtn = document.querySelector('#btn-submit-code') as HTMLButtonElement;
+    
+    if (!form || !submitBtn) return;
+
+    // Funciones de utilidad para animaciones AOS
+    const resetAosAnimations = (element: Element) => {
+      const aosElements = element.querySelectorAll('[data-aos]');
+      aosElements.forEach(el => {
+        el.classList.remove('aos-animate', 'aos-init');
+      });
+    };
+    
+    const validator = new JustValidate('#form-code', {
+      errorFieldCssClass: 'border-red-500',
+      errorLabelCssClass: 'text-red-500 text-xs mt-1',
+      successFieldCssClass: 'border-green-500',
+      validateBeforeSubmitting: true,
+    });
+
+    validator
+      .addField('#codeClaro', [
+        {
+          rule: 'required',
+          errorMessage: 'El código es obligatorio',
+        },
+        {
+          rule: 'minLength',
+          value: 4,
+          errorMessage: 'El código debe tener al menos 4 caracteres',
+        },
+        {
+          rule: 'maxLength',
+          value: 6,
+          errorMessage: 'El código debe tener máximo 6 caracteres',
+        },
+      ])
+      .onValidate(({ isValid, isSubmitted, fields, errors, failedRules, failedRulesCount }) => {     
+        if (isValid) {
+          submitBtn.disabled = !isValid;
+        }else{
+          submitBtn.disabled = !isValid;
+        }
+      })
+      .onSuccess( async(event) => {
+        event.preventDefault();
+        submitBtn.disabled = true;
+        const ruleta = document.querySelector(".ruletaGanadora") as HTMLElement;
+        const code = event.target.codeClaro.value;
+        //Obten el store de store de zustand
+        const { user } = userStore.getState();
+        console.log("user", userStore.getState(), user);
+        if (!user) return;
+        // Aquí puedes agregar la lógica para validar el código con el backend
+        togglePreloadAnimation(true);
+        try {
+          const verifyCodeResponse = await verifyCode(user.email, code);
+          const { verified, message, status } = verifyCodeResponse || {};
+          if (verified) {
+            document.querySelectorAll(".section_hidden").forEach(section => section.classList.add("hidden"));
+            ruleta.classList.remove("hidden");
+          } else {
+            // showCustomModal({
+            //   title: "Código inválido",
+            //   html: message || "El código ingresado no es válido",
+            //   iconSrc: icon_no_cumple.src,
+            //   confirmButtonText: "Aceptar",
+            //   showCloseButton: false,
+            //   onConfirm: () => {
+            //     resetForm();
+            //   },
+            // });
+          }
+        } catch (error) {
+          console.error(error);
+          // showCustomModal({
+          //   title: "Error al validar el código",
+          //   html: "Ocurrió un problema al validar tu código. Por favor, inténtalo nuevamente.",
+          //   iconSrc: icon_no_cumple.src,
+          //   confirmButtonText: "Aceptar",
+          //   showCloseButton: false,
+          //   onConfirm: () => {
+          //     resetForm();
+          //   },
+          // });
+        } finally {
+          submitBtn.disabled = false;
+          document.querySelectorAll(".section_hidden").forEach(section => section.classList.add("hidden"));
+          document.querySelector(".ruletaGanadora").classList.remove("hidden");
+          const eventInitRuleta = new CustomEvent("ruleta:enter");
+          document.dispatchEvent(eventInitRuleta);
+          try {
+            const userEnabledResponse = await validUserEnabled(user.id);
+            const { canSpin, remainingPlays, playsAllowed, playsUsed, reason } = userEnabledResponse || {};
+            console.log({canSpin, remainingPlays, playsAllowed, playsUsed, reason})
+            if (canSpin) {
+              
+            }else{
+              // setTimeout(() => {
+              //   showCustomModal({
+              //     title: "Lo sentimos, no puedes participar en estos momentos 👇",
+              //     html: `<p>${reason}</p>`,
+              //     iconSrc: icon_no_cumple.src,
+              //     confirmButtonText: "Volver al inicio",
+              //     showCloseButton: false,
+              //     onConfirm: () => {
+              //       resetForm();
+              //     },
+              //   });
+              // }, 2500);
+            }
+          } catch (error) {
+            console.error(error);
+          }
+        }
+      });
+    
+    //Crea una funcion para restear el formulario y poder usarlo en onSuccess
+    const resetForm = () => {
+      form.reset();
+      validator.refresh();
+      submitBtn.disabled = true;
+    };
+    // #codeClaro solo se permiten numeros
+    restrictInput("#codeClaro", /[^0-9]/g);
+  });
+</script>
