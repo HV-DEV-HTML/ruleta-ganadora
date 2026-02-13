@@ -34,7 +34,7 @@ const postpagoCards = [
     alt: "Paso 1 Postpago",
     step: 1,
     title:
-      "Contrata un móvil o internet hogar de CLARO de la promoción o si ya eres CLARO conoce cómo participar <span class='btnOpenModal text-white underline cursor-pointer'>AQUÍ</span>",
+      "Los clientes deberán realizar una o varias de las siguientes transacciones, de acuerdo al servicio de CLARO que tengan de su titularidad.Conoce cómo participar <span class='btnOpenModal text-white underline cursor-pointer'>AQUÍ</span>",
   },
   {
     image: card_02.src,
@@ -49,22 +49,19 @@ const postpagoCards = [
     image: card_03.src,
     alt: "Paso 3 Postpago",
     step: 3,
-    title:
-      "Ingresa a link, completa el formulario para recibir publicidad y gira la ruleta hasta el 20/01/26.",
-    description:
-      "*Recuerda que se mostraran los premios disponibles para tu plan. Premio de celulares no disponible para prepago.",
+    title: "Ingresa a link, completa el formulario para recibir publicidad y gira la ruleta hasta el 28/02/26.",
+    description: "*Recuerda que se mostraran los premios disponibles para tu plan. Premio de celulares no disponible para prepago.",
   },
   {
     image: card_01_postpago.src,
     alt: "Paso 4 Postpago",
     step: 4,
-    title:
-      "Descubrirás el premio que ganaste y CLARO te enviará correo con el detalle.",
+    title: "Descubrirás el premio que ganaste y CLARO te enviará correo con el detalle.",
   },
 ];
 ---
 
-<section class="relative bg-transparent text-white secparticipa">
+<section class="relative bg-transparent text-white secparticipa pt-14 md:pt-18 xl:pt-94 2xl:pt-68">
   <div class="container">
     <h2 class="text-center font-amx-bold text-3xl xl:text-4xl pb-6 md:pb-8">
       ¿Cómo participar del sorteo?
@@ -123,38 +120,32 @@ const postpagoCards = [
       <div class="ptext">
         <div class="columns">
           <div class="part1">
-            <p><b>Cliente Prepago</b></p>
+            <p><b>Cliente Internet Hogar</b></p>
             <ul>
               <li>
-                Recargar, aceptar y activar un “Crece tu recarga” desde S/10
+                Realizar un alta en 1, 2 y/o 3 play que incluyan el servicio de Internet.
               </li>
               <li>
-                Contratar un servicio, Portabilidad o Renovación de equipo.
+                Realizar una actualización de tecnología de internet (HFC a FTTH).
               </li>
-              <li>Comprar paquete desde S/10</li>
+              <li>Realizar una solicitud de repetidor como servicio adicional en su plan fijo (HFC a FTTH).</li>
             </ul>
           </div>
           <div class="part2">
             <p><b>Cliente Postpago</b></p>
             <ul>
-              <li>Comprar paquetes desde S/10</li>
-              <li>
-                Contratar un servicio, Portabilidad o Renovación de equipo.
-              </li>
-              <li>Recargar desde S/10</li>
+              <li>Comprar paquetes desde S/10.</li>
+              <li>Realizar un alta, porta o renovación.</li>
+              <li>Recargar desde S/10.</li>
             </ul>
           </div>
         </div>
         <div class="part3">
-          <p><b>Cliente Fija</b></p>
+          <p><b>Cliente Prepago</b></p>
           <ul>
-            <li>
-              Contratar un servicio en 1, 2 y/o 3 play que incluyan el servicio
-              de Internet.
-            </li>
-            <li>
-              Realizar una actualización de tecnología de internet (HFC a FTTH).
-            </li>
+            <li>Recargar, aceptar y activar un CTR desde S/10.</li>
+            <li>Realizar un alta, porta o renovación.</li>
+            <li>Comprar paquete desde S/10.</li>
           </ul>
         </div>
         <button>Entendido</button>
@@ -164,29 +155,6 @@ const postpagoCards = [
 </div>
 
 <style>
-  .secparticipa {
-    padding-top: 165px !important;
-  }
-  @media (max-width: 1599px) {
-    .secparticipa {
-      padding-top: 237px !important;
-    }
-  }
-  @media (max-width: 1279px) {
-    .secparticipa {
-      padding-top: 100px !important;
-    }
-  }
-  @media (max-width: 1023px) {
-    .secparticipa {
-      padding-top: 58px !important;
-    }
-  }
-  @media (max-width: 500px) {
-    .secparticipa {
-      padding-top: 53px !important;
-    }
-  }
   .modalTransacciones {
     position: fixed;
     top: 0;
@@ -208,8 +176,8 @@ const postpagoCards = [
   .modalTransacciones .content {
     background-color: #fff;
     border-radius: 30px;
-    max-width: 784px;
-    padding: 60px 60px 40px 60px;
+    max-width: 804px;
+    padding: 60px 36px 36px;
     position: relative;
   }
   .modalTransacciones .content .close {
@@ -278,6 +246,7 @@ const postpagoCards = [
   .modalTransacciones .content .ptext .columns {
     display: flex;
     gap: 30px;
+    flex-direction: column;
     margin-bottom: 20px;
   }
 

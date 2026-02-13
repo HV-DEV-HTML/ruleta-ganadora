@@ -1,10 +1,77 @@
 const URL_API = import.meta.env.API_URL_RULETA || 'https://api_ruleta.claromarketingcloud.pe/api'
 
+const isBrowser = typeof window !== 'undefined' && typeof navigator !== 'undefined';
+let uaParserPromise;
+let fingerprintAgentPromise;
+
+async function loadUAParser() {
+  if (!uaParserPromise) {
+    uaParserPromise = import('ua-parser-js')
+      .then((mod) => mod.default ?? mod.UAParser ?? null)
+      .catch(() => null);
+  }
+  return uaParserPromise;
+}
+
+async function loadFingerprintAgent() {
+  if (!fingerprintAgentPromise) {
+    fingerprintAgentPromise = import('@fingerprintjs/fingerprintjs')
+      .then((mod) => {
+        const FingerprintJS = mod.default ?? mod;
+        return FingerprintJS?.load ? FingerprintJS.load() : null;
+      })
+      .catch(() => null);
+  }
+  return fingerprintAgentPromise;
+}
+
+function getScreenInfo() {
+  if (!isBrowser) {
+    return {
+      resolution: null,
+      viewport: null,
+      colorDepth: null,
+      pixelRatio: null
+    };
+  }
+
+  return {
+    resolution: window.screen.width + 'x' + window.screen.height,
+    viewport: window.innerWidth + 'x' + window.innerHeight,
+    colorDepth: window.screen.colorDepth,
+    pixelRatio: window.devicePixelRatio
+  };
+}
+
+function buildBaseDeviceInfo() {
+  const screen = getScreenInfo();
+  return {
+    deviceFingerprint: null,
+    userAgent: isBrowser ? navigator.userAgent : null,
+    browserName: null,
+    browserVersion: null,
+    browserLanguage: isBrowser ? navigator.language || null : null,
+    osName: null,
+    osVersion: null,
+    deviceType: null,
+    deviceVendor: null,
+    deviceModel: null,
+    screenResolution: screen.resolution,
+    viewportSize: screen.viewport,
+    colorDepth: screen.colorDepth,
+    pixelRatio: screen.pixelRatio,
+    ipAddress: null,
+    countryCode: null,
+    city: null
+  };
+}
+
 
 export async function getDepartament() {
   try {
     const response = await fetch(`${URL_API}/Provinces/departments`, {
       method: 'GET',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json'
       }
@@ -27,6 +94,7 @@ export async function getProvince(departmentId) {
   try {
     const response = await fetch(`${URL_API}/Provinces/departments/${departmentId}/provinces`, {
       method: 'GET',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json'
       }
@@ -49,6 +117,7 @@ export async function preCheck(phone) {
   try {
     const response = await fetch(`${URL_API}/Auth/precheck`, {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -77,7 +146,8 @@ export async function registerUser({
   docType,
   docNumber,
   provinceId,
-  telefono = ""
+  telefono = "",
+  deviceInfo
 }) {
   try {
     const bodyData = {
@@ -87,7 +157,8 @@ export async function registerUser({
       telefono: telefono || "", // siempre string
       docType,
       docNumber,
-      provinceId
+      provinceId,
+      deviceInfo
     };
 
     console.log("=== DATOS QUE SE ENVIAN DESDE registerUser ===");
@@ -98,6 +169,7 @@ export async function registerUser({
 
     const response = await fetch(`${URL_API}/Auth/register`, {
       method: "POST",
+      credentials: 'include',
       headers: {
         "Content-Type": "application/json"
       },
@@ -119,7 +191,7 @@ export async function registerUser({
 
 
 
-export async function verifyCode(email, code, docNumber) {
+export async function verifyCode(code) {
   try {
     const response = await fetch(`${URL_API}/Auth/verify`, {
       method: 'POST',
@@ -128,9 +200,7 @@ export async function verifyCode(email, code, docNumber) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        email,
         code,
-        docNumber
       })
     });
     // La API puede devolver 400 con un cuerpo útil (verified, message, token, etc.)
@@ -179,9 +249,9 @@ export async function getListProducts(provinceId) {
   }
 }
 
-export async function validUserEnabled(serviceId) {
+export async function validUserEnabled(serviceId, userId) {
   try {
-    const response = await fetch(`${URL_API}/Spin/eligibility?serviceId=${serviceId}`, {
+    const response = await fetch(`${URL_API}/Spin/eligibility?serviceId=${serviceId}&userId=${userId}`, {
       method: 'GET',
       credentials: 'include',
       headers: {
@@ -236,6 +306,7 @@ export async function deleteUserByDni(docNumber) {
   try {
     const response = await fetch(`${URL_API}/auth/cleanup-by-dni`, {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -255,3 +326,57 @@ export async function deleteUserByDni(docNumber) {
     throw error;
   }
 }
+
+export async function getDeviceInfo() {
+  try {
+    const baseInfo = buildBaseDeviceInfo();
+    if (!isBrowser) {
+      return baseInfo;
+    }
+
+    const UAParserCtor = await loadUAParser();
+    if (!UAParserCtor) {
+      return baseInfo;
+    }
+
+    // Parser de User Agent
+    const parser = new UAParserCtor();
+    const result = parser.getResult();
+
+    // Fingerprint del dispositivo (única)
+    const fpAgent = await loadFingerprintAgent();
+    let fingerprintId = null;
+    if (fpAgent) {
+      const fingerprint = await fpAgent.get();
+      fingerprintId = fingerprint?.visitorId ?? null;
+    }
+
+    // Determinar tipo de dispositivo
+    let deviceType = 'desktop';
+    if (result.device.type === 'mobile') {
+      deviceType = 'mobile';
+    } else if (result.device.type === 'tablet') {
+      deviceType = 'tablet';
+    }
+
+    return {
+      ...baseInfo,
+      deviceFingerprint: fingerprintId,
+      userAgent: navigator.userAgent,
+      browserName: result.browser.name || null,
+      browserVersion: result.browser.version || null,
+      browserLanguage: navigator.language || null,
+      osName: result.os.name || null,
+      osVersion: result.os.version || null,
+      deviceType: deviceType,
+      deviceVendor: result.device.vendor || null,
+      deviceModel: result.device.model || null
+    };
+  } catch (error) {
+    console.error('Error obteniendo información del dispositivo:', error);
+
+    // Fallback: información mínima y consistente
+    return buildBaseDeviceInfo();
+  }
+}
+

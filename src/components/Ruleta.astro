@@ -862,7 +862,6 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
         itemsDisponibles.push({ index, element: item });
       }
     });
-
     // Si no hay ítems disponibles, cancelamos el giro y reactivamos el botón
     if (itemsDisponibles.length === 0) {
       console.warn(
@@ -956,6 +955,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
     yaGiro = false;
     resetRuleta();
   });
+  
 
   const resetForm = () => {
     const form = document.querySelector("#form-registro") as HTMLFormElement;
@@ -999,7 +999,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
   document.addEventListener("ruleta:enter", async () => {
     const { user } = userStore.getState();
     try {
-      const userEnabledResponse = await validUserEnabled(user.serviceId);
+      const userEnabledResponse = await validUserEnabled(user.serviceId, user.id);
       const { canSpin, remainingPlays, playsAllowed, playsUsed, reason } =
         userEnabledResponse || {};
       const mainRuleta = document.querySelector(".main_ruleta");
@@ -1050,13 +1050,13 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
           (product) => product.prizeTypeName === "Bonos"
         );
         const accesoriosResponse = dataProducts.filter(
-          (product) => product.prizeTypeName === "Accesorios"
+          (product) => product.prizeTypeName === "Combo"
         );
         const valesResponse = dataProducts.filter(
-          (product) => product.prizeTypeName === "Vales burguer king y Cinemark"
+          (product) => product.prizeTypeName === "Vales Tailoy y Cinemark"
         );
-        const valesBurguerResponse = dataProducts.filter(
-          (product) => product.prizeTypeName === "Solo vales Burger King"
+        const valesTailoyResponse = dataProducts.filter(
+          (product) => product.prizeTypeName === "Solo vales Tailoy"
         );
         const valesCineResponse = dataProducts.filter(
           (product) => product.prizeTypeName === "Solo vales Cinemark"
@@ -1066,7 +1066,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
           (product) => product.prizeTypeName === "Equipos"
         );
         const artefactosResponse = dataProducts.filter(
-          (product) => product.prizeTypeName === "Artefactos"
+          (product) => product.prizeTypeName === "Combo 1"
         );
         const getValesForItem = (product) => {
           if (valesResponse.length !== 0) {
@@ -1079,20 +1079,20 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
             product.querySelector("img").src = valesResponse[0].imageUrl;
             return;
           }
-          if (valesBurguerResponse.length !== 0) {
+          if (valesTailoyResponse.length !== 0) {
             product.setAttribute(
               "data-nombre",
-              valesBurguerResponse[0].prizeTypeName
+              valesTailoyResponse[0].prizeTypeName
             );
             product.setAttribute(
               "data-stock",
-              valesBurguerResponse[0].hasStock
+              valesTailoyResponse[0].hasStock
             );
             product.setAttribute(
               "data-category_id",
-              valesBurguerResponse[0].prizeTypeId
+              valesTailoyResponse[0].prizeTypeId
             );
-            product.querySelector("img").src = valesBurguerResponse[0].imageUrl;
+            product.querySelector("img").src = valesTailoyResponse[0].imageUrl;
             return;
           }
           if (valesCineResponse.length !== 0) {
@@ -1110,7 +1110,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
           }
           if (
             valesResponse.length === 0 &&
-            valesBurguerResponse.length === 0 &&
+            valesTailoyResponse.length === 0 &&
             valesCineResponse.length === 0
           ) {
             product.setAttribute("data-nombre", bonosResponse[0].prizeTypeName);

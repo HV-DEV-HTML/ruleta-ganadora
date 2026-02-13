@@ -25,11 +25,11 @@ export function showCustomModal({
 } = {}) {
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
-      popup: "rounded-[20px] max-w-[640px] w-full pb-8 lg:p-4 lg:pb-8",
+      popup: "rounded-[20px] max-w-[640px] w-full pb-8 pt-6 lg:p-4 lg:pb-8",
       actions: "gap-2",
-      icon: "rounded-[0px] border-0",
+      icon: "rounded-[0px] border-0 w-full",
       title:
-        "font-amx-bold text-2xl xl:text-3xl text-black pt-0 text-balance px-2",
+        "font-amx-bold text-xl xl:text-3xl text-black pt-0 text-balance px-2",
       htmlContainer:
         "font-roboto text-base text-black !flex flex-col gap-2 xl:gap-3 px-10 pt-2",
       cancelButton: "",

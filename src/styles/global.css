@@ -70,6 +70,14 @@ span.linkToC20pe2,
   font-size: 15px;
   color: #787878;
 }
+div:where(.swal2-container) {
+  --swal2-container-padding: 1.3rem;
+  padding: var(--swal2-container-padding) !important;
+}
+.swal2-icon-content {
+  justify-content: center;
+  width: 100%;
+}
 .swal2-html-container .btnOpenModal,
 .swal2-html-container .btnOpenModal2 {
   color: #000;

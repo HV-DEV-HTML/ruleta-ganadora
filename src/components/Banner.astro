@@ -1,6 +1,7 @@
 ---
 import Paso01 from "@components/Paso01.astro";
-import Paso02 from "@components/Paso02-cierre.astro";
+import Paso02Cierre from "@components/Paso02-cierre.astro";
+import Paso02 from "@components/Paso02.astro";
 import Paso03 from "@components/Paso03.astro";
 import bg_mobile from "@/assets/images/banner_mobile.webp";
 import bg_tablet from "@/assets/images/banner_tablet.webp";
@@ -15,10 +16,11 @@ import Icon04 from "@components/Banner/Icon04.astro";
 import Icon05 from "@components/Banner/Icon05.astro";
 import Icon06 from "@components/Banner/Icon06.astro";
 import Icon07 from "@components/Banner/Icon07.astro";
+import Icon08 from "./Banner/Icon08.astro";
 ---
 
 <section
-  class="p-0 relative banner_sorteo section_hidden bg-transparent h-[600px] md:h-[800px] lg:h-[950px] xl:h-[740px] 2xl:h-[900px]"
+  class="p-0 relative banner_sorteo section_hidden bg-transparent h-[1100px] md:h-[1150px] lg:h-[950px] xl:h-[740px] 2xl:h-[900px]"
   data-current-step="2"
 >
   <picture class="bg-claro">
@@ -65,7 +67,7 @@ import Icon07 from "@components/Banner/Icon07.astro";
   </button>
   <div class="w-full h-full absolute top-0 left-0">
     <div
-      class="flex flex-col items-center mx-auto md:max-w-[620px] xl:max-w-[1040px] 2xl:max-w-[1490px] max-h-[360px] md:max-h-[360px] lg:max-h-[560px] xl:max-h-[413px] h-full px-4 mt-16 2xl:mt-20 relative"
+      class="flex flex-col items-center mx-auto md:max-w-[620px] xl:max-w-[1180px] 2xl:max-w-[1490px] max-h-[360px] md:max-h-[500px] lg:max-h-[560px] xl:max-h-[413px] h-full px-4 mt-16 2xl:mt-20 relative"
     >
       <div class="w-full h-full bg-transparent relative">
         <picture>
@@ -83,13 +85,14 @@ import Icon07 from "@components/Banner/Icon07.astro";
         <Paso02 />
         <!-- <Paso03 /> -->
       </div>
+      <Icon01 />
       <Icon04 />
       <Icon05 />
       <Icon06 />
-      <Icon01 />
       <Icon02 />
       <Icon03 />
       <Icon07 />
+      <Icon08 />
       <ChicaAsset />
     </div>
   </div>
