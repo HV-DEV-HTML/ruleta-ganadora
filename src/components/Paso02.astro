@@ -355,6 +355,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
   import { togglePreloadAnimation } from "@/utils/animations";
 
   document.addEventListener("DOMContentLoaded", async () => {
+    const isDevelopment = import.meta.env.DEV;
     const form = document.querySelector("#form-registro") as HTMLFormElement;
     const submitBtn = document.querySelector(
       "#btn-submit-form",
@@ -735,10 +736,11 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
       }
       return "";
     };
-
     if (fieldDni) {
       const debouncedPreCheck = debounce(handlePreCheckByDni, 600);
 
+      // Nota: este handler mantiene un valor real sin máscara (realDniValue)
+      // y reescribe el input con máscara. Aquí también se normaliza lo pegado.
       fieldDni.addEventListener("input", (e: InputEvent) => {
         const input = e.target as HTMLInputElement;
         const typeDoc = fieldTypeDoc.value;
@@ -750,6 +752,9 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
         visibleValue = sanitizeDniByType(visibleValue, typeDoc);
 
         // 🧠 Autofill / pegado / reemplazo masivo
+        // Cuando se pega o reemplaza texto, el navegador puede insertar
+        // varios caracteres de golpe. Este bloque sincroniza realDniValue
+        // con el valor completo ya saneado.
         if (
           e.inputType === "insertFromPaste" ||
           e.inputType === "insertReplacementText" ||
@@ -770,7 +775,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
           realDniValue += char;
         }
 
-        // 🔒 Longitud máxima
+        // 🔒 Longitud máxima según tipo de documento
         if (typeDoc === "DNI") {
           realDniValue = realDniValue.slice(0, 8);
         } else if (typeDoc === "PASAPORTE") {
@@ -782,10 +787,16 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
         // 🎭 Aplicar máscara
         input.value = maskDni(realDniValue);
 
-        // 🚀 Validación
+        // Validación
         debouncedPreCheck();
       });
+      // Nota: beforeinput filtra carácter por carácter.
+      // Si el usuario pega texto con caracteres inválidos, aquí se bloquea
+      // (e.preventDefault). Eso puede dar la impresión de que “no se puede pegar”.
+      // Si se quiere permitir pegado, conviene no bloquear insertFromPaste y
+      // dejar que el handler de input limpie el valor.
       fieldDni.addEventListener("beforeinput", (e: InputEvent) => {
+        if (isDevelopment) return;
         const typeDoc = fieldTypeDoc.value;
         const data = e.data;
 
@@ -1183,18 +1194,8 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
 
         try {
           const { user } = userStore.getState();
-          userStore.setState({
-            user: {
-              ...user,
-              serviceId: fieldPhoneIDForm,
-              provinceId: fieldProvinceForm,
-              telefonoAdicional: telefonoAdicional,
-            },
-          });
           if (!user) {
-            throw new Error(
-              "User no está definido en el store antes de registerUser",
-            );
+            throw new Error("User no está definido en el store antes de registerUser",);
           }
 
           const { email, docType, docNumber } = user;
@@ -1211,11 +1212,20 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
           //console.log('registerUserResponse:', registerUserResponse);
 
           if (registerUserResponse?.success) {
+            //Seteamos los datos del store de user
+            userStore.setState({
+              user: {
+                ...user,
+                serviceId: fieldPhoneIDForm,
+                provinceId: fieldProvinceForm,
+                telefonoAdicional: telefonoAdicional,
+                product: registerUserResponse?.product,
+                fullClaro: registerUserResponse?.fullClaro,
+                detallePlay: registerUserResponse?.detallePlay
+              },
+            });
             // ✅ Si canPlay=true, el usuario ya está validado y puede jugar inmediatamente
-            if (
-              registerUserResponse?.canPlay === true &&
-              registerUserResponse?.token
-            ) {
+            if (registerUserResponse?.canPlay === true &&registerUserResponse?.token) {
               console.log("✅ Usuario ya validado - Auto-login activado");
 
               // Guardar token si el backend lo envía
@@ -1435,12 +1445,23 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
       try {
         const verifyCodeResponse = await verifyCode(getParameter,);
         const { verified, message, services, userId, provinceId } = verifyCodeResponse || {};
+        const { id: servicesId, product, fullClaro, detallePlay } = services?.[0] || {};
         const verifyMockup = true;
         if (verified) {
-          userStore.setState({ user: { verified: true, id: userId, serviceId: services[0].id, provinceId: provinceId } });
-          console.log("services", services);
-          console.log("userId", userId)
-          console.log(userStore.getState())
+          userStore.setState({ user:
+            {
+              verified: true,
+              id: userId,
+              serviceId: servicesId,
+              provinceId: provinceId,
+              product: product,
+              fullClaro: fullClaro,
+              detallePlay: detallePlay
+            } 
+          });
+          // console.log("services", services);
+          // console.log("userId", userId)
+          // console.log(userStore.getState())
           const userEnabledResponse = await validUserEnabled(services[0].id, userId);
           const { canSpin, remainingPlays, playsAllowed, playsUsed, reason } = userEnabledResponse || {};
           const canSpinMockup = true;

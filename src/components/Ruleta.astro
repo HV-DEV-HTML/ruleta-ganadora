@@ -840,8 +840,19 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
     });
   };
 
-  function girarRuleta() {
+  const hasStockAvailable = (value) => {
+    if (typeof value === "boolean") return value;
+    if (typeof value === "number") return value > 0;
+    if (typeof value === "string") {
+      const normalized = value.trim().toLowerCase();
+      return ["true", "1", "si", "sí", "yes"].includes(normalized);
+    }
+    return false;
+  };
+
+  async function girarRuleta() {
     const { user } = userStore.getState();
+    const {fullClaro, product, detallePlay} = user
     if (yaGiro) return;
     yaGiro = true;
 
@@ -852,13 +863,54 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
       ruletaIntroTween = null;
     }
     gsap.killTweensOf(ruletaTable, "rotation");
+    const isUserFijaFullClaro100Mbps = fullClaro === false && product === "Fija" &&  detallePlay === '1000';
+    const categoryIdExclude = isUserFijaFullClaro100Mbps ? 4 : null;
+
+    try {
+      const latestProductsResponse = await getListProducts(user.provinceId);
+      const latestProducts = latestProductsResponse?.data || [];
+      const latestStockByPrizeType = new Map(
+        latestProducts.map((product) => [
+          Number(product.prizeTypeId),
+          hasStockAvailable(product.hasStock),
+        ])
+      );
+
+      items.forEach((item) => {
+        const categoryId = Number(item.getAttribute("data-category_id"));
+        if (!Number.isFinite(categoryId) || !latestStockByPrizeType.has(categoryId)) {
+          item.setAttribute("data-stock", "0");
+          return;
+        }
+        const hasStock = latestStockByPrizeType.get(categoryId);
+        item.setAttribute("data-stock", hasStock ? "1" : "0");
+      });
+    } catch (error) {
+      console.error("Error al revalidar stock antes del giro:", error);
+      showCustomModal({
+        title: "No se pudo validar stock",
+        html: `<p>Inténtalo nuevamente en unos segundos.</p>`,
+        iconSrc: icon_no_cumple.src,
+        confirmButtonText: "Entendido",
+        showCloseButton: false,
+      });
+      yaGiro = false;
+      btnGirar.disabled = false;
+      return;
+    }
 
     // Filtrar solo los ítems con stock > 0
     const itemsDisponibles: { index: number; element: Element }[] = [];
     items.forEach((item, index) => {
       const stockAttr = item.getAttribute("data-stock");
       const stock = stockAttr ? Number(stockAttr) : 0;
-      if (stock > 0) {
+      const categoryId = Number(item.getAttribute("data-category_id"));
+      // Regla especial: si el usuario es Fija Full Claro 100Mbps,
+      // se excluye una categoría específica para que no sea elegible al giro.
+      // categoryIdExclude será null si la regla no aplica.
+      const isExcludedCategory =
+        Number.isFinite(categoryId) && categoryIdExclude === categoryId;
+      if (stock > 0 && !isExcludedCategory) {
         itemsDisponibles.push({ index, element: item });
       }
     });
@@ -867,6 +919,16 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
       console.warn(
         "No hay ítems disponibles con stock > 0 para girar la ruleta."
       );
+      showCustomModal({
+        title: "Lo sentimos, no puedes participar en estos momentos 👇",
+        html: `<p>No hay premios disponibles para girar la ruleta.</p>`,
+        iconSrc: icon_no_cumple.src,
+        confirmButtonText: "Volver al inicio",
+        showCloseButton: false,
+        onConfirm: () => {
+          resetRuleta();
+        },
+      });
       yaGiro = false;
       btnGirar.disabled = true;
       return;
@@ -895,6 +957,19 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
         const category_id = itemGanador.getAttribute("data-category_id");
         const category_name = itemGanador.getAttribute("data-nombre");
         //console.log(`Categoría Ganador: ${category_name}, con ID ${category_id}`);
+        if (!category_id || Number.isNaN(Number(category_id))) {
+          showCustomModal({
+            title: "No se pudo registrar el giro",
+            html: `<p>No se encontró una categoría válida para este premio.</p>`,
+            iconSrc: icon_no_cumple.src,
+            confirmButtonText: "Volver al inicio",
+            showCloseButton: false,
+            onConfirm: () => {
+              resetRuleta();
+            },
+          });
+          return;
+        }
         // Después del giro mostrar modal
         btnGirar.disabled = false;
         try {
@@ -906,9 +981,21 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
           //console.log({ spinSaveResultResponse });
           if (spinSaveResultResponse?.result === "WIN") {
             showModalWin(spinSaveResultResponse, user);
+          } else if (spinSaveResultResponse?.result === "NO_STOCK") {
+            showCustomModal({
+              title: "Lo sentimos, no hay stock disponible",
+              html: `<p>${spinSaveResultResponse?.message || "No hay premios disponibles para esta categoría en este momento."}</p>`,
+              iconSrc: icon_no_cumple.src,
+              confirmButtonText: "Volver al inicio",
+              showCloseButton: false,
+              onConfirm: () => {
+                resetRuleta();
+              },
+            });
           } else {
             showCustomModal({
-              title: `🎁 ${spinSaveResultResponse.message}`,
+              title: "Resultado de tu jugada",
+              html: `<p>${spinSaveResultResponse?.message || "No fue posible registrar el resultado del giro."}</p>`,
               iconSrc: icon_no_cumple.src,
               confirmButtonText: "Volver al inicio",
               showCloseButton: false,
@@ -919,7 +1006,29 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
           }
         } catch (error) {
           console.error("Error en spinSaveResult:", error);
-          throw error;
+          const resultCode = String(error?.result || "").toUpperCase();
+          const errorMessage = error?.apiMessage || error?.message || "Error al procesar el giro.";
+
+          if (resultCode === "NO_STOCK" || String(errorMessage).toLowerCase().includes("stock")) {
+            showCustomModal({
+              title: "Lo sentimos, no hay stock disponible",
+              html: `<p>No hay premios disponibles para esta categoría en este momento.</p>`,
+              iconSrc: icon_no_cumple.src,
+              confirmButtonText: "Volver al inicio",
+              showCloseButton: false,
+              onConfirm: () => {
+                resetRuleta();
+              },
+            });
+          } else {
+            showCustomModal({
+              title: "Ocurrió un problema al registrar tu jugada",
+              html: `<p>Por favor, intenta nuevamente.</p>`,
+              iconSrc: icon_no_cumple.src,
+              confirmButtonText: "Entendido",
+              showCloseButton: false,
+            });
+          }
         } finally {
           togglePreloadAnimation(false);
         }
@@ -935,13 +1044,17 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
     const sinVale = "4e2f787c-6391-467b-894e-d3340e35582e";
     const conVale = "178ce82c-618d-4f7f-8ec2-2e51ae9abeb1";
     const userTemp = {
-      id: "e315e242-b2cd-48cb-b606-5a4188ef5aa6",
+      id: "6545b221-07af-4fdf-995a-fe21c29bae5c",
       email: "javiercastro.ik@gmail.com",
       fullName: "Victor Castro",
       docType: "DNI",
       docNumber: "42122122",
-      serviceId: "d999f49b-a8cf-46c0-904f-093d6dd9f9ab",
+      serviceId: "f2ea3dff-7e93-4c1f-908e-9b382d5bca99",
       provinceId: conVale,
+      product: "Fija",
+      fullClaro: false,
+      detallePlay: "300",
+      verified: true,
     };
     //togglePreloadAnimation(true);
     userStore.setState({ user: userTemp });
@@ -998,10 +1111,10 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
 
   document.addEventListener("ruleta:enter", async () => {
     const { user } = userStore.getState();
+    console.log({user})
     try {
       const userEnabledResponse = await validUserEnabled(user.serviceId, user.id);
-      const { canSpin, remainingPlays, playsAllowed, playsUsed, reason } =
-        userEnabledResponse || {};
+      const { canSpin, remainingPlays, playsAllowed, playsUsed, reason } = userEnabledResponse || {};
       const mainRuleta = document.querySelector(".main_ruleta");
       showRuleta();
       if (window.innerWidth >= 1200) {
@@ -1016,10 +1129,10 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
       const forseCanSpin = true;
       if (canSpin) {
         const listProductsResponse = await getListProducts(user.provinceId);
-        const dataProducts = listProductsResponse.data;
-        const totalStockProducts = listProductsResponse.count;
+        const dataProducts = listProductsResponse?.data || [];
+        const totalStockProducts = dataProducts.filter((product) => hasStockAvailable(product.hasStock)).length;
         //console.log({listProductsResponse, totalStockProducts})
-        if (listProductsResponse.length === 0) {
+        if (dataProducts.length === 0) {
           showCustomModal({
             title: "Lo sentimos, no puedes participar en estos momentos 👇",
             html: `<p>No hay premios disponibles para girar la ruleta.</p>`,
@@ -1071,54 +1184,30 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
         const getValesForItem = (product) => {
           if (valesResponse.length !== 0) {
             product.setAttribute("data-nombre", valesResponse[0].prizeTypeName);
-            product.setAttribute("data-stock", valesResponse[0].hasStock);
-            product.setAttribute(
-              "data-category_id",
-              valesResponse[0].prizeTypeId
-            );
+            product.setAttribute("data-stock",hasStockAvailable(valesResponse[0].hasStock) ? "1" : "0");
+            product.setAttribute("data-category_id",valesResponse[0].prizeTypeId);
             product.querySelector("img").src = valesResponse[0].imageUrl;
             return;
           }
           if (valesTailoyResponse.length !== 0) {
-            product.setAttribute(
-              "data-nombre",
-              valesTailoyResponse[0].prizeTypeName
+              product.setAttribute("data-nombre", valesTailoyResponse[0].prizeTypeName);
+              product.setAttribute("data-stock",hasStockAvailable(valesTailoyResponse[0].hasStock) ? "1" : "0"
             );
-            product.setAttribute(
-              "data-stock",
-              valesTailoyResponse[0].hasStock
-            );
-            product.setAttribute(
-              "data-category_id",
-              valesTailoyResponse[0].prizeTypeId
-            );
+            product.setAttribute("data-category_id", valesTailoyResponse[0].prizeTypeId);
             product.querySelector("img").src = valesTailoyResponse[0].imageUrl;
             return;
           }
           if (valesCineResponse.length !== 0) {
-            product.setAttribute(
-              "data-nombre",
-              valesCineResponse[0].prizeTypeName
-            );
-            product.setAttribute("data-stock", valesCineResponse[0].hasStock);
-            product.setAttribute(
-              "data-category_id",
-              valesCineResponse[0].prizeTypeId
-            );
+            product.setAttribute("data-nombre", valesCineResponse[0].prizeTypeName);
+            product.setAttribute("data-stock", hasStockAvailable(valesCineResponse[0].hasStock) ? "1" : "0");
+            product.setAttribute("data-category_id", valesCineResponse[0].prizeTypeId);
             product.querySelector("img").src = valesCineResponse[0].imageUrl;
             return;
           }
-          if (
-            valesResponse.length === 0 &&
-            valesTailoyResponse.length === 0 &&
-            valesCineResponse.length === 0
-          ) {
+          if (valesResponse.length === 0 && valesTailoyResponse.length === 0 && valesCineResponse.length === 0) {
             product.setAttribute("data-nombre", bonosResponse[0].prizeTypeName);
-            product.setAttribute("data-stock", bonosResponse[0].hasStock);
-            product.setAttribute(
-              "data-category_id",
-              bonosResponse[0].prizeTypeId
-            );
+            product.setAttribute("data-stock",hasStockAvailable(bonosResponse[0].hasStock) ? "1" : "0");
+            product.setAttribute("data-category_id",bonosResponse[0].prizeTypeId);
             product.querySelector("img").src = bonosResponse[0].imageUrl;
             return;
           }
@@ -1126,30 +1215,36 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
         items.forEach((item, index) => {
           const nombre = item.getAttribute("data-nombre");
           if (nombre === "Accesorios") {
-            item.setAttribute(
-              "data-nombre",
-              accesoriosResponse[0].prizeTypeName
-            );
-            item.setAttribute("data-stock", accesoriosResponse[0].hasStock);
-            item.setAttribute(
-              "data-category_id",
-              accesoriosResponse[0].prizeTypeId
-            );
+            if (accesoriosResponse.length === 0) {
+              item.setAttribute("data-stock", "0");
+              item.removeAttribute("data-category_id");
+              return;
+            }
+            item.setAttribute("data-nombre", accesoriosResponse[0].prizeTypeName);
+            item.setAttribute("data-stock", hasStockAvailable(accesoriosResponse[0].hasStock) ? "1" : "0");
+            item.setAttribute("data-category_id", accesoriosResponse[0].prizeTypeId);
             item.querySelector("img").src = accesoriosResponse[0].imageUrl;
           }
           if (nombre === "Bonos") {
+            if (bonosResponse.length === 0) {
+              item.setAttribute("data-stock", "0");
+              item.removeAttribute("data-category_id");
+              return;
+            }
             item.setAttribute("data-nombre", bonosResponse[0].prizeTypeName);
-            item.setAttribute("data-stock", bonosResponse[0].hasStock);
+            item.setAttribute("data-stock", hasStockAvailable(bonosResponse[0].hasStock) ? "1" : "0");
             item.setAttribute("data-category_id", bonosResponse[0].prizeTypeId);
             item.querySelector("img").src = bonosResponse[0].imageUrl;
           }
           if (nombre === "Equipos") {
+            if (equiposResponse.length === 0) {
+              item.setAttribute("data-stock", "0");
+              item.removeAttribute("data-category_id");
+              return;
+            }
             item.setAttribute("data-nombre", equiposResponse[0].prizeTypeName);
-            item.setAttribute("data-stock", equiposResponse[0].hasStock);
-            item.setAttribute(
-              "data-category_id",
-              equiposResponse[0].prizeTypeId
-            );
+            item.setAttribute("data-stock", hasStockAvailable(equiposResponse[0].hasStock) ? "1" : "0");
+            item.setAttribute("data-category_id", equiposResponse[0].prizeTypeId);
             item.querySelector("img").src = equiposResponse[0].imageUrl;
           }
           if (nombre === "Vales general") {
@@ -1157,16 +1252,13 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
           }
           if (nombre === "Artefactos") {
             if (artefactosResponse.length !== 0) {
-              item.setAttribute(
-                "data-nombre",
-                artefactosResponse[0].prizeTypeName
-              );
-              item.setAttribute("data-stock", artefactosResponse[0].hasStock);
-              item.setAttribute(
-                "data-category_id",
-                artefactosResponse[0].prizeTypeId
-              );
+              item.setAttribute("data-nombre",artefactosResponse[0].prizeTypeName);
+              item.setAttribute("data-stock",hasStockAvailable(artefactosResponse[0].hasStock) ? "1" : "0");
+              item.setAttribute("data-category_id",artefactosResponse[0].prizeTypeId);
               item.querySelector("img").src = artefactosResponse[0].imageUrl;
+            } else {
+              item.setAttribute("data-stock", "0");
+              item.removeAttribute("data-category_id");
             }
           }
         });

@@ -161,11 +161,11 @@ export async function registerUser({
       deviceInfo
     };
 
-    console.log("=== DATOS QUE SE ENVIAN DESDE registerUser ===");
-    console.log("URL:", `${URL_API}/Auth/register`);
-    console.log("Body que se enviará:", bodyData);
-    console.log("JSON que se enviará:", JSON.stringify(bodyData));
-    console.log("==============================================");
+    // console.log("=== DATOS QUE SE ENVIAN DESDE registerUser ===");
+    // console.log("URL:", `${URL_API}/Auth/register`);
+    // console.log("Body que se enviará:", bodyData);
+    // console.log("JSON que se enviará:", JSON.stringify(bodyData));
+    // console.log("==============================================");
 
     const response = await fetch(`${URL_API}/Auth/register`, {
       method: "POST",
@@ -288,8 +288,13 @@ export async function spinSaveResult(serviceId, prizeTypeId) {
     });
 
     if (!response.ok) {
-      const errorBody = await response.text().catch(() => '');
-      throw new Error(`Error spinSaveResult (${response.status}): ${errorBody}`);
+      const errorData = await response.json().catch(() => null);
+      const errorBody = errorData?.message || (await response.text().catch(() => ''));
+      const error = new Error(`Error spinSaveResult (${response.status}): ${errorBody}`);
+      error.status = response.status;
+      error.result = errorData?.result;
+      error.apiMessage = errorData?.message;
+      throw error;
     }
 
     const data = await response.json();
