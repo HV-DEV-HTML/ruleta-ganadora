@@ -225,9 +225,9 @@ export async function verifyCode(code) {
   }
 }
 
-export async function getListProducts(provinceId) {
+export async function getListProducts(provinceId, serviceId) {
   try {
-    const response = await fetch(`${URL_API}/Provinces/${provinceId}/allowed-prize-types`, {
+    const response = await fetch(`${URL_API}/Provinces/${provinceId}/allowed-prize-types?serviceId=${serviceId}`, {
       method: 'GET',
       credentials: 'include',
       headers: {

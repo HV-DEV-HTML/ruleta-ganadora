@@ -742,11 +742,89 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
     remainingPlays: 1,
     message: "¡Felicitaciones! Has ganado: Descuento de Whopper Jr",
   };
+  const fakeProducts = {
+    success: true,
+    data: [
+      {
+        prizeTypeId: 10,
+        prizeTypeName: "Bonos",
+        imageUrl: null,
+        isAllowed: true,
+        hasStock: 1,
+        subtypes: [
+          {
+            id: 7,
+            name: "Bono 2",
+            description: "bono 2",
+            imagen: "",
+            hasStock: true,
+            displayOrder: 0,
+            isActive: true,
+          },
+          {
+            id: 6,
+            name: "Bono 1",
+            description: "bonos 1",
+            imagen: "",
+            hasStock: true,
+            displayOrder: 0,
+            isActive: true,
+          },
+        ],
+      },
+      {
+        prizeTypeId: 11,
+        prizeTypeName: "Equipos y accesorios",
+        imageUrl: null,
+        isAllowed: true,
+        hasStock: 1,
+        subtypes: null,
+      },
+      {
+        prizeTypeId: 12,
+        prizeTypeName: "Combos",
+        imageUrl: null,
+        isAllowed: true,
+        hasStock: 1,
+        subtypes: [
+          {
+            id: 9,
+            name: "Combo 2",
+            description: "combo 2",
+            imagen: "",
+            hasStock: true,
+            displayOrder: 0,
+            isActive: true,
+          },
+          {
+            id: 8,
+            name: "Combo 1",
+            description: "combo 1",
+            imagen: "",
+            hasStock: true,
+            displayOrder: 0,
+            isActive: true,
+          },
+        ],
+      },
+      {
+        prizeTypeId: 13,
+        prizeTypeName: "Vales",
+        imageUrl: null,
+        isAllowed: true,
+        hasStock: 1,
+        subtypes: null,
+      },
+    ],
+    count: 4,
+    availableCount: 4,
+    message: null,
+  };
 
   const btnGirar = document.querySelector("#btnGirar") as HTMLButtonElement;
   const ruletaTable = document.querySelector(".ruleta") as HTMLElement;
   const containerRuleta = document.querySelector(
-    ".contentRuleta"
+    ".contentRuleta",
   ) as HTMLElement;
   const items = document.querySelectorAll(".ruleta .item");
 
@@ -763,7 +841,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
 
   const resetRuleta = () => {
     const sectionRuleta = document.querySelector(
-      ".ruletaGanadora"
+      ".ruletaGanadora",
     ) as HTMLElement;
     if (!sectionRuleta) return;
     document
@@ -803,7 +881,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
     anguloFinal: number,
     cantidadItems: number,
     gradosPorItem: number,
-    offsetFlecha: number
+    offsetFlecha: number,
   ): number {
     // Normalizar el ángulo en el rango [0, 360)
     const anguloNormalizado = ((anguloFinal % 360) + 360) % 360;
@@ -852,7 +930,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
 
   async function girarRuleta() {
     const { user } = userStore.getState();
-    const {fullClaro, product, detallePlay} = user
+    const { fullClaro, product, detallePlay } = user;
     if (yaGiro) return;
     yaGiro = true;
 
@@ -863,22 +941,26 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
       ruletaIntroTween = null;
     }
     gsap.killTweensOf(ruletaTable, "rotation");
-    const isUserFijaFullClaro100Mbps = fullClaro === false && product === "Fija" &&  detallePlay === '1000';
-    const categoryIdExclude = isUserFijaFullClaro100Mbps ? 4 : null;
+    const isUserFijaFullClaro100Mbps =
+      fullClaro === false && product === "Fija" && detallePlay === "1000";
+    const categoryIdExclude = isUserFijaFullClaro100Mbps ? 10 : null; //No debe caer en bonos
 
     try {
-      const latestProductsResponse = await getListProducts(user.provinceId);
+      const latestProductsResponse = await getListProducts(user.provinceId, user.serviceId);
       const latestProducts = latestProductsResponse?.data || [];
       const latestStockByPrizeType = new Map(
         latestProducts.map((product) => [
           Number(product.prizeTypeId),
           hasStockAvailable(product.hasStock),
-        ])
+        ]),
       );
 
       items.forEach((item) => {
         const categoryId = Number(item.getAttribute("data-category_id"));
-        if (!Number.isFinite(categoryId) || !latestStockByPrizeType.has(categoryId)) {
+        if (
+          !Number.isFinite(categoryId) ||
+          !latestStockByPrizeType.has(categoryId)
+        ) {
           item.setAttribute("data-stock", "0");
           return;
         }
@@ -917,7 +999,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
     // Si no hay ítems disponibles, cancelamos el giro y reactivamos el botón
     if (itemsDisponibles.length === 0) {
       console.warn(
-        "No hay ítems disponibles con stock > 0 para girar la ruleta."
+        "No hay ítems disponibles con stock > 0 para girar la ruleta.",
       );
       showCustomModal({
         title: "Lo sentimos, no puedes participar en estos momentos 👇",
@@ -976,7 +1058,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
           //console.log("Giro completado");
           const spinSaveResultResponse = await spinSaveResult(
             user.serviceId,
-            Number(category_id)
+            Number(category_id),
           );
           //console.log({ spinSaveResultResponse });
           if (spinSaveResultResponse?.result === "WIN") {
@@ -1007,9 +1089,13 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
         } catch (error) {
           console.error("Error en spinSaveResult:", error);
           const resultCode = String(error?.result || "").toUpperCase();
-          const errorMessage = error?.apiMessage || error?.message || "Error al procesar el giro.";
+          const errorMessage =
+            error?.apiMessage || error?.message || "Error al procesar el giro.";
 
-          if (resultCode === "NO_STOCK" || String(errorMessage).toLowerCase().includes("stock")) {
+          if (
+            resultCode === "NO_STOCK" ||
+            String(errorMessage).toLowerCase().includes("stock")
+          ) {
             showCustomModal({
               title: "Lo sentimos, no hay stock disponible",
               html: `<p>No hay premios disponibles para esta categoría en este momento.</p>`,
@@ -1049,7 +1135,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
       fullName: "Victor Castro",
       docType: "DNI",
       docNumber: "42122122",
-      serviceId: "f2ea3dff-7e93-4c1f-908e-9b382d5bca99",
+      serviceId: "15efc454-16dc-428c-93af-d8058c1051df",
       provinceId: conVale,
       product: "Fija",
       fullClaro: false,
@@ -1068,22 +1154,21 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
     yaGiro = false;
     resetRuleta();
   });
-  
 
   const resetForm = () => {
     const form = document.querySelector("#form-registro") as HTMLFormElement;
     const submitBtn = document.querySelector(
-      "#btn-submit-form"
+      "#btn-submit-form",
     ) as HTMLButtonElement;
     const fieldName = document.querySelector("#name") as HTMLInputElement;
     const fieldEmail = document.querySelector("#email") as HTMLInputElement;
     const fieldDni = document.querySelector("#dni") as HTMLInputElement;
     const fieldPhone = document.querySelector("#phone") as HTMLSelectElement;
     const selectDeparment = document.querySelector(
-      "#departament"
+      "#departament",
     ) as HTMLSelectElement;
     const selectProvince = document.querySelector(
-      "#province"
+      "#province",
     ) as HTMLSelectElement;
     form.reset();
     // Limpiar clases de validación para que el formulario se vea "prístino"
@@ -1093,7 +1178,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
         "border-green-500",
         "border-red-500",
         "just-validate-success-field",
-        "just-validate-error-field"
+        "just-validate-error-field",
       );
     });
     // Eliminar labels de error generados por JustValidate (si quedara alguno)
@@ -1111,10 +1196,14 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
 
   document.addEventListener("ruleta:enter", async () => {
     const { user } = userStore.getState();
-    console.log({user})
+    console.log({ user });
     try {
-      const userEnabledResponse = await validUserEnabled(user.serviceId, user.id);
-      const { canSpin, remainingPlays, playsAllowed, playsUsed, reason } = userEnabledResponse || {};
+      const userEnabledResponse = await validUserEnabled(
+        user.serviceId,
+        user.id,
+      );
+      const { canSpin, remainingPlays, playsAllowed, playsUsed, reason } =
+        userEnabledResponse || {};
       const mainRuleta = document.querySelector(".main_ruleta");
       showRuleta();
       if (window.innerWidth >= 1200) {
@@ -1128,9 +1217,16 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
       // Animar el isotipo cuando se hace clic en el botón de entrada
       const forseCanSpin = true;
       if (canSpin) {
-        const listProductsResponse = await getListProducts(user.provinceId);
+        const listProductsResponse = await getListProducts(
+          user.provinceId,
+          user.serviceId,
+        );
         const dataProducts = listProductsResponse?.data || [];
-        const totalStockProducts = dataProducts.filter((product) => hasStockAvailable(product.hasStock)).length;
+        // const dataProducts = fakeProducts?.data || [];
+        console.log({ dataProducts });
+        const totalStockProducts = dataProducts.filter((product) =>
+          hasStockAvailable(product.hasStock),
+        ).length;
         //console.log({listProductsResponse, totalStockProducts})
         if (dataProducts.length === 0) {
           showCustomModal({
@@ -1159,107 +1255,134 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
           return;
         }
         // console.log({dataProducts})
-        const bonosResponse = dataProducts.filter(
-          (product) => product.prizeTypeName === "Bonos"
+        const bonosResponse = dataProducts.find(
+          (product) => product.prizeTypeName === "Bonos",
         );
-        const accesoriosResponse = dataProducts.filter(
-          (product) => product.prizeTypeName === "Combo"
+        const equiposYAccesoriosResponse = dataProducts.find(
+          (product) => product.prizeTypeName === "Equipos y accesorios",
         );
-        const valesResponse = dataProducts.filter(
-          (product) => product.prizeTypeName === "Vales Tailoy y Cinemark"
+        const valesResponse = dataProducts.find(
+          (product) => product.prizeTypeName === "Vales",
         );
         const valesTailoyResponse = dataProducts.filter(
-          (product) => product.prizeTypeName === "Solo vales Tailoy"
+          (product) => product.prizeTypeName === "Solo vales Tailoy",
         );
         const valesCineResponse = dataProducts.filter(
-          (product) => product.prizeTypeName === "Solo vales Cinemark"
+          (product) => product.prizeTypeName === "Solo vales Cinemark",
         );
-        //console.log({valesResponse})
         const equiposResponse = dataProducts.filter(
-          (product) => product.prizeTypeName === "Equipos"
+          (product) => product.prizeTypeName === "Equipos",
         );
         const artefactosResponse = dataProducts.filter(
-          (product) => product.prizeTypeName === "Combo 1"
+          (product) => product.prizeTypeName === "Combo 1",
         );
-        const getValesForItem = (product) => {
-          if (valesResponse.length !== 0) {
-            product.setAttribute("data-nombre", valesResponse[0].prizeTypeName);
-            product.setAttribute("data-stock",hasStockAvailable(valesResponse[0].hasStock) ? "1" : "0");
-            product.setAttribute("data-category_id",valesResponse[0].prizeTypeId);
-            product.querySelector("img").src = valesResponse[0].imageUrl;
-            return;
-          }
-          if (valesTailoyResponse.length !== 0) {
-              product.setAttribute("data-nombre", valesTailoyResponse[0].prizeTypeName);
-              product.setAttribute("data-stock",hasStockAvailable(valesTailoyResponse[0].hasStock) ? "1" : "0"
-            );
-            product.setAttribute("data-category_id", valesTailoyResponse[0].prizeTypeId);
-            product.querySelector("img").src = valesTailoyResponse[0].imageUrl;
-            return;
-          }
-          if (valesCineResponse.length !== 0) {
-            product.setAttribute("data-nombre", valesCineResponse[0].prizeTypeName);
-            product.setAttribute("data-stock", hasStockAvailable(valesCineResponse[0].hasStock) ? "1" : "0");
-            product.setAttribute("data-category_id", valesCineResponse[0].prizeTypeId);
-            product.querySelector("img").src = valesCineResponse[0].imageUrl;
-            return;
-          }
-          if (valesResponse.length === 0 && valesTailoyResponse.length === 0 && valesCineResponse.length === 0) {
-            product.setAttribute("data-nombre", bonosResponse[0].prizeTypeName);
-            product.setAttribute("data-stock",hasStockAvailable(bonosResponse[0].hasStock) ? "1" : "0");
-            product.setAttribute("data-category_id",bonosResponse[0].prizeTypeId);
-            product.querySelector("img").src = bonosResponse[0].imageUrl;
-            return;
-          }
-        };
+        const combosResponse = dataProducts.find(
+          (product) => product.prizeTypeName === "Combos",
+        );
+        // const getValesForItem = (product) => {
+        //   if (valesResponse.length !== 0) {
+        //     product.setAttribute("data-nombre", valesResponse[0].prizeTypeName);
+        //     product.setAttribute(
+        //       "data-stock",
+        //       hasStockAvailable(valesResponse[0].hasStock) ? "1" : "0",
+        //     );
+        //     product.setAttribute(
+        //       "data-category_id",
+        //       valesResponse[0].prizeTypeId,
+        //     );
+        //     product.querySelector("img").src = valesResponse[0].imageUrl;
+        //     return;
+        //   }
+        //   if (valesTailoyResponse.length !== 0) {
+        //     product.setAttribute(
+        //       "data-nombre",
+        //       valesTailoyResponse[0].prizeTypeName,
+        //     );
+        //     product.setAttribute(
+        //       "data-stock",
+        //       hasStockAvailable(valesTailoyResponse[0].hasStock) ? "1" : "0",
+        //     );
+        //     product.setAttribute(
+        //       "data-category_id",
+        //       valesTailoyResponse[0].prizeTypeId,
+        //     );
+        //     product.querySelector("img").src = valesTailoyResponse[0].imageUrl;
+        //     return;
+        //   }
+        //   if (valesCineResponse.length !== 0) {
+        //     product.setAttribute(
+        //       "data-nombre",
+        //       valesCineResponse[0].prizeTypeName,
+        //     );
+        //     product.setAttribute(
+        //       "data-stock",
+        //       hasStockAvailable(valesCineResponse[0].hasStock) ? "1" : "0",
+        //     );
+        //     product.setAttribute(
+        //       "data-category_id",
+        //       valesCineResponse[0].prizeTypeId,
+        //     );
+        //     product.querySelector("img").src = valesCineResponse[0].imageUrl;
+        //     return;
+        //   }
+        //   if (
+        //     valesResponse.length === 0 &&
+        //     valesTailoyResponse.length === 0 &&
+        //     valesCineResponse.length === 0
+        //   ) {
+        //     return;
+        //   }
+        // };
         items.forEach((item, index) => {
           const nombre = item.getAttribute("data-nombre");
-          if (nombre === "Accesorios") {
-            if (accesoriosResponse.length === 0) {
-              item.setAttribute("data-stock", "0");
-              item.removeAttribute("data-category_id");
-              return;
-            }
-            item.setAttribute("data-nombre", accesoriosResponse[0].prizeTypeName);
-            item.setAttribute("data-stock", hasStockAvailable(accesoriosResponse[0].hasStock) ? "1" : "0");
-            item.setAttribute("data-category_id", accesoriosResponse[0].prizeTypeId);
-            item.querySelector("img").src = accesoriosResponse[0].imageUrl;
-          }
           if (nombre === "Bonos") {
-            if (bonosResponse.length === 0) {
+            if (!bonosResponse) {
               item.setAttribute("data-stock", "0");
               item.removeAttribute("data-category_id");
               return;
             }
-            item.setAttribute("data-nombre", bonosResponse[0].prizeTypeName);
-            item.setAttribute("data-stock", hasStockAvailable(bonosResponse[0].hasStock) ? "1" : "0");
-            item.setAttribute("data-category_id", bonosResponse[0].prizeTypeId);
-            item.querySelector("img").src = bonosResponse[0].imageUrl;
+            item.setAttribute("data-nombre", bonosResponse?.prizeTypeName);
+            item.setAttribute("data-stock", hasStockAvailable(bonosResponse?.hasStock) ? "1" : "0");
+            item.setAttribute("data-category_id", String(bonosResponse?.prizeTypeId));
+            item.querySelector("img").src = bonosResponse?.imageUrl;
           }
           if (nombre === "Equipos") {
-            if (equiposResponse.length === 0) {
+            if (!equiposYAccesoriosResponse) {
               item.setAttribute("data-stock", "0");
               item.removeAttribute("data-category_id");
               return;
             }
-            item.setAttribute("data-nombre", equiposResponse[0].prizeTypeName);
-            item.setAttribute("data-stock", hasStockAvailable(equiposResponse[0].hasStock) ? "1" : "0");
-            item.setAttribute("data-category_id", equiposResponse[0].prizeTypeId);
-            item.querySelector("img").src = equiposResponse[0].imageUrl;
+            item.setAttribute("data-nombre",equiposYAccesoriosResponse?.prizeTypeName);
+            item.setAttribute("data-stock",hasStockAvailable(equiposYAccesoriosResponse?.hasStock) ? "1" : "0");
+            item.setAttribute("data-category_id",String(equiposYAccesoriosResponse?.prizeTypeId));
+            item.querySelector("img").src = equiposYAccesoriosResponse?.imageUrl;
           }
           if (nombre === "Vales general") {
-            getValesForItem(item);
-          }
-          if (nombre === "Artefactos") {
-            if (artefactosResponse.length !== 0) {
-              item.setAttribute("data-nombre",artefactosResponse[0].prizeTypeName);
-              item.setAttribute("data-stock",hasStockAvailable(artefactosResponse[0].hasStock) ? "1" : "0");
-              item.setAttribute("data-category_id",artefactosResponse[0].prizeTypeId);
-              item.querySelector("img").src = artefactosResponse[0].imageUrl;
-            } else {
+            if (!valesResponse) {
               item.setAttribute("data-stock", "0");
               item.removeAttribute("data-category_id");
+              return;
             }
+            item.setAttribute("data-nombre",valesResponse?.prizeTypeName);
+            item.setAttribute("data-stock",hasStockAvailable(valesResponse?.hasStock) ? "1" : "0");
+            item.setAttribute("data-category_id",String(valesResponse?.prizeTypeId));
+            item.querySelector("img").src = valesResponse?.imageUrl;
+          }
+          if (nombre === "Artefactos") {
+            const { subtypes } = combosResponse;
+            const combo = subtypes.find((subtype) => subtype.name === "Combo 2");
+            item.setAttribute("data-nombre",combo?.name);
+            item.setAttribute("data-stock",hasStockAvailable(combo?.hasStock) ? "1" : "0");
+            item.setAttribute("data-category_id",String(combo?.id));
+            item.querySelector("img").src = combo?.imagen;
+          }
+          if(nombre === "Accesorios") {
+            const { subtypes } = combosResponse;
+            const combo = subtypes.find((subtype) => subtype.name === "Combo 1");
+            item.setAttribute("data-nombre",combo?.name);
+            item.setAttribute("data-stock",hasStockAvailable(combo?.hasStock) ? "1" : "0");
+            item.setAttribute("data-category_id",String(combo?.id));
+            item.querySelector("img").src = combo?.imagen;
           }
         });
         const rotacion = gsap.to(isotipo, {
