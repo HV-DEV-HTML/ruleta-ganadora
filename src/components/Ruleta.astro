@@ -748,25 +748,28 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
       {
         prizeTypeId: 10,
         prizeTypeName: "Bonos",
-        imageUrl: null,
+        imageUrl:
+          "https://crm.dev-limprod.com/uploads/prize-types/prize-type-10-d4833167-e408-4a2d-a552-5d8d134a92a8.png",
         isAllowed: true,
-        hasStock: 1,
+        hasStock: false,
         subtypes: [
-          {
-            id: 7,
-            name: "Bono 2",
-            description: "bono 2",
-            imagen: "",
-            hasStock: true,
-            displayOrder: 0,
-            isActive: true,
-          },
           {
             id: 6,
             name: "Bono 1",
             description: "bonos 1",
-            imagen: "",
-            hasStock: true,
+            imagen:
+              "/uploads/prize-subtypes/subtype-6-019f29bf-7018-4799-ab3c-116fae8fb213.png",
+            hasStock: false,
+            displayOrder: 0,
+            isActive: true,
+          },
+          {
+            id: 7,
+            name: "Bono 2",
+            description: "bono 2",
+            imagen:
+              "/uploads/prize-subtypes/subtype-7-9299223f-a9be-4440-82ac-7deec154d1cc.png",
+            hasStock: false,
             displayOrder: 0,
             isActive: true,
           },
@@ -775,32 +778,36 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
       {
         prizeTypeId: 11,
         prizeTypeName: "Equipos y accesorios",
-        imageUrl: null,
+        imageUrl:
+          "https://crm.dev-limprod.com/uploads/prize-types/prize-type-11-cfc1a038-e47b-4b00-94eb-72c90ff20b18.png",
         isAllowed: true,
-        hasStock: 1,
+        hasStock: false,
         subtypes: null,
       },
       {
         prizeTypeId: 12,
         prizeTypeName: "Combos",
-        imageUrl: null,
+        imageUrl:
+          "https://crm.dev-limprod.com/uploads/prize-types/prize-type-12-17d5bf05-5260-4342-95e4-ed877dc1b97b.png",
         isAllowed: true,
-        hasStock: 1,
+        hasStock: true,
         subtypes: [
-          {
-            id: 9,
-            name: "Combo 2",
-            description: "combo 2",
-            imagen: "",
-            hasStock: true,
-            displayOrder: 0,
-            isActive: true,
-          },
           {
             id: 8,
             name: "Combo 1",
             description: "combo 1",
-            imagen: "",
+            imagen:
+              "/uploads/prize-subtypes/subtype-8-9d5a1ce7-b27d-4676-bf9e-de192896b6f4.png",
+            hasStock: false,
+            displayOrder: 0,
+            isActive: true,
+          },
+          {
+            id: 9,
+            name: "Combo 2",
+            description: "combo 2",
+            imagen:
+              "/uploads/prize-subtypes/subtype-9-3cce7e4b-e2cc-485f-8d36-e8853685aac0.png",
             hasStock: true,
             displayOrder: 0,
             isActive: true,
@@ -810,14 +817,15 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
       {
         prizeTypeId: 13,
         prizeTypeName: "Vales",
-        imageUrl: null,
+        imageUrl:
+          "https://crm.dev-limprod.com/uploads/prize-types/prize-type-13-92aefe85-7594-4f59-83d9-f2efb088c9ee.png",
         isAllowed: true,
-        hasStock: 1,
+        hasStock: false,
         subtypes: null,
       },
     ],
     count: 4,
-    availableCount: 4,
+    availableCount: 1,
     message: null,
   };
 
@@ -946,7 +954,10 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
     const categoryIdExclude = isUserFijaFullClaro100Mbps ? 10 : null; //No debe caer en bonos
 
     try {
-      const latestProductsResponse = await getListProducts(user.provinceId, user.serviceId);
+      const latestProductsResponse = await getListProducts(
+        user.provinceId,
+        user.serviceId,
+      );
       const latestProducts = latestProductsResponse?.data || [];
       const latestStockByPrizeType = new Map(
         latestProducts.map((product) => [
@@ -954,17 +965,29 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
           hasStockAvailable(product.hasStock),
         ]),
       );
+      const combosProduct = latestProducts.find(
+        (product) => product.prizeTypeName === "Combos",
+      );
+      const comboSubtypeStock = new Map(
+        (combosProduct?.subtypes || []).map((subtype) => [
+          Number(subtype.id),
+          hasStockAvailable(subtype.hasStock),
+        ]),
+      );
 
       items.forEach((item) => {
         const categoryId = Number(item.getAttribute("data-category_id"));
-        if (
-          !Number.isFinite(categoryId) ||
-          !latestStockByPrizeType.has(categoryId)
-        ) {
+        if (!Number.isFinite(categoryId)) {
           item.setAttribute("data-stock", "0");
           return;
         }
-        const hasStock = latestStockByPrizeType.get(categoryId);
+        const hasStock = latestStockByPrizeType.has(categoryId)
+          ? latestStockByPrizeType.get(categoryId)
+          : comboSubtypeStock.get(categoryId);
+        if (hasStock === undefined) {
+          item.setAttribute("data-stock", "0");
+          return;
+        }
         item.setAttribute("data-stock", hasStock ? "1" : "0");
       });
     } catch (error) {
@@ -1342,8 +1365,14 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
               return;
             }
             item.setAttribute("data-nombre", bonosResponse?.prizeTypeName);
-            item.setAttribute("data-stock", hasStockAvailable(bonosResponse?.hasStock) ? "1" : "0");
-            item.setAttribute("data-category_id", String(bonosResponse?.prizeTypeId));
+            item.setAttribute(
+              "data-stock",
+              hasStockAvailable(bonosResponse?.hasStock) ? "1" : "0",
+            );
+            item.setAttribute(
+              "data-category_id",
+              String(bonosResponse?.prizeTypeId),
+            );
             item.querySelector("img").src = bonosResponse?.imageUrl;
           }
           if (nombre === "Equipos") {
@@ -1352,10 +1381,22 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
               item.removeAttribute("data-category_id");
               return;
             }
-            item.setAttribute("data-nombre",equiposYAccesoriosResponse?.prizeTypeName);
-            item.setAttribute("data-stock",hasStockAvailable(equiposYAccesoriosResponse?.hasStock) ? "1" : "0");
-            item.setAttribute("data-category_id",String(equiposYAccesoriosResponse?.prizeTypeId));
-            item.querySelector("img").src = equiposYAccesoriosResponse?.imageUrl;
+            item.setAttribute(
+              "data-nombre",
+              equiposYAccesoriosResponse?.prizeTypeName,
+            );
+            item.setAttribute(
+              "data-stock",
+              hasStockAvailable(equiposYAccesoriosResponse?.hasStock)
+                ? "1"
+                : "0",
+            );
+            item.setAttribute(
+              "data-category_id",
+              String(equiposYAccesoriosResponse?.prizeTypeId),
+            );
+            item.querySelector("img").src =
+              equiposYAccesoriosResponse?.imageUrl;
           }
           if (nombre === "Vales general") {
             if (!valesResponse) {
@@ -1363,25 +1404,41 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
               item.removeAttribute("data-category_id");
               return;
             }
-            item.setAttribute("data-nombre",valesResponse?.prizeTypeName);
-            item.setAttribute("data-stock",hasStockAvailable(valesResponse?.hasStock) ? "1" : "0");
-            item.setAttribute("data-category_id",String(valesResponse?.prizeTypeId));
+            item.setAttribute("data-nombre", valesResponse?.prizeTypeName);
+            item.setAttribute(
+              "data-stock",
+              hasStockAvailable(valesResponse?.hasStock) ? "1" : "0",
+            );
+            item.setAttribute(
+              "data-category_id",
+              String(valesResponse?.prizeTypeId),
+            );
             item.querySelector("img").src = valesResponse?.imageUrl;
           }
           if (nombre === "Artefactos") {
             const { subtypes } = combosResponse;
-            const combo = subtypes.find((subtype) => subtype.name === "Combo 2");
-            item.setAttribute("data-nombre",combo?.name);
-            item.setAttribute("data-stock",hasStockAvailable(combo?.hasStock) ? "1" : "0");
-            item.setAttribute("data-category_id",String(combo?.id));
+            const combo = subtypes.find(
+              (subtype) => subtype.name === "Combo 2",
+            );
+            item.setAttribute("data-nombre", combo?.name);
+            item.setAttribute(
+              "data-stock",
+              hasStockAvailable(combo?.hasStock) ? "1" : "0",
+            );
+            item.setAttribute("data-category_id", String(combo?.id));
             item.querySelector("img").src = combo?.imagen;
           }
-          if(nombre === "Accesorios") {
+          if (nombre === "Accesorios") {
             const { subtypes } = combosResponse;
-            const combo = subtypes.find((subtype) => subtype.name === "Combo 1");
-            item.setAttribute("data-nombre",combo?.name);
-            item.setAttribute("data-stock",hasStockAvailable(combo?.hasStock) ? "1" : "0");
-            item.setAttribute("data-category_id",String(combo?.id));
+            const combo = subtypes.find(
+              (subtype) => subtype.name === "Combo 1",
+            );
+            item.setAttribute("data-nombre", combo?.name);
+            item.setAttribute(
+              "data-stock",
+              hasStockAvailable(combo?.hasStock) ? "1" : "0",
+            );
+            item.setAttribute("data-category_id", String(combo?.id));
             item.querySelector("img").src = combo?.imagen;
           }
         });
