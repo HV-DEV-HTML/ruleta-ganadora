@@ -1,0 +1,183 @@
+---
+import "swiper/css/bundle";
+import image_01 from '@/assets/images/ganadores/image_01.webp'
+import image_02 from '@/assets/images/ganadores/image_02.webp'
+import image_03 from '@/assets/images/ganadores/image_03.webp'
+import image_04 from '@/assets/images/ganadores/image_04.webp'
+import image_05 from '@/assets/images/ganadores/image_05.webp'
+import image_06 from '@/assets/images/ganadores/image_06.webp'
+import image_07 from '@/assets/images/ganadores/image_07.webp'
+import image_08 from '@/assets/images/ganadores/image_08.webp'
+import image_09 from '@/assets/images/ganadores/image_09.webp'
+import image_10 from '@/assets/images/ganadores/image_10.webp'
+import image_11 from '@/assets/images/ganadores/image_11.webp'
+const ganadores = [
+  {
+    name: "OPPO A5 PRO 5G",
+    image: image_01.src
+  },
+  {
+    name: `SAMSUNG QLED Q7F 55"`,
+    image: image_02.src
+  },
+  {
+    name: "XIAOMI ROBOT VACUUM E5",
+    image: image_03.src
+  },
+  {
+    name: "HONOR CHOICE HEADPHONES",
+    image: image_04.src
+  },
+  {
+    name: "HONOR BAND",
+    image: image_05.src
+  },
+  {
+    name: "VIVO Y29S 5G",
+    image: image_06.src
+  },
+  {
+    name: `SAMSUNG QLED Q7F 55"`,
+    image: image_07.src
+  },
+  {
+    name: "XIAOMI AIR FYER 6.5L",
+    image: image_08.src
+  },
+  {
+    name: "OPPO A5 PRO 5G",
+    image: image_09.src
+  },
+  {
+    name: "XIAOMI AIR FYER 6.5L",
+    image: image_10.src
+  },
+  {
+    name: "OPPO A5 PRO 5G",
+    image: image_11.src
+  }
+];
+---
+
+<section class="relative bg-transparent">
+  <div class="container flex flex-col gap-2 lg:gap-4 xl:gap-6">
+    <div class="flex flex-col md:flex-row md:justify-between gap-4">
+      <hgroup class="flex flex-col gap-2 text-center w-full xl:pt-2 xl:pb-12">
+        <h2
+          class="text-white font-amx-bold text-3xl xl:text-4xl 2xl:text-5xl leading-none"
+        >
+          ¡Ellos ya ganaron con la ruleta de premios!
+        </h2>
+      </hgroup>
+    </div>
+    <div class="relative py-8 xl:pb-14">
+      <div class="swiper swiperGanadores w-full">
+        <div class="swiper-wrapper">
+          {ganadores.map((ganador) => (
+            <div class="swiper-slide">
+              <div class="flex flex-col items-center">
+                <picture class="flex -mb-11 relative z-10">
+                  <img 
+                    class="w-full h-full object-cover max-w-[150px] rounded-2xl" 
+                    src={ganador.image} 
+                    alt={`Premio: ${ganador.name}`}
+                    loading="lazy"
+                    width="150"
+                    height="150"
+                  />
+                </picture>
+                <div class="bg-claro p-4 xl:p-8 rounded-2xl max-w-[270px] min-h-[186px] w-full h-full flex flex-col items-center justify-center gap-2">
+                  <p class="font-amx-regular leading-none text-white text-xs xl:text-sm uppercase">Ganador(A)</p>
+                  <h4 class="text-white text-lg xl:text-xl leading-none text-center">{ganador.name}</h4>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div class="flex justify-center items-center gap-4 pt-6 md:mt-6">
+          <button
+            class="swiper-button-prev relative mt-0 text-white before:hidden after:hidden border-2 w-[30px] h-[30px] rounded-full"
+          >
+            <svg
+              class="size-4"
+              width="11"
+              height="11"
+              viewBox="0 0 11 11"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M5.35 10.71C5.11 10.71 4.88333 10.6167 4.71 10.4433L0.27 6.00333C-0.09 5.64333 -0.09 5.07 0.27 4.71L4.71 0.27C5.07 -0.09 5.64333 -0.09 6.00333 0.27C6.36333 0.63 6.36333 1.20333 6.00333 1.56333L2.21667 5.35L6.00333 9.13667C6.36333 9.49667 6.36333 10.07 6.00333 10.43C5.83 10.6033 5.59 10.6967 5.36333 10.6967L5.35 10.71Z"
+                fill="white"></path>
+              <path
+                d="M9.79042 6.27037H0.923756C0.41709 6.27037 0.0170898 5.85703 0.0170898 5.3637C0.0170898 4.87036 0.430423 4.45703 0.923756 4.45703H9.79042C10.2971 4.45703 10.6971 4.87036 10.6971 5.3637C10.6971 5.85703 10.2838 6.27037 9.79042 6.27037Z"
+                fill="white"></path>
+            </svg>
+          </button>
+          <div
+            class="swiper-pagination relative top-0 w-fit"
+            style="--swiper-pagination-color:#DA291C;--swiper-pagination-bullet-inactive-color:white;--swiper-pagination-bullet-inactive-opacity:1"
+          >
+          </div>
+          <button
+            class="swiper-button-next relative mt-0 text-white before:hidden after:hidden border-2 border-white w-[30px] h-[30px] rounded-full"
+          >
+            <svg
+              class="size-4"
+              width="11"
+              height="11"
+              viewBox="0 0 11 11"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M5.34707 0.000937315C5.58707 0.000937336 5.81373 0.0942704 5.98707 0.267604L10.4271 4.70761C10.7871 5.06761 10.7871 5.64094 10.4271 6.00094L5.98707 10.4409C5.62707 10.8009 5.05373 10.8009 4.69373 10.4409C4.33373 10.0809 4.33373 9.5076 4.69373 9.1476L8.4804 5.36094L4.69374 1.57427C4.33374 1.21427 4.33374 0.640937 4.69374 0.280937C4.86707 0.107604 5.10707 0.0142709 5.33374 0.014271L5.34707 0.000937315Z"
+                fill="white"></path>
+              <path
+                d="M0.906644 4.44057L9.77331 4.44057C10.28 4.44057 10.68 4.85391 10.68 5.34724C10.68 5.84057 10.2666 6.25391 9.77331 6.25391L0.906644 6.25391C0.399977 6.25391 -2.31703e-05 5.84057 -2.31272e-05 5.34724C-2.30841e-05 4.8539 0.413311 4.44057 0.906644 4.44057Z"
+                fill="white"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<script>
+  import Swiper from "swiper/bundle";
+
+  const swiperGanadores = new Swiper(".swiperGanadores", {
+    slidesPerView: 1,
+    spaceBetween: 10,
+    loop: true,
+    pagination: {
+      el: ".swiperGanadores .swiper-pagination",
+      clickable: true,
+    },
+    navigation: {
+      nextEl: ".swiperGanadores .swiper-button-next",
+      prevEl: ".swiperGanadores .swiper-button-prev",
+    },
+    breakpoints: {
+      768: {
+        slidesPerView: 2,
+        spaceBetween: 20,
+        slidesPerGroup: 2,
+      },
+      820: {
+        slidesPerView: 3,
+        spaceBetween: 20,
+        slidesPerGroup: 3,
+      },
+      1200: {
+        slidesPerView: 4,
+        spaceBetween: 30,
+        slidesPerGroup: 4,
+        loop: false,
+      },
+    },
+  });
+</script>

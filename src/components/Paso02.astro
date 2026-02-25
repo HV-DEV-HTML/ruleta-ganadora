@@ -21,14 +21,14 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
       data-aos="zoom-in-right"
       class="font-amx-black text-lg md:text-2xl 2xl:text-4xl uppercase leading-none italic text-center text-claro"
     >
-      CONTRATA UN SERVICIO FIJO O MÓVIL
+      CONTRATA UN SERVICIO con <br class="hidden xl:inline"> internet hogar O un servicio MÓVIL
     </h1>
-    <p
+    <!-- <p
       data-aos="zoom-in-right"
       class="font-amx-medium bold italic text-claro text-[13px] md:text-base xl:text-lg 2xl:text-[30px] text-balance px-3 text-center leading-none md:max-w-[570px] mx-auto uppercase"
     >
       gira la ruleta y gana
-    </p>
+    </p> -->
     <p
       data-aos="zoom-in-right"
       data-aos-delay="50"
@@ -320,7 +320,7 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
   <div class="col-span-2 pt-3 xl:pt-0 xl:-mt-2">
     <p
       class="text-[11px] text-white text-center xl:text-left leading-none mx-auto xl:mr-0 xl:ml-auto md:max-w-[500px] xl:max-w-[430px] 2xl:max-w-[520px] relative xl:right-29 2xl:right-32 2xl:px-0"
-    > No aplica para RUC 20 ni líneas corporativas. Vale del 16/02/26 al 28/02/26 y/o hasta agotar stock. Stock de premios: 1536033. Max. 1 premio por línea o play Claro Hogar. Premio de celulares no disponible para prepago. También participan clientes actuales que realicen las operaciones de la promoción. Tipos de premios según plan y restricciones en secciónenles “Nos gusta hablar claro”. También juegan clientes actuales que realicen las operaciones de la promoción. Premios por plan y restricciones <a class="underline" href="https://claro.pe/ruletaganadora">claro.pe/ruletaganadora</a>
+    > No aplica para RUC 20 ni líneas corporativas. Vale del 24/02/26 al 15/03/26 y/o hasta agotar stock. Total de premios: 1 531 661. Max. 1 premio por línea o play Claro Hogar. Premio de celulares no disponible para prepago. También participan clientes actuales que realicen las operaciones de la promoción. Tipos de premios según plan y restricciones. Premios por plan y restricciones: <a class="underline btnTab" href="https://claro.pe/ruletaganadora">claro.pe/ruletaganadora</a>
     </p>
   </div>
 </div>
@@ -1529,6 +1529,31 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
       }
     }
 
+    const openTermsToggle = () => {
+      const c20peElement = document.querySelector(".c20pe",) as HTMLElement | null;
+      if (!c20peElement) return;
+
+      const yOffset = -80;
+      const y = c20peElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+      setTimeout(() => {
+        window.scrollTo({
+          top: y,
+          behavior: "smooth",
+        });
+      }, 700);
+
+      setTimeout(() => {
+        const actBtn = c20peElement.querySelector(".actBtn",) as HTMLElement | null;
+        actBtn?.click();
+      }, 400);
+    }
+
+    document.querySelector(".btnTab")?.addEventListener("click", (e: MouseEvent) => {
+      e.preventDefault();
+      openTermsToggle();
+    });
+
     document.addEventListener("click", (e) => {
       const target = e.target as HTMLElement;
 
@@ -1537,33 +1562,9 @@ import iconTooltip from "@/assets/icons/tooltip.svg?raw";
 
       e.preventDefault();
 
-      const closeModal = document.querySelector(
-        ".swal2-close",
-      ) as HTMLElement | null;
+      const closeModal = document.querySelector(".swal2-close",) as HTMLElement | null;
       closeModal?.click();
-
-      const c20peElement = document.querySelector(
-        ".c20pe",
-      ) as HTMLElement | null;
-      if (!c20peElement) return;
-
-      const yOffset = -80;
-      const y =
-        c20peElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
-
-      setTimeout(() => {
-        window.scrollTo({
-          top: y,
-          behavior: "smooth",
-        });
-      }, 1000);
-
-      setTimeout(() => {
-        const actBtn = c20peElement.querySelector(
-          ".actBtn",
-        ) as HTMLElement | null;
-        actBtn?.click();
-      }, 600);
+      openTermsToggle();
     });
   });
 </script>

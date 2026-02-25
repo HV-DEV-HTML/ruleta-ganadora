@@ -123,12 +123,14 @@ const postpagoCards = [
             <p><b>Cliente Internet Hogar</b></p>
             <ul>
               <li>
-                Realizar un alta en 1, 2 y/o 3 play que incluyan el servicio de Internet.
+               Realizar un alta en 1, 2 y/o 3 play que incluyan el servicio de Internet
               </li>
               <li>
                 Realizar una actualización de tecnología de internet (HFC a FTTH).
               </li>
-              <li>Realizar una solicitud de repetidor como servicio adicional en su plan fijo (HFC a FTTH).</li>
+              <li>
+                Contratar un servicio Wifi 360 (HFC y FTTH) con cargo fijo mayor a S/0.
+              </li>
             </ul>
           </div>
           <div class="part2">
@@ -146,7 +148,19 @@ const postpagoCards = [
             <li>Recargar, aceptar y activar un CTR desde S/10.</li>
             <li>Realizar un alta, porta o renovación.</li>
             <li>Comprar paquete desde S/10.</li>
+            <li>
+              Recargar desde S/3 durante la vigencia de la promoción siempre que los clientes cumplan con las siguientes condiciones de manera conjunta*:
+              <ul>
+                <li>Que, durante enero 2026, hayan realizado recargas por un monto total entre S/3 y S/10.</li>
+                <li>Que, durante el mes de febrero 2026 y previo a la vigencia de la presente promoción, hayan efectuado recargas sin superar el monto total recargado en enero 2026.</li>
+                <li>
+                  Que el monto total de recargas realizas entre el 1 al 21 de febrero del 2026 sea menor al monto total de recargas realizadas entre el 1 al 21 de enero del 2026.
+                </li>
+              </ul>
+            </li>
           </ul>
+          <br><br>
+          <p class="font-normal font-amx-regular">* En caso el cliente aplique a cada una de estas condiciones, realice una recarga y además acepte y active un CTR, solo podrá participar una sola vez en la ruleta</p>
         </div>
         <button>Entendido</button>
       </div>
@@ -179,6 +193,22 @@ const postpagoCards = [
     max-width: 804px;
     padding: 60px 36px 36px;
     position: relative;
+    max-height: 600px;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: #867979 transparent;
+    scrollbar-gutter: stable;
+  }
+  .modalTransacciones .content::-webkit-scrollbar {
+    width: 8px;
+  }
+  .modalTransacciones .content::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+  }
+  .modalTransacciones .content::-webkit-scrollbar-thumb {
+    background-color: #867979;
+    border-radius: 10px;
   }
   .modalTransacciones .content .close {
     position: absolute;
@@ -194,7 +224,7 @@ const postpagoCards = [
   .modalTransacciones .content h3 {
     color: #000;
     text-align: center;
-    font-size: 32px;
+    font-size: 28px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
@@ -222,7 +252,7 @@ const postpagoCards = [
 
   .modalTransacciones .content .ptext ul li {
     color: #000;
-    font-size: 18px;
+    font-size: 16px;
     font-style: normal;
     font-weight: 400;
     line-height: 25px;
