@@ -2,6 +2,7 @@
 import "aos/dist/aos.css";
 import Layout from "@layouts/Layout.astro";
 import Banner from "@components/Banner.astro";
+import BannerCierre from "@/components/BannerCierre.astro";
 import Participa from "@components/Participa.astro";
 import bg_circle from "@/assets/images/bg_transparent_circle.webp";
 import ModalTratamientos from "@components/Modal/Tratamientos.astro";
@@ -14,22 +15,24 @@ import Ganadores from "@/components/Ganadores.astro";
 ---
 
 <Layout title="Ruleta Ganadora">
-  <Ruleta />
-  <Banner />
+  <!-- <Ruleta /> -->
+  <!-- Cuando no es cierre, va el componente Banner -->
+  <BannerCierre />
   <div class="relative md:mt-20 xl:-mt-48 section_hidden">
-    <img
+    <!-- Comentar cuando la ruleta se cierra -->
+    <!-- <img
       loading="lazy"
       class="absolute object-contain w-full -top-14 md:-top-1/12 xl:top-9 2xl:-top-7 left-0 inset-0"
       src={bg_circle.src}
       alt=""
-    />
-    <Participa />
+    /> -->
+    <!-- <Participa />
     <Premios />
     <Ganadores />
-    <Auspiciadores />
+    <Auspiciadores /> -->
   </div>
-  <ModalTratamientos />
-  <ModalPromociones />
+  <!-- <ModalTratamientos />
+  <ModalPromociones /> -->
   <Preaload />
 </Layout>
 
