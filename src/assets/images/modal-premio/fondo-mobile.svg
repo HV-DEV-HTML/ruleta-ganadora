@@ -1,0 +1,16 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="784" height="546" viewBox="0 0 784 546" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Mask group">
+<mask id="mask0_0_7" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="784" height="546">
+<rect id="Rectangle 3467822" width="784" height="546" rx="30" fill="white"/>
+</mask>
+<g mask="url(#mask0_0_7)">
+<circle id="Ellipse 1678" cx="391.5" cy="370.5" r="255.5" fill="url(#paint0_linear_0_7)"/>
+</g>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_7" x1="391.5" y1="115" x2="391.5" y2="260.496" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FFE1E1" stop-opacity="0"/>
+<stop offset="1" stop-color="#FFE1E1"/>
+</linearGradient>
+</defs>
+</svg>
