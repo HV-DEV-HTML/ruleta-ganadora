@@ -172,7 +172,9 @@ const confetti = [
       animation: none;
     }
   }
-  :global(html:has(dialog.premio-modal[open])) {
+  /* The page scrolls on <body> (fixed height + overflow auto), so lock both. */
+  :global(html:has(dialog.premio-modal[open])),
+  :global(body:has(dialog.premio-modal[open])) {
     overflow: hidden;
   }
 
@@ -528,7 +530,8 @@ const confetti = [
     .premio-modal__cta {
       grid-column: 1 / -1;
       grid-row: 5;
-      margin: -25px 0 0;
+      justify-self: start;
+      margin: -25px 0 0 230px;
       position: relative;
       z-index: 10;
     }
