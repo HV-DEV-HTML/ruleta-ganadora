@@ -20,6 +20,10 @@ const svg = (w, h, color) =>
     `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><rect width="${w}" height="${h}" rx="${Math.min(w, h) / 6}" fill="${color}"/></svg>`,
   );
 
+// Local placeholders must be absolute: resolveAssetUrl would otherwise treat the
+// root-relative dev-server path as an API path and request it from the API host.
+const abs = (asset) => new URL(asset.src, window.location.origin).href;
+
 const norm360 = (deg) => ((deg % 360) + 360) % 360;
 const diff180 = (a, b) => ((a - b + 540) % 360) - 180;
 
@@ -43,13 +47,13 @@ const type = (prizeTypeId, prizeTypeName, imageUrl, hasStock = true, subtypes = 
 });
 
 const base = (img = {}) => [
-  type(10, "Bonos", img.bonos ?? gift.src),
-  type(11, "Equipos y accesorios", img.equipos ?? equipos.src),
-  type(12, "Combos", img.combos ?? combo1.src, true, [
-    sub(8, "Combo 1", img.combo1 ?? combo1.src),
-    sub(9, "Combo 2", img.combo2 ?? combo2.src),
+  type(10, "Bonos", img.bonos ?? abs(gift)),
+  type(11, "Equipos y accesorios", img.equipos ?? abs(equipos)),
+  type(12, "Combos", img.combos ?? abs(combo1), true, [
+    sub(8, "Combo 1", img.combo1 ?? abs(combo1)),
+    sub(9, "Combo 2", img.combo2 ?? abs(combo2)),
   ]),
-  type(13, "Vales", img.vales ?? vales.src),
+  type(13, "Vales", img.vales ?? abs(vales)),
 ];
 
 const SLOT_KEYS = ["bonos", "vales", "equipos", "combo1", "combo2"];
@@ -195,7 +199,7 @@ export function install(ctx) {
           result: "WIN",
           prizeId: "dev-prize",
           prizeName: `Premio de prueba (categoria ${prizeTypeId})`,
-          prizeImageUrl: items[index].querySelector("[data-prize-img]")?.src ?? gift.src,
+          prizeImageUrl: items[index].querySelector("[data-prize-img]")?.src ?? abs(gift),
           prizeTypeId,
           message: "Simulated win",
         };

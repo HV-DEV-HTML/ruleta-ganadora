@@ -1,5 +1,7 @@
 ---
 import ruleta_art from "@/assets/images/ruleta/ruleta-wheel.webp";
+// Same art with the pointer tip painted out, so the rotating disc has no arrow.
+import ruleta_disc from "@/assets/images/ruleta/ruleta-disc.webp";
 import glow_disc from "@/assets/images/ruleta/glow-disc.svg";
 import glow_ring from "@/assets/images/ruleta/glow-ring.svg";
 import glow_ellipse from "@/assets/images/ruleta/glow-ellipse.svg";
@@ -65,7 +67,7 @@ const slots = [
         <img src={glow_disc.src} alt="" aria-hidden="true" class="ruleta-glow ruleta-glow--disc" />
         <img src={glow_ring.src} alt="" aria-hidden="true" class="ruleta-glow ruleta-glow--ring" />
         <div class="ruleta transition-opacity duration-300">
-          <img src={ruleta_art.src} alt="" class="ruleta-art ruleta-art--disc" />
+          <img src={ruleta_disc.src} alt="" class="ruleta-art ruleta-art--disc" />
           {
             slots.map((s, i) => (
               <div
@@ -205,7 +207,7 @@ const slots = [
       --cy: calc(var(--u) * 51.12);
       --disc-r: calc(var(--u) * 39.7);
       --hub-r: calc(var(--u) * 14.6);
-      --disc-edge: calc(var(--u) * 0.35);
+      --disc-edge: calc(var(--u) * 0.5);
     }
 
     /* Glows: static decoration behind the wheel (positions from the Figma frame). */
@@ -267,26 +269,41 @@ const slots = [
       width: 100%;
       z-index: 2;
     }
+    /* Rim + glow copy: visible only outside the disc. The ramp overlaps the disc
+       edge slightly so no hairline of background leaks through the seam. */
     .ruleta-art--rim,
     .ruleta-art--glow {
       -webkit-mask-image: radial-gradient(
         circle at var(--cx) var(--cy),
-        transparent var(--disc-r),
-        #000 calc(var(--disc-r) + var(--disc-edge))
+        transparent calc(var(--disc-r) - var(--disc-edge)),
+        #000 var(--disc-r)
       );
       mask-image: radial-gradient(
         circle at var(--cx) var(--cy),
-        transparent var(--disc-r),
-        #000 calc(var(--disc-r) + var(--disc-edge))
+        transparent calc(var(--disc-r) - var(--disc-edge)),
+        #000 var(--disc-r)
       );
     }
     .ruleta-art--glow {
       filter: blur(6.834px);
       mix-blend-mode: overlay;
     }
+    /* Crisp arrow tip that reaches inside the disc. The rotating disc art has the
+       tip painted out (ruleta-disc.webp), so this fixed copy is the only tip; it is
+       clipped to the arrow head so no baked shadow or glow lands on the prizes. */
     .ruleta-art--pointer {
       z-index: 3;
-      clip-path: polygon(40% 8%, 60% 8%, 60% 17%, 40% 17%);
+      -webkit-mask-image: radial-gradient(
+        circle at var(--cx) var(--cy),
+        #000 var(--disc-r),
+        transparent calc(var(--disc-r) + var(--disc-edge) * 0.3)
+      );
+      mask-image: radial-gradient(
+        circle at var(--cx) var(--cy),
+        #000 var(--disc-r),
+        transparent calc(var(--disc-r) + var(--disc-edge) * 0.3)
+      );
+      clip-path: polygon(45.3% 10.5%, 55.1% 10.5%, 50.2% 15.95%);
     }
     .ruleta-art--hub {
       z-index: 3;
@@ -304,6 +321,9 @@ const slots = [
       pointer-events: none;
     }
 
+    /* Image boxes keep r + ph / 2 under ~35 (the arrow tip sits at r ~ 35.4), so a
+       prize resting under the pointer is never touched by it. Slightly tighter
+       than the Figma boxes on purpose. */
     /* Prize slots: a 0x0 box at the wheel centre rotated 60deg * index; children
        are pushed outwards along the slot axis (so no per-breakpoint offsets). */
     .ruleta .item {
@@ -375,28 +395,28 @@ const slots = [
         }
       }
       &[data-slot="vales"] {
-        --r: 28.31;
+        --r: 27.3;
         --tx: 1.59;
         --tilt: -24.55deg;
-        --pw: 20.78;
-        --ph: 14.16;
+        --pw: 19.5;
+        --ph: 13;
         --lr: 17.14;
         --ltx: 0.88;
       }
       &[data-slot="combo2"] {
-        --r: 28.65;
+        --r: 27.2;
         --tx: 0.07;
         --tilt: 22.39deg;
-        --pw: 17.4;
-        --ph: 16.85;
+        --pw: 16;
+        --ph: 15.4;
         --lr: 16.9;
         --ltx: -0.4;
       }
       &[data-slot="equipos"] {
-        --r: 27.62;
+        --r: 26.2;
         --tx: 1.66;
-        --pw: 16.63;
-        --ph: 19.16;
+        --pw: 15.4;
+        --ph: 17;
         --lr: 20.28;
         --ltx: 0.26;
         --ltilt: 5.78deg;
@@ -405,11 +425,11 @@ const slots = [
         }
       }
       &[data-slot="combo1"] {
-        --r: 28.05;
+        --r: 26.4;
         --tx: -0.84;
         --tilt: -1.34deg;
-        --pw: 14.87;
-        --ph: 18.36;
+        --pw: 13.7;
+        --ph: 17;
         --lr: 17.78;
         --ltx: -0.2;
       }
