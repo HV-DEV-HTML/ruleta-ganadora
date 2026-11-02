@@ -1,5 +1,26 @@
 const URL_API = import.meta.env.API_URL_RULETA || 'https://api_ruleta.claromarketingcloud.pe/api'
 
+/**
+ * Resolves an image path coming from the API. Absolute and protocol-relative URLs
+ * pass through; relative paths (e.g. "/uploads/...") are resolved against the origin
+ * of `refUrl` (a sibling absolute URL from the same response) or, failing that, the API origin.
+ */
+export function resolveAssetUrl(path, refUrl) {
+  if (!path || typeof path !== 'string') return '';
+  if (/^(https?:)?\/\//i.test(path) || /^(data|blob):/i.test(path)) return path;
+  let origin = '';
+  for (const candidate of [refUrl, URL_API]) {
+    try {
+      origin = new URL(candidate).origin;
+      break;
+    } catch {
+      // try the next candidate
+    }
+  }
+  if (!origin) return path;
+  return origin + (path.startsWith('/') ? path : `/${path}`);
+}
+
 const isBrowser = typeof window !== 'undefined' && typeof navigator !== 'undefined';
 let uaParserPromise;
 let fingerprintAgentPromise;
