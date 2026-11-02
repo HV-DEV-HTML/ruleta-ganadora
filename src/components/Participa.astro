@@ -1,96 +1,212 @@
 ---
-import card_01 from "@/assets/images/card_01.webp";
-import card_01_postpago from "@/assets/images/card_01_postpago.webp";
-import card_02 from "@/assets/images/card_02.webp";
-import card_03 from "@/assets/images/card_03.webp";
-import card_04 from "@/assets/images/card_04.webp";
-import CardSlider from "./CardSlider.astro";
+import "swiper/css/bundle";
+import paso_01 from "@/assets/images/participa/paso_01.webp";
+import paso_02 from "@/assets/images/participa/paso_02.webp";
+import paso_03 from "@/assets/images/participa/paso_03.webp";
+import paso_04 from "@/assets/images/participa/paso_04.webp";
+import linea from "@/assets/icons/participa/linea.svg";
+import trazo_mini from "@/assets/icons/participa/trazo_mini.svg";
+import destello_24 from "@/assets/icons/participa/destello_24.svg";
+import destello_26 from "@/assets/icons/participa/destello_26.svg";
+import destello_34 from "@/assets/icons/participa/destello_34.svg";
+import destello_34_tablet from "@/assets/icons/participa/destello_34_tablet.svg";
+import destello_40 from "@/assets/icons/participa/destello_40.svg";
 
-const prepagoCards = [
+const steps = [
   {
-    image: card_01.src,
-    alt: "Paso 1 Prepago",
-    step: 1,
-    title:
-      "Realiza una recarga desde S/ 7 o adquiere un paquete de alta, portabilidad o renovación para participar.",
-  },
-  {
-    image: card_02.src,
-    alt: "Paso 2 Prepago",
-    step: 2,
-    title: "Ingresa tus datos y valida tu línea Claro.",
-  },
-  {
-    image: card_03.src,
-    alt: "Paso 3 Prepago",
-    step: 3,
-    title: "¡Gira la ruleta y gana premios al instante!",
-  },
-];
-
-const postpagoCards = [
-  {
-    image: card_04.src,
-    alt: "Paso 1 Postpago",
-    step: 1,
-    title:
-      "Los clientes deberán realizar una o varias de las siguientes transacciones, de acuerdo al servicio de CLARO que tengan de su titularidad.Conoce cómo participar <span class='btnOpenModal text-white underline cursor-pointer'>AQUÍ</span>",
-  },
-  {
-    image: card_02.src,
-    alt: "Paso 2 Postpago",
-    step: 2,
-    title:
-      "Recibirás el mensaje de CLARO confirmándote que puedes participar de la ruleta.",
+    shape: "arch",
+    image: paso_01,
+    alt: "Mujer sonriendo mientras usa su celular",
+    number: "01",
+    title: "Realiza una transacción",
     description:
-      "*Si tu línea o play Claro Hogar ya recibió un premio, no recibirás más invitaciones a la ruleta.",
+      "Haz una o más transacciones según el servicio Claro que tengas a tu titularidad.",
+    cta: "Ver transacciones",
   },
   {
-    image: card_03.src,
-    alt: "Paso 3 Postpago",
-    step: 3,
-    title: "Ingresa a link, completa el formulario para recibir publicidad y gira la ruleta hasta el 15/03/26.",
-    description: "*Recuerda que se mostraran los premios disponibles para tu plan. Premio de celulares no disponible para prepago.",
+    shape: "circle",
+    image: paso_02,
+    alt: "Hombre celebrando mientras mira su celular",
+    number: "02",
+    title: "Recibe tu invitación",
+    description:
+      "Te llegará un mensaje de Claro confirmando que puedes participar en la ruleta.",
+    note: "Si tu línea o play Claro Hogar ya recibió un premio, no recibirás más invitaciones.",
   },
   {
-    image: card_01_postpago.src,
-    alt: "Paso 4 Postpago",
-    step: 4,
-    title: "Descubrirás el premio que ganaste y CLARO te enviará correo con el detalle.",
+    shape: "leaf",
+    image: paso_03,
+    alt: "Ruleta de premios Claro",
+    number: "03",
+    title: "Gira la ruleta",
+    description:
+      "Ingresa a link, completa el formulario para recibir publicidad y gira la ruleta hasta el 31/12/26.",
+    note: "Verás los premios de tu plan. Celulares no disponibles para prepago.",
+  },
+  {
+    shape: "pill",
+    image: paso_04,
+    alt: "Joven gamer feliz mostrando su premio de 10GB en el celular",
+    number: "04",
+    title: "Recibe tu premio",
+    description:
+      "Descubre al instante lo que ganaste. Claro te enviará un correo con el detalle.",
   },
 ];
 ---
 
-<section class="relative bg-transparent text-white secparticipa pt-14 md:pt-18 xl:pt-94 2xl:pt-68">
-  <div class="container">
-    <h2 class="text-center font-amx-bold text-3xl xl:text-4xl pb-6 md:pb-8">
+<section
+  class="relative bg-transparent text-white secparticipa overflow-x-clip pt-14 md:pt-18 xl:pt-94 2xl:pt-68"
+>
+  <div class="container px-4 md:px-6 xl:px-0">
+    <h2
+      class="relative z-10 text-center font-amx-bold text-[24px] leading-[42px] md:text-[32px] xl:text-[50px] xl:leading-none pb-4 md:pb-10 xl:pb-[54px]"
+    >
       ¿Cómo participar del sorteo?
     </h2>
-    <div
-      class="tabs-container hidden justify-center gap-4 pt-8 pb-8 md:max-w-[500px] mx-auto"
-      role="tablist"
-      aria-label="Tipo de plan"
-    >
-      <button
-        class="tab-btn w-full px-6 py-3 rounded-full font-amx-bold text-lg transition-all duration-300 bg-transparent text-primary border-2 border-white shadow-lg cursor-pointer"
-        data-tab="prepago"
-        role="tab"
-        aria-selected="true"
-      >
-        Prepago
-      </button>
-      <button
-        class="tab-btn w-full px-6 py-3 rounded-full font-amx-bold text-lg transition-all duration-300 bg-white/30 border-2 border-transparent text-white/70 cursor-pointer"
-        data-tab="postpago"
-        role="tab"
-        aria-selected="false"
-      >
-        Postpago
-      </button>
-    </div>
 
-    <div class="tab-content" data-content="postpago" role="tabpanel">
-      <CardSlider cards={postpagoCards} tabId="postpago" />
+    <div class="stage">
+      <div class="deco" aria-hidden="true">
+        <!-- Mobile -->
+        <div class="md:hidden">
+          <img class="d-line d-line--mobile" src={linea.src} alt="" width="1704" height="221" />
+        </div>
+        <!-- Tablet and small laptop -->
+        <div class="hidden md:block xl:hidden">
+          <img class="d-line d-line--tablet" src={linea.src} alt="" width="1704" height="221" />
+          <img class="d-star d-star--tablet-1" src={destello_34_tablet.src} alt="" width="34" height="34" />
+          <img class="d-star d-star--tablet-2" src={trazo_mini.src} alt="" width="28" height="28" />
+        </div>
+        <!-- Desktop -->
+        <div class="hidden xl:block">
+          <img class="d-line d-line--desktop" src={linea.src} alt="" width="1704" height="221" />
+          <img class="d-star d-star--desktop-1" src={destello_34.src} alt="" width="34" height="34" />
+          <img class="d-star d-star--desktop-2" src={destello_24.src} alt="" width="24" height="24" />
+          <img class="d-star d-star--desktop-3" src={destello_26.src} alt="" width="26" height="26" />
+          <img class="d-star d-star--desktop-4" src={destello_40.src} alt="" width="40" height="40" />
+          <img class="d-star d-star--desktop-5" src={trazo_mini.src} alt="" width="28" height="28" />
+        </div>
+      </div>
+
+      <div class="swiper swiperParticipa">
+        <div class="swiper-wrapper">
+          {
+            steps.map((step) => (
+              <div class="swiper-slide">
+                <article class="step" data-shape={step.shape}>
+                  <div class="body">
+                    <div class="media">
+                      <span class="outline" aria-hidden="true" />
+                      <div class="zoom">
+                        <div class="photo">
+                          <img
+                            src={step.image.src}
+                            width={step.image.width}
+                            height={step.image.height}
+                            alt={step.alt}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        </div>
+                        <span class="badge" aria-hidden="true">
+                          {step.number}
+                        </span>
+                      </div>
+                    </div>
+                    <div class="text">
+                      <h3>{step.title}</h3>
+                      <p class="desc">{step.description}</p>
+                      {step.cta && (
+                        <button type="button" class="cta btnOpenModal">
+                          <span>{step.cta}</span>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            aria-hidden="true"
+                          >
+                            <path
+                              d="M3.33333 8H12.6667M8.66667 12L12.6667 8L8.66667 4"
+                              stroke="currentColor"
+                              stroke-width="1.73333"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                        </button>
+                      )}
+                      {step.note && (
+                        <p class="note">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="18"
+                            height="18"
+                            viewBox="0 0 18 18"
+                            fill="none"
+                            aria-hidden="true"
+                          >
+                            <path
+                              d="M16.5 9C16.5 13.1421 13.1421 16.5 9 16.5C4.85786 16.5 1.5 13.1421 1.5 9C1.5 4.85786 4.85786 1.5 9 1.5C13.1421 1.5 16.5 4.85786 16.5 9Z"
+                              stroke="currentColor"
+                              stroke-width="1.65"
+                            />
+                            <path
+                              d="M9 8.25V12.75"
+                              stroke="currentColor"
+                              stroke-width="1.8"
+                              stroke-linecap="round"
+                            />
+                            <path
+                              d="M9 6.675C9.5799 6.675 10.05 6.2049 10.05 5.625C10.05 5.0451 9.5799 4.575 9 4.575C8.4201 4.575 7.95 5.0451 7.95 5.625C7.95 6.2049 8.4201 6.675 9 6.675Z"
+                              fill="currentColor"
+                            />
+                          </svg>
+                          <span>
+                            <strong>Ten en cuenta:</strong> {step.note}
+                          </span>
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </article>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="participa-nav xl:hidden">
+        <button type="button" class="participa-prev" aria-label="Paso anterior">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="40"
+            height="40"
+            viewBox="0 0 40 40"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path d="M20 40C8.97778 40 0 31.0222 0 20C0 8.97778 8.97778 0 20 0C31.0222 0 40 8.97778 40 20C40 31.0222 31.0222 40 20 40ZM20 3.04444C10.6444 3.04444 3.04444 10.6444 3.04444 20C3.04444 29.3556 10.6444 36.9556 20 36.9556C29.3556 36.9556 36.9556 29.3556 36.9556 20C36.9556 10.6444 29.3556 3.04444 20 3.04444Z" />
+            <path d="M19.9996 28.9111C19.5996 28.9111 19.2218 28.7555 18.9329 28.4666L11.5329 21.0666C10.9329 20.4666 10.9329 19.5111 11.5329 18.9111L18.9329 11.5111C19.5329 10.9111 20.4885 10.9111 21.0885 11.5111C21.6885 12.1111 21.6885 13.0666 21.0885 13.6666L14.7773 19.9777L21.0885 26.2888C21.6885 26.8888 21.6885 27.8444 21.0885 28.4444C20.7996 28.7333 20.3996 28.8888 20.0218 28.8888L19.9996 28.9111Z" />
+            <path d="M27.4 21.5111H12.6222C11.7778 21.5111 11.1111 20.8222 11.1111 20C11.1111 19.1778 11.8 18.4889 12.6222 18.4889H27.4C28.2444 18.4889 28.9111 19.1778 28.9111 20C28.9111 20.8222 28.2222 21.5111 27.4 21.5111Z" />
+          </svg>
+        </button>
+        <button type="button" class="participa-next" aria-label="Paso siguiente">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="40"
+            height="40"
+            viewBox="0 0 40 40"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path d="M20 40C8.97778 40 0 31.0222 0 20C0 8.97778 8.97778 0 20 0C31.0222 0 40 8.97778 40 20C40 31.0222 31.0222 40 20 40ZM20 3.04444C10.6444 3.04444 3.04444 10.6444 3.04444 20C3.04444 29.3556 10.6444 36.9556 20 36.9556C29.3556 36.9556 36.9556 29.3556 36.9556 20C36.9556 10.6444 29.3556 3.04444 20 3.04444Z" />
+            <path d="M19.9997 28.9111C19.5997 28.9111 19.222 28.7555 18.9331 28.4666C18.3331 27.8666 18.3331 26.9111 18.9331 26.3111L25.2442 20L18.9331 13.6889C18.3331 13.0889 18.3331 12.1333 18.9331 11.5333C19.5331 10.9333 20.4886 10.9333 21.0886 11.5333L28.4886 18.9333C28.7775 19.2222 28.9331 19.6 28.9331 20C28.9331 20.4 28.7775 20.8 28.4886 21.0666L21.0886 28.4666C20.7997 28.7555 20.3997 28.9111 20.022 28.9111H19.9997Z" />
+            <path d="M27.4 21.5111H12.6222C11.7778 21.5111 11.1111 20.8222 11.1111 20C11.1111 19.1778 11.8 18.4889 12.6222 18.4889H27.4C28.2444 18.4889 28.9111 19.1778 28.9111 20C28.9111 20.8222 28.2222 21.5111 27.4 21.5111Z" />
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
 </section>
@@ -167,6 +283,7 @@ const postpagoCards = [
     </div>
   </div>
 </div>
+
 
 <style>
   .modalTransacciones {
@@ -307,44 +424,368 @@ const postpagoCards = [
   }
 </style>
 
+<style>
+  /* Stage: container for decorative layer sizing (cqw) */
+  .stage {
+    position: relative;
+    container-type: inline-size;
+  }
+  .swiperParticipa,
+  .participa-nav {
+    position: relative;
+    z-index: 10;
+  }
+
+  /* ---- Decorative layer ---- */
+  .deco {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    --u: calc(100cqw / 1440);
+  }
+  .d-line,
+  .d-star {
+    position: absolute;
+    max-width: none;
+    height: auto;
+  }
+  .d-line {
+    width: 1704px;
+    top: 137.9px;
+  }
+  .d-line--mobile {
+    left: -110px;
+  }
+  .d-line--tablet {
+    left: -113px;
+  }
+  .d-star--tablet-1 {
+    left: 379px;
+    top: 41px;
+    width: 34px;
+  }
+  .d-star--tablet-2 {
+    left: 161px;
+    top: 633px;
+    width: 28px;
+  }
+  .d-line--desktop {
+    width: calc(1704 * var(--u));
+    left: calc(-124.5 * var(--u));
+    top: calc(137.9 * var(--u));
+  }
+  .d-star--desktop-1 {
+    left: calc(357.5 * var(--u));
+    top: calc(32 * var(--u));
+    width: calc(34 * var(--u));
+  }
+  .d-star--desktop-2 {
+    left: calc(705.5 * var(--u));
+    top: calc(124 * var(--u));
+    width: calc(24 * var(--u));
+  }
+  .d-star--desktop-3 {
+    left: calc(1087.5 * var(--u));
+    top: calc(62 * var(--u));
+    width: calc(26 * var(--u));
+  }
+  .d-star--desktop-4 {
+    left: calc(1324.5 * var(--u));
+    top: calc(-8 * var(--u));
+    width: calc(40 * var(--u));
+  }
+  .d-star--desktop-5 {
+    left: calc(3.5 * var(--u));
+    top: calc(645 * var(--u));
+    width: calc(28 * var(--u));
+  }
+
+  /* ---- Slider layout ---- */
+  .swiperParticipa {
+    overflow: hidden;
+  }
+  .swiperParticipa .swiper-wrapper {
+    align-items: flex-start;
+  }
+  .swiperParticipa .swiper-slide {
+    height: auto;
+  }
+
+  .participa-nav {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 40px;
+  }
+  .participa-nav button {
+    display: block;
+    width: 40px;
+    height: 40px;
+    color: #fff;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .participa-nav button.swiper-button-disabled {
+    opacity: 0.4;
+    pointer-events: none;
+    cursor: default;
+  }
+  .participa-nav button:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
+    border-radius: 999px;
+  }
+
+  /* ---- Step card ---- */
+  .step {
+    width: min(100%, 340px);
+    margin-inline: auto;
+    container-type: inline-size;
+  }
+  /* --k: scale factor of the 340px design card */
+  .step .body {
+    --k: calc(100cqw / 340);
+    padding-top: calc(32 * var(--k));
+  }
+  .media {
+    position: relative;
+    height: calc(var(--ih) * var(--k));
+  }
+  .zoom {
+    position: absolute;
+    inset: 0;
+    transition: transform 0.35s ease;
+  }
+  .outline,
+  .photo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+  }
+  .outline {
+    width: calc(var(--ow) * var(--k));
+    height: calc(var(--oh) * var(--k));
+    border: 2px dashed rgba(255, 255, 255, 0.35);
+    transform: translate(-50%, -50%) rotate(var(--orot));
+  }
+  .photo {
+    width: calc(var(--iw) * var(--k));
+    height: calc(var(--ih) * var(--k));
+    border: 6px solid #fff;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(64, 0, 0, 0.45);
+    transform: translate(-50%, -50%) rotate(var(--irot));
+  }
+  .photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .badge {
+    position: absolute;
+    left: calc(var(--bx) * var(--k));
+    top: calc(var(--by) * var(--k));
+    width: 76px;
+    height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #da291c;
+    border: 5px solid #fff;
+    border-radius: 999px;
+    box-shadow: 0 8px 18px rgba(51, 0, 0, 0.4);
+    font-family: var(--font-roboto);
+    font-weight: 700;
+    font-size: 28px;
+    line-height: normal;
+    color: #fff;
+  }
+
+  /* Shapes (numbers are design px at 340px card width) */
+  .step[data-shape="arch"] {
+    --iw: 260; --ih: 330; --ow: 284; --oh: 354;
+    --irot: 4deg; --orot: -1deg; --bx: 14; --by: 70;
+  }
+  .step[data-shape="arch"] .photo {
+    border-radius: calc(130 * var(--k)) calc(130 * var(--k)) calc(32 * var(--k)) calc(32 * var(--k));
+  }
+  .step[data-shape="arch"] .outline {
+    border-radius: calc(142 * var(--k)) calc(142 * var(--k)) calc(32 * var(--k)) calc(32 * var(--k));
+  }
+  .step[data-shape="circle"] {
+    --iw: 290; --ih: 290; --ow: 314; --oh: 314;
+    --irot: 0deg; --orot: 5deg; --bx: 19; --by: -4;
+  }
+  .step[data-shape="circle"] .photo {
+    border-radius: 50%;
+  }
+  .step[data-shape="circle"] .outline {
+    border-radius: 50%;
+  }
+  .step[data-shape="leaf"] {
+    --iw: 260; --ih: 330; --ow: 284; --oh: 354;
+    --irot: -4deg; --orot: -9deg; --bx: 14; --by: -22;
+  }
+  .step[data-shape="leaf"] .photo {
+    border-radius: calc(130 * var(--k)) calc(28 * var(--k)) calc(130 * var(--k)) calc(28 * var(--k));
+  }
+  .step[data-shape="leaf"] .outline {
+    border-radius: calc(142 * var(--k)) calc(28 * var(--k)) calc(142 * var(--k)) calc(28 * var(--k));
+  }
+  .step[data-shape="pill"] {
+    --iw: 260; --ih: 320; --ow: 284; --oh: 344;
+    --irot: 3deg; --orot: 8deg; --bx: 14; --by: -22;
+  }
+  .step[data-shape="pill"] .photo {
+    border-radius: calc(130 * var(--k));
+  }
+  .step[data-shape="pill"] .outline {
+    border-radius: calc(142 * var(--k));
+  }
+
+  /* ---- Text ---- */
+  .text {
+    width: calc(320 * var(--k));
+    margin: calc(44 * var(--k)) auto 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+    font-family: var(--font-roboto);
+  }
+  .text h3 {
+    width: 100%;
+    font-weight: 700;
+    font-size: min(20px, 5.9cqw);
+    line-height: 1.15;
+    color: #fff;
+  }
+  .text .desc {
+    width: 100%;
+    font-weight: 400;
+    font-size: min(16px, 4.7cqw);
+    line-height: 1.25;
+    color: rgba(255, 255, 255, 0.92);
+  }
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px 10px 16px;
+    border: 1.5px solid #fff;
+    border-radius: 999px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: normal;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  .cta:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+  }
+  .note {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    text-align: left;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 16px;
+    font-size: min(14px, 4.12cqw);
+    line-height: 1.4;
+    color: #fff;
+  }
+  .note svg {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    color: #fff;
+  }
+
+  @media (min-width: 768px) {
+    .participa-nav {
+      margin-top: 48px;
+    }
+    .swiper-slide:nth-child(even) .body {
+      margin-top: calc(90 * var(--k));
+    }
+    .text h3 {
+      font-size: min(26px, 7.65cqw);
+    }
+    .text .desc {
+      font-size: min(17px, 5cqw);
+      line-height: 1.45;
+    }
+  }
+
+  /* Desktop: slider disabled, four staggered columns */
+  @media (min-width: 1280px) {
+    .swiperParticipa {
+      overflow: visible;
+    }
+    .swiperParticipa .swiper-wrapper {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      column-gap: 2cqw;
+      transform: none !important;
+    }
+    .swiperParticipa .swiper-slide {
+      width: auto !important;
+      margin: 0 !important;
+    }
+  }
+
+  /* Hover: only photo and badge grow a little */
+  @media (hover: hover) {
+    .step:hover .zoom {
+      transform: scale(1.05);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .zoom,
+    .participa-nav button,
+    .cta {
+      transition: none;
+    }
+  }
+</style>
+
 <script>
-  const tabButtons = document.querySelectorAll(".tab-btn");
-  const tabContents = document.querySelectorAll(".tab-content");
+  import Swiper from "swiper/bundle";
 
-  tabButtons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const tabName = btn.getAttribute("data-tab");
-      if (!tabName) return;
+  // Slider only below the desktop breakpoint; desktop shows the 4-card layout
+  const desktopQuery = window.matchMedia("(min-width: 1280px)");
+  let swiperParticipa: Swiper | undefined;
 
-      tabButtons.forEach((b) => {
-        const isActive = b === btn;
-        b.setAttribute("aria-selected", isActive ? "true" : "false");
-        b.classList.toggle("bg-transparent", isActive);
-        b.classList.toggle("text-primary", isActive);
-        b.classList.toggle("border-white", isActive);
-        b.classList.toggle("shadow-lg", isActive);
-        b.classList.toggle("bg-transparent", !isActive);
-        b.classList.toggle("bg-white/30", !isActive);
-        //b.classList.toggle("border-transparent", !isActive);
-        b.classList.toggle("border-transparent", !isActive);
-        b.classList.toggle("text-white/70", !isActive);
-      });
-
-      tabContents.forEach((content) => {
-        const isTarget = content.getAttribute("data-content") === tabName;
-        content.classList.toggle("hidden", !isTarget);
-        content.setAttribute("aria-hidden", isTarget ? "false" : "true");
-
-        // Cuando un tab pasa a ser visible, disparar animación de entrada de cards en desktop
-        if (isTarget) {
-          const slider = content.querySelector(".card-slider");
-          if (slider) {
-            slider.dispatchEvent(new CustomEvent("cards:enter"));
-          }
-        }
-      });
+  const syncSlider = () => {
+    if (desktopQuery.matches) {
+      swiperParticipa?.destroy(true, true);
+      swiperParticipa = undefined;
+      return;
+    }
+    if (swiperParticipa) return;
+    swiperParticipa = new Swiper(".swiperParticipa", {
+      slidesPerView: 1,
+      spaceBetween: 30,
+      breakpoints: {
+        768: { slidesPerView: 2 },
+        1024: { slidesPerView: 3 },
+      },
+      navigation: {
+        prevEl: ".participa-prev",
+        nextEl: ".participa-next",
+      },
     });
-  });
+  };
+  syncSlider();
+  desktopQuery.addEventListener("change", syncSlider);
+
   const modal = document.querySelector(
     ".modalTransacciones",
   ) as HTMLElement | null;
@@ -354,10 +795,11 @@ const postpagoCards = [
   document.addEventListener("click", (e) => {
     const btn = e.target as HTMLElement;
     if (!btn.closest(".btnOpenModal")) return;
+    if (!modal) return;
 
     e.preventDefault();
 
-    // 🔴 Cerrar cualquier SweetAlert abierto
+    // Cerrar cualquier SweetAlert abierto
     document.querySelectorAll(".swal2-close").forEach((btnClose) => {
       const closeBtn = btnClose as HTMLElement;
       closeBtn.click();
@@ -366,18 +808,18 @@ const postpagoCards = [
     modal.classList.add("active");
     modal.style.display = "flex";
 
-    // 🔒 Bloquear scroll
+    // Bloquear scroll
     body.classList.add("scrollHidden");
   });
 
   // Cerrar modal (X o botón "Entendido")
-  modal.addEventListener("click", (e) => {
+  modal?.addEventListener("click", (e) => {
     const target = e.target as HTMLElement;
     if (target.closest(".close") || target.tagName === "BUTTON") {
       modal.classList.remove("active");
       modal.style.display = "none";
 
-      // 🔓 Restaurar scroll
+      // Restaurar scroll
       body.classList.remove("scrollHidden");
     }
   });
