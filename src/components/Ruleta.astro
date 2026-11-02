@@ -1,25 +1,38 @@
 ---
-import icon_frecha from "@/assets/images/ruleta/icon_flecha.png";
-import ruleta from "@/assets/images/ruleta/ruletav3.webp";
-import item1 from "@/assets/images/ruleta/item1.png";
-import item2 from "@/assets/images/ruleta/vales.png";
-import item3 from "@/assets/images/ruleta/artefactos.png";
-import item4 from "@/assets/images/ruleta/bono_adicionales.png";
-import item5 from "@/assets/images/ruleta/item4.png";
-import item6 from "@/assets/images/ruleta/bono_adicionales.png";
+import ruleta_art from "@/assets/images/ruleta/ruleta-wheel.webp";
+// Same art with the pointer tip painted out, so the rotating disc has no arrow.
+import ruleta_disc from "@/assets/images/ruleta/ruleta-disc.webp";
+import glow_disc from "@/assets/images/ruleta/glow-disc.svg";
+import glow_ring from "@/assets/images/ruleta/glow-ring.svg";
+import glow_ellipse from "@/assets/images/ruleta/glow-ellipse.svg";
+import prize_gift from "@/assets/images/ruleta/prize-gift.webp";
+import prize_vales from "@/assets/images/ruleta/prize-vales.webp";
+import prize_combo1 from "@/assets/images/ruleta/prize-combo1.webp";
+import prize_combo2 from "@/assets/images/ruleta/prize-combo2.webp";
+import prize_equipos from "@/assets/images/ruleta/prize-equipos.webp";
 import bg_mobile from "@/assets/images/banner_mobile.webp";
 import bg_tablet from "@/assets/images/banner_tablet.webp";
 import bg_desktop from "@/assets/images/banner_desktop.webp";
+
+// DOM order = slot index, clockwise from the pointer (every slot is 60deg).
+// `slot` is the stable key used by the hydration script; `nombre` is only the
+// initial value of data-nombre (the API name overwrites it later).
+const slots = [
+  { slot: "bonos", nombre: "Bonos", label: "Bonos", img: prize_gift },
+  { slot: "vales", nombre: "Vales general", label: "Vales", img: prize_vales },
+  {
+    slot: "combo2",
+    nombre: "Artefactos",
+    label: "Combo 2",
+    img: prize_combo2,
+    stock: "0",
+  },
+  { slot: "bonos", nombre: "Bonos", label: "Bonos", img: prize_gift },
+  { slot: "equipos", nombre: "Equipos", label: "Equipos y accesorios", img: prize_equipos },
+  { slot: "combo1", nombre: "Accesorios", label: "Combo 1", img: prize_combo1 },
+];
 ---
 
-<button
-  class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer entry_ruleta hidden"
-  >Entra ruleta</button
->
-<button
-  class="bg-red-500 text-white px-4 py-2 rounded cursor-pointer reset_ruleta hidden"
-  >Resetear ruleta</button
->
 <section class="ruletaGanadora relative hidden" data-step="4">
   <picture class="w-full h-full absolute top-0 left-0 z-0">
     <source srcset={bg_desktop.src} media="(min-width: 1280px)" />
@@ -49,57 +62,58 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
       data-aos="zoom-in-down"
       data-aos-delay="100"
     >
-      <img src={icon_frecha.src} alt="" class="flecha" />
-      <div
-        class="size-10 bg-logo-claro-gradient isotipo_claro rounded-full p-[8px] absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-20"
-      >
-        <svg
-          class="w-full h-full relative bg-logo-claro-gradient rounded-full"
-          width="48"
-          height="48"
-          viewBox="0 0 48 48"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M27.4407 22.1073L42.8203 7.00478L38.7367 3.04688L23.3572 18.1494L27.4407 22.1073Z"
-            fill="white"></path>
-          <path d="M17.1317 0H11.6813V16.0108H17.1317V0Z" fill="white"></path>
-          <path d="M47.4938 28.207H30.3663V33.544H47.4938V28.207Z" fill="white"
-          ></path>
-          <path
-            d="M18.1749 39.1204C16.854 40.5036 15.1633 41.1184 13.2085 41.1184C11.3065 41.1184 9.6686 40.4524 8.34776 39.1204C7.02691 37.7372 6.28724 36.1491 6.28724 34.3048C6.28724 32.3581 7.02691 30.77 8.34776 29.438C9.6686 28.0548 11.3593 27.4401 13.2085 27.4913C15.1633 27.4401 16.8012 28.1061 18.2277 29.438C19.4957 30.7188 20.1826 32.3581 20.2354 34.3048C20.1826 36.1491 19.4957 37.7372 18.1749 39.1204ZM22.6129 25.1347C19.9712 22.5733 16.8012 21.3438 13.2085 21.3438C9.61577 21.3438 6.49857 22.5733 3.90971 25.1347C1.26802 27.6962 0 30.77 0 34.3048C0 37.8397 1.26802 40.9647 3.90971 43.4237C6.44574 45.9852 9.56294 47.2659 13.2085 47.2659C16.8012 47.2659 19.9712 45.9852 22.6129 43.4237C25.2018 40.9135 26.4698 37.8397 26.4698 34.3048C26.4698 30.77 25.2018 27.6962 22.6129 25.1347Z"
-            fill="white"></path>
-        </svg>
-      </div>
-      <!-- <img src={icon_claro.src} alt="" class="claro"> -->
-      <div class="ruleta transition-opacity duration-300">
-        <img src={ruleta.src} alt="" class="imgRuleta" />
-        <div class="ruleta-lights">
-          <span class="ruleta-light ruleta-light-1"></span>
-          <span class="ruleta-light ruleta-light-2"></span>
-          <span class="ruleta-light ruleta-light-3"></span>
-          <span class="ruleta-light ruleta-light-4"></span>
-          <span class="ruleta-light ruleta-light-5"></span>
-          <span class="ruleta-light ruleta-light-6"></span>
+      <div class="ruleta-stage">
+        <img src={glow_ellipse.src} alt="" aria-hidden="true" class="ruleta-glow ruleta-glow--ellipse" />
+        <img src={glow_disc.src} alt="" aria-hidden="true" class="ruleta-glow ruleta-glow--disc" />
+        <img src={glow_ring.src} alt="" aria-hidden="true" class="ruleta-glow ruleta-glow--ring" />
+        <div class="ruleta transition-opacity duration-300">
+          <img src={ruleta_disc.src} alt="" class="ruleta-art ruleta-art--disc" />
+          {
+            slots.map((s, i) => (
+              <div
+                class="item"
+                data-slot={s.slot}
+                data-nombre={s.nombre}
+                data-stock={s.stock}
+                style={`--i:${i}`}
+              >
+                <img
+                  class="item__img"
+                  src={s.img.src}
+                  alt=""
+                  data-prize-img
+                  data-fallback={s.img.src}
+                />
+                <span class="item__label" data-prize-label data-default-label={s.label}>
+                  {s.label}
+                </span>
+              </div>
+            ))
+          }
         </div>
-        <div class="item item1" data-nombre="Accesorios">
-          <img src={item1.src} alt="" />
-        </div>
-        <div class="item item2" data-nombre="Vales general">
-          <img src={item2.src} alt="" />
-        </div>
-        <div class="item item3" data-nombre="Artefactos" data-stock="0">
-          <img src={item3.src} alt="" />
-        </div>
-        <div class="item item4" data-nombre="Bonos">
-          <img src={item4.src} alt="" />
-        </div>
-        <div class="item item5" data-nombre="Equipos">
-          <img src={item5.src} alt="" />
-        </div>
-        <div class="item item6" data-nombre="Bonos">
-          <img src={item6.src} alt="" />
+        <img src={ruleta_art.src} alt="" class="ruleta-art ruleta-art--rim" />
+        <img src={ruleta_art.src} alt="" class="ruleta-art ruleta-art--glow" />
+        <img src={ruleta_art.src} alt="" class="ruleta-art ruleta-art--pointer" />
+        <img src={ruleta_art.src} alt="" class="ruleta-art ruleta-art--hub" />
+        <div class="isotipo_claro">
+          <svg
+            class="w-full h-full relative bg-logo-claro-gradient rounded-full"
+            width="48"
+            height="48"
+            viewBox="0 0 48 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M27.4407 22.1073L42.8203 7.00478L38.7367 3.04688L23.3572 18.1494L27.4407 22.1073Z"
+              fill="white"></path>
+            <path d="M17.1317 0H11.6813V16.0108H17.1317V0Z" fill="white"></path>
+            <path d="M47.4938 28.207H30.3663V33.544H47.4938V28.207Z" fill="white"
+            ></path>
+            <path
+              d="M18.1749 39.1204C16.854 40.5036 15.1633 41.1184 13.2085 41.1184C11.3065 41.1184 9.6686 40.4524 8.34776 39.1204C7.02691 37.7372 6.28724 36.1491 6.28724 34.3048C6.28724 32.3581 7.02691 30.77 8.34776 29.438C9.6686 28.0548 11.3593 27.4401 13.2085 27.4913C15.1633 27.4401 16.8012 28.1061 18.2277 29.438C19.4957 30.7188 20.1826 32.3581 20.2354 34.3048C20.1826 36.1491 19.4957 37.7372 18.1749 39.1204ZM22.6129 25.1347C19.9712 22.5733 16.8012 21.3438 13.2085 21.3438C9.61577 21.3438 6.49857 22.5733 3.90971 25.1347C1.26802 27.6962 0 30.77 0 34.3048C0 37.8397 1.26802 40.9647 3.90971 43.4237C6.44574 45.9852 9.56294 47.2659 13.2085 47.2659C16.8012 47.2659 19.9712 45.9852 22.6129 43.4237C25.2018 40.9135 26.4698 37.8397 26.4698 34.3048C26.4698 30.77 25.2018 27.6962 22.6129 25.1347Z"
+              fill="white"></path>
+          </svg>
         </div>
       </div>
     </div>
@@ -110,106 +124,8 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
 </section>
 
 <style>
-  .ruleta-lights {
-    pointer-events: none;
-    position: absolute;
-    inset: 0;
-    top: -30px;
-    left: -26px;
-    rotate: 6deg;
-    @media (min-width: 768px) {
-      top: -50px;
-      left: -40px;
-    }
-  }
-  .ruleta-light {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: var(--ruleta-light-size);
-    height: var(--ruleta-light-size);
-    border-radius: 999px;
-    opacity: 0.6;
-    /* filter: blur(2px); */
-    mix-blend-mode: soft-light;
-    background: radial-gradient(circle, #ffe9b8 0%, #ffc35a 45%, #e78b25 100%);
-    box-shadow:
-      0 0 10px rgba(255, 195, 90, 0.9),
-      0 0 18px rgba(255, 195, 90, 0.8);
-    transform-origin: center center;
-    transform: translate(-50%, -50%);
-    --flash-scale: 1;
-    animation: ruleta-light-flash 1.3s ease-in-out infinite alternate;
-  }
-  .ruleta-light-1 {
-    transform: rotate(0deg) translate(var(--ruleta-radius))
-      translate(-50%, -50%) scale(var(--flash-scale));
-  }
-  .ruleta-light-2 {
-    transform: rotate(60deg) translate(var(--ruleta-radius))
-      translate(-50%, -50%) scale(var(--flash-scale));
-  }
-  .ruleta-light-3 {
-    transform: rotate(120deg) translate(var(--ruleta-radius))
-      translate(-50%, -50%) scale(var(--flash-scale));
-  }
-  .ruleta-light-4 {
-    transform: rotate(180deg) translate(var(--ruleta-radius))
-      translate(-50%, -50%) scale(var(--flash-scale));
-  }
-  .ruleta-light-5 {
-    transform: rotate(240deg) translate(var(--ruleta-radius))
-      translate(-50%, -50%) scale(var(--flash-scale));
-  }
-  .ruleta-light-6 {
-    transform: rotate(300deg) translate(var(--ruleta-radius))
-      translate(-50%, -50%) scale(var(--flash-scale));
-  }
-
-  /* Escalonar el destello para que no todas las luces parpadeen al mismo tiempo */
-  .ruleta-light-1 {
-    animation-delay: 0s;
-  }
-  .ruleta-light-2 {
-    animation-delay: 0.15s;
-  }
-  .ruleta-light-3 {
-    animation-delay: 0.3s;
-  }
-  .ruleta-light-4 {
-    animation-delay: 0.45s;
-  }
-  .ruleta-light-5 {
-    animation-delay: 0.6s;
-  }
-  .ruleta-light-6 {
-    animation-delay: 0.75s;
-  }
-
-  @keyframes ruleta-light-flash {
-    0% {
-      opacity: 0.35;
-      --flash-scale: 0.85;
-      box-shadow:
-        0 0 6px rgba(255, 195, 90, 0.5),
-        0 0 10px rgba(255, 195, 90, 0.4);
-    }
-    50% {
-      opacity: 0.9;
-      --flash-scale: 1.05;
-      box-shadow:
-        0 0 14px rgba(255, 210, 120, 0.9),
-        0 0 20px rgba(255, 210, 120, 0.8);
-    }
-    100% {
-      opacity: 0.6;
-      --flash-scale: 1.15;
-      box-shadow:
-        0 0 20px rgba(255, 230, 150, 1),
-        0 0 30px rgba(255, 230, 150, 0.9);
-    }
-  }
   section.ruletaGanadora {
+    overflow-x: clip;
     background-color: #000;
     p {
       color: #fff;
@@ -274,114 +190,250 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
     }
 
     .contentRuleta {
-      /* pointer-events: none; */
       position: relative;
       margin-bottom: 50px;
-
-      .flecha {
-        position: absolute;
-        top: 3px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 2;
-      }
-
-      .claro {
-        position: absolute;
-        top: 49.5%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 2;
-        width: 100px;
-      }
+      /* --W is the width of the wheel art; every measure below is N * --u (1% of --W). */
+      --W: min(670px, calc(100vw - 24px));
+      --u: calc(var(--W) / 100);
     }
 
-    .ruleta {
-      margin: 0 auto;
-      margin-top: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .ruleta-stage {
       position: relative;
-      max-width: 665px;
-      --ruleta-radius: calc(
-        50% + 162px
-      ); /* radio relativo al ancho del contenedor */
-      --ruleta-light-size: 24px;
-      .imgRuleta {
-        width: 100%;
-        max-width: 665px;
-      }
-      @media (min-width: 768px) {
-        --ruleta-radius: calc(50% + 290px);
-        --ruleta-light-size: 36px;
-      }
-      @media (min-width: 1200px) {
-        --ruleta-light-size: 44px;
-      }
-
-      .item {
-        position: absolute;
-
-        &.item1 {
-          top: 95px;
-          left: 50%;
-          transform: translateX(-50%);
-          img {
-            width: 106px;
-          }
-        }
-
-        &.item2 {
-          top: 158px;
-          right: 120px;
-          transform: rotate(60deg);
-
-          img {
-            width: 110px;
-          }
-        }
-
-        &.item3 {
-          bottom: 175px;
-          right: 119px;
-          transform: rotate(116deg);
-          img {
-            width: 100px;
-          }
-        }
-
-        &.item4 {
-          bottom: 90px;
-          left: 50%;
-          transform: translateX(-50%) rotate(-180deg);
-          img {
-            width: 100px;
-          }
-        }
-
-        &.item5 {
-          bottom: 166px;
-          left: 130px;
-          transform: rotate(238deg);
-
-          img {
-            width: 102px;
-          }
-        }
-
-        &.item6 {
-          top: 168px;
-          left: 140px;
-          transform: rotate(293deg);
-
-          img {
-            width: 100px;
-          }
-        }
-      }
+      width: var(--W);
+      aspect-ratio: 1340 / 1362;
+      margin: 50px auto 0;
+      /* Geometry of the art (calibrated against ruleta-wheel.webp). */
+      --cx: calc(var(--u) * 50.3);
+      --cy: calc(var(--u) * 51.12);
+      --disc-r: calc(var(--u) * 39.7);
+      --hub-r: calc(var(--u) * 14.6);
+      --disc-edge: calc(var(--u) * 0.5);
     }
 
+    /* Glows: static decoration behind the wheel (positions from the Figma frame). */
+    .ruleta-glow {
+      position: absolute;
+      max-width: none;
+      height: auto;
+      pointer-events: none;
+      user-select: none;
+    }
+    .ruleta-glow--ellipse {
+      left: calc(var(--u) * -97.8);
+      top: calc(var(--u) * -30.1);
+      width: calc(var(--u) * 209.4);
+    }
+    .ruleta-glow--disc {
+      left: calc(var(--u) * -17.25);
+      top: calc(var(--u) * -12.36);
+      width: calc(var(--u) * 129.1);
+    }
+    .ruleta-glow--ring {
+      left: calc(var(--u) * -4.8);
+      top: calc(var(--u) * -4.24);
+      width: calc(var(--u) * 109.7);
+    }
+
+    /* The only element animated by gsap: a circle clipped to the slices. */
+    .ruleta {
+      position: absolute;
+      z-index: 1;
+      left: calc(var(--cx) - var(--disc-r));
+      top: calc(var(--cy) - var(--disc-r));
+      width: calc(var(--disc-r) * 2);
+      height: calc(var(--disc-r) * 2);
+      border-radius: 50%;
+      overflow: hidden;
+      will-change: transform;
+    }
+
+    .ruleta-art {
+      position: absolute;
+      max-width: none;
+      height: auto;
+      pointer-events: none;
+      user-select: none;
+    }
+    .ruleta-art--disc {
+      width: var(--W);
+      left: calc(var(--disc-r) - var(--cx));
+      top: calc(var(--disc-r) - var(--cy));
+    }
+    /* Fixed layers cut out of the same art: rim, pointer and hub. */
+    .ruleta-art--rim,
+    .ruleta-art--glow,
+    .ruleta-art--pointer,
+    .ruleta-art--hub {
+      left: 0;
+      top: 0;
+      width: 100%;
+      z-index: 2;
+    }
+    /* Rim + glow copy: visible only outside the disc. The ramp overlaps the disc
+       edge slightly so no hairline of background leaks through the seam. */
+    .ruleta-art--rim,
+    .ruleta-art--glow {
+      -webkit-mask-image: radial-gradient(
+        circle at var(--cx) var(--cy),
+        transparent calc(var(--disc-r) - var(--disc-edge)),
+        #000 var(--disc-r)
+      );
+      mask-image: radial-gradient(
+        circle at var(--cx) var(--cy),
+        transparent calc(var(--disc-r) - var(--disc-edge)),
+        #000 var(--disc-r)
+      );
+    }
+    .ruleta-art--glow {
+      filter: blur(6.834px);
+      mix-blend-mode: overlay;
+    }
+    /* Crisp arrow tip that reaches inside the disc. The rotating disc art has the
+       tip painted out (ruleta-disc.webp), so this fixed copy is the only tip; it is
+       clipped to the arrow head so no baked shadow or glow lands on the prizes. */
+    .ruleta-art--pointer {
+      z-index: 3;
+      -webkit-mask-image: radial-gradient(
+        circle at var(--cx) var(--cy),
+        #000 var(--disc-r),
+        transparent calc(var(--disc-r) + var(--disc-edge) * 0.3)
+      );
+      mask-image: radial-gradient(
+        circle at var(--cx) var(--cy),
+        #000 var(--disc-r),
+        transparent calc(var(--disc-r) + var(--disc-edge) * 0.3)
+      );
+      clip-path: polygon(45.3% 10.5%, 55.1% 10.5%, 50.2% 15.95%);
+    }
+    .ruleta-art--hub {
+      z-index: 3;
+      clip-path: circle(var(--hub-r) at var(--cx) var(--cy));
+    }
+
+    .isotipo_claro {
+      position: absolute;
+      z-index: 20;
+      left: var(--cx);
+      top: var(--cy);
+      width: calc(var(--u) * 12.5);
+      height: calc(var(--u) * 12.5);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    /* Image boxes keep r + ph / 2 under ~35 (the arrow tip sits at r ~ 35.4), so a
+       prize resting under the pointer is never touched by it. Slightly tighter
+       than the Figma boxes on purpose. */
+    /* Prize slots: a 0x0 box at the wheel centre rotated 60deg * index; children
+       are pushed outwards along the slot axis (so no per-breakpoint offsets). */
+    .ruleta .item {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 0;
+      height: 0;
+      transform: rotate(calc(var(--i) * 60deg));
+
+      --r: 28;
+      --tx: 0;
+      --tilt: 0deg;
+      --pw: 16;
+      --ph: 16;
+      --lr: 17.5;
+      --ltx: 0;
+      --ltilt: 0deg;
+      --lf: 1.92;
+
+      .item__img,
+      .item__label {
+        position: absolute;
+        left: 0;
+        top: 0;
+        transform-origin: 0 0;
+      }
+
+      .item__img {
+        width: calc(var(--u) * var(--pw));
+        height: calc(var(--u) * var(--ph));
+        object-fit: contain;
+        max-width: none;
+        transform: translate(
+            calc(var(--u) * var(--tx)),
+            calc(var(--u) * var(--r) * -1)
+          )
+          rotate(var(--tilt)) translate(-50%, -50%);
+      }
+
+      .item__label {
+        width: max-content;
+        max-width: calc(var(--u) * 10.5);
+        text-align: center;
+        text-transform: uppercase;
+        text-wrap: balance;
+        font-family: "AMX Black", sans-serif;
+        font-weight: 400;
+        font-size: max(calc(var(--u) * var(--lf)), 7.5px);
+        line-height: 1.09;
+        color: #83170f;
+        pointer-events: none;
+        transform: translate(
+            calc(var(--u) * var(--ltx)),
+            calc(var(--u) * var(--lr) * -1)
+          )
+          rotate(var(--ltilt)) translate(-50%, -50%);
+      }
+
+      &[data-slot="bonos"] {
+        --r: 20.63;
+        --tx: 0.23;
+        --pw: 8.5;
+        --ph: 8.5;
+        --lr: 31;
+        --lf: 3.49;
+        .item__label {
+          max-width: calc(var(--u) * 16);
+        }
+      }
+      &[data-slot="vales"] {
+        --r: 27.3;
+        --tx: 1.59;
+        --tilt: -24.55deg;
+        --pw: 19.5;
+        --ph: 13;
+        --lr: 17.14;
+        --ltx: 0.88;
+      }
+      &[data-slot="combo2"] {
+        --r: 27.2;
+        --tx: 0.07;
+        --tilt: 22.39deg;
+        --pw: 16;
+        --ph: 15.4;
+        --lr: 16.9;
+        --ltx: -0.4;
+      }
+      &[data-slot="equipos"] {
+        --r: 26.2;
+        --tx: 1.66;
+        --pw: 15.4;
+        --ph: 17;
+        --lr: 20.28;
+        --ltx: 0.26;
+        --ltilt: 5.78deg;
+        .item__label {
+          max-width: calc(var(--u) * 11.5);
+        }
+      }
+      &[data-slot="combo1"] {
+        --r: 26.4;
+        --tx: -0.84;
+        --tilt: -1.34deg;
+        --pw: 13.7;
+        --ph: 17;
+        --lr: 17.78;
+        --ltx: -0.2;
+      }
+    }
     .legal {
       color: #fff;
       text-align: center;
@@ -444,75 +496,6 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
     }
   }
 
-  @media (max-width: 740px) {
-    section.ruletaGanadora .ruleta {
-      max-width: 600px;
-    }
-
-    section.ruletaGanadora .contentRuleta .flecha {
-      width: 80px;
-    }
-
-    section.ruletaGanadora .ruleta .item.item1 {
-      top: 83px;
-      left: 49.5%;
-    }
-
-    section.ruletaGanadora .ruleta .item.item1 img {
-      width: 121px;
-    }
-
-    section.ruletaGanadora .ruleta .item.item2 img {
-      width: 87px;
-    }
-
-    section.ruletaGanadora .ruleta .item.item2 {
-      top: 200px;
-      right: 122px;
-      transform: rotate(67deg);
-    }
-
-    section.ruletaGanadora .ruleta .item.item3 {
-      bottom: 135px;
-      right: 96px;
-      transform: rotate(123deg);
-    }
-
-    section.ruletaGanadora .ruleta .item.item3 img {
-      width: 157px;
-    }
-
-    section.ruletaGanadora .ruleta .item.item4 {
-      bottom: 93px;
-      left: 49.5%;
-      transform: translateX(-50%) rotate(-180deg);
-    }
-
-    section.ruletaGanadora .ruleta .item.item4 img {
-      width: 88px;
-    }
-
-    section.ruletaGanadora .ruleta .item.item5 {
-      bottom: 207px;
-      left: 127px;
-      transform: rotate(242deg);
-    }
-
-    section.ruletaGanadora .ruleta .item.item5 img {
-      width: 87px;
-    }
-
-    section.ruletaGanadora .ruleta .item.item6 {
-      top: 195px;
-      left: 121px;
-      transform: rotate(300deg);
-    }
-
-    section.ruletaGanadora .ruleta .item.item6 img {
-      width: 85px;
-    }
-  }
-
   @media (max-width: 750px) {
     section.ruletaGanadora p {
       font-size: 20px;
@@ -533,100 +516,20 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
     }
   }
 
+
   @media (max-width: 660px) {
-    section.ruletaGanadora .ruleta {
-      max-width: 500px;
+    section.ruletaGanadora .ruleta-stage {
       margin-top: 30px;
-    }
-
-    section.ruletaGanadora .contentRuleta .flecha {
-      width: 64px;
-      top: 6px;
-    }
-
-    section.ruletaGanadora .ruleta .item.item1 {
-      top: 79px;
-    }
-
-    section.ruletaGanadora .ruleta .item.item1 img {
-      width: 96px;
-    }
-
-    section.ruletaGanadora .ruleta .item.item2 {
-      top: 162px;
-      right: 104px;
-      transform: rotate(66deg);
-    }
-
-    section.ruletaGanadora .ruleta .item.item2 img {
-      width: 77px;
-    }
-
-    section.ruletaGanadora .ruleta .item.item3 {
-      bottom: 117px;
-      right: 81px;
-      transform: rotate(121deg);
-    }
-
-    section.ruletaGanadora .ruleta .item.item3 img {
-      width: 129px;
-    }
-
-    section.ruletaGanadora .contentRuleta .claro {
-      width: 74px;
-    }
-
-    section.ruletaGanadora .ruleta .item.item4 {
-      bottom: 78px;
-      left: 49.5%;
-    }
-
-    section.ruletaGanadora .ruleta .item.item4 img {
-      width: 75px;
-    }
-
-    section.ruletaGanadora .ruleta .item.item5 {
-      bottom: 174px;
-      left: 106px;
-    }
-
-    section.ruletaGanadora .ruleta .item.item5 img {
-      width: 75px;
-    }
-
-    section.ruletaGanadora .ruleta .item.item6 {
-      top: 166px;
-      left: 105px;
-      transform: rotate(298deg);
-    }
-
-    section.ruletaGanadora .ruleta .item.item6 img {
-      width: 75px;
     }
   }
 
   @media (max-width: 500px) {
-    section.ruletaGanadora .ruleta {
+    section.ruletaGanadora .ruleta-stage {
       margin-top: 20px;
     }
 
     section.ruletaGanadora .contentRuleta {
       margin-bottom: 20px;
-    }
-
-    section.ruletaGanadora .ruleta {
-      height: 400px;
-    }
-
-    section.ruletaGanadora .ruleta .imgRuleta {
-      width: 363px;
-      position: absolute;
-      max-width: 363px;
-    }
-
-    section.ruletaGanadora .contentRuleta .flecha {
-      width: 60px;
-      top: 19px;
     }
 
     section.ruletaGanadora p {
@@ -650,67 +553,6 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
     section.ruletaGanadora .legal {
       font-size: 12px;
     }
-
-    section.ruletaGanadora .ruleta .item.item1 {
-      top: 75px;
-    }
-
-    section.ruletaGanadora .ruleta .item.item1 img {
-      width: 52px;
-    }
-
-    section.ruletaGanadora .ruleta .item.item2 {
-      top: 100px;
-      right: 46%;
-      transform: translateX(171%) rotate(62deg);
-    }
-
-    section.ruletaGanadora .ruleta .item.item2 img {
-      width: 60px;
-    }
-
-    section.ruletaGanadora .ruleta .item.item3 {
-      bottom: 110px;
-      right: 43%;
-      transform: translateX(161%) rotate(121deg);
-    }
-
-    section.ruletaGanadora .ruleta .item.item3 img {
-      width: 54px;
-    }
-
-    section.ruletaGanadora .ruleta .item.item4 {
-      bottom: 56px;
-      left: 49.5%;
-    }
-
-    section.ruletaGanadora .ruleta .item.item4 img {
-      width: 60px;
-    }
-
-    section.ruletaGanadora .contentRuleta .claro {
-      width: 56px;
-    }
-
-    section.ruletaGanadora .ruleta .item.item5 {
-      top: 264px;
-      left: 41%;
-      transform: translateX(-200%) rotate(242deg);
-    }
-
-    section.ruletaGanadora .ruleta .item.item5 img {
-      width: 56px;
-    }
-
-    section.ruletaGanadora .ruleta .item.item6 {
-      top: 104px;
-      left: 51%;
-      transform: translateX(-196%) rotate(298deg);
-    }
-
-    section.ruletaGanadora .ruleta .item.item6 img {
-      width: 57px;
-    }
   }
 </style>
 
@@ -723,110 +565,11 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
     getListProducts,
     validUserEnabled,
     spinSaveResult,
+    resolveAssetUrl,
   } from "@/utils/endpoints";
   import { userStore } from "@/store/userStore";
   import { showCustomModal } from "@/utils/modalHelper";
   import icon_no_cumple from "@/assets/icons/icon_no_cumple.svg";
-
-  const userWinFake = {
-    success: true,
-    result: "WIN",
-    prizeId: "b0975216-cd8a-4761-b81b-83e33de8858c",
-    prizeName: "Descuento de Whopper Jr",
-    prizeImageUrl:
-      "https://crm.dev-limprod.com/images/premios/c885731f-5d48-4447-98c2-212f07755a3e.png",
-    prizeTypeId: 3,
-    prizeTypeName: "Vales general",
-    probability: 0.5,
-    remainingPlays: 1,
-    message: "¡Felicitaciones! Has ganado: Descuento de Whopper Jr",
-  };
-  const fakeProducts = {
-    success: true,
-    data: [
-      {
-        prizeTypeId: 10,
-        prizeTypeName: "Bonos",
-        imageUrl:
-          "https://crm.dev-limprod.com/uploads/prize-types/prize-type-10-d4833167-e408-4a2d-a552-5d8d134a92a8.png",
-        isAllowed: true,
-        hasStock: false,
-        subtypes: [
-          {
-            id: 6,
-            name: "Bono 1",
-            description: "bonos 1",
-            imagen:
-              "/uploads/prize-subtypes/subtype-6-019f29bf-7018-4799-ab3c-116fae8fb213.png",
-            hasStock: false,
-            displayOrder: 0,
-            isActive: true,
-          },
-          {
-            id: 7,
-            name: "Bono 2",
-            description: "bono 2",
-            imagen:
-              "/uploads/prize-subtypes/subtype-7-9299223f-a9be-4440-82ac-7deec154d1cc.png",
-            hasStock: false,
-            displayOrder: 0,
-            isActive: true,
-          },
-        ],
-      },
-      {
-        prizeTypeId: 11,
-        prizeTypeName: "Equipos y accesorios",
-        imageUrl:
-          "https://crm.dev-limprod.com/uploads/prize-types/prize-type-11-cfc1a038-e47b-4b00-94eb-72c90ff20b18.png",
-        isAllowed: true,
-        hasStock: false,
-        subtypes: null,
-      },
-      {
-        prizeTypeId: 12,
-        prizeTypeName: "Combos",
-        imageUrl:
-          "https://crm.dev-limprod.com/uploads/prize-types/prize-type-12-17d5bf05-5260-4342-95e4-ed877dc1b97b.png",
-        isAllowed: true,
-        hasStock: true,
-        subtypes: [
-          {
-            id: 8,
-            name: "Combo 1",
-            description: "combo 1",
-            imagen:
-              "/uploads/prize-subtypes/subtype-8-9d5a1ce7-b27d-4676-bf9e-de192896b6f4.png",
-            hasStock: false,
-            displayOrder: 0,
-            isActive: true,
-          },
-          {
-            id: 9,
-            name: "Combo 2",
-            description: "combo 2",
-            imagen:
-              "/uploads/prize-subtypes/subtype-9-3cce7e4b-e2cc-485f-8d36-e8853685aac0.png",
-            hasStock: true,
-            displayOrder: 0,
-            isActive: true,
-          },
-        ],
-      },
-      {
-        prizeTypeId: 13,
-        prizeTypeName: "Vales",
-        imageUrl:
-          "https://crm.dev-limprod.com/uploads/prize-types/prize-type-13-92aefe85-7594-4f59-83d9-f2efb088c9ee.png",
-        isAllowed: true,
-        hasStock: false,
-        subtypes: null,
-      },
-    ],
-    count: 4,
-    availableCount: 1,
-    message: null,
-  };
 
   const btnGirar = document.querySelector("#btnGirar") as HTMLButtonElement;
   const ruletaTable = document.querySelector(".ruleta") as HTMLElement;
@@ -834,6 +577,23 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
     ".contentRuleta",
   ) as HTMLElement;
   const items = document.querySelectorAll(".ruleta .item");
+
+  // Seams for the local dev harness (src/utils/ruletaDev.js). In production they
+  // are just the real endpoints, a random pick among the available slots and 10s.
+  const deps = {
+    validUserEnabled,
+    getListProducts,
+    spinSaveResult,
+    pickIndex: (available: { index: number }[]) =>
+      available[Math.floor(Math.random() * available.length)].index,
+    spinDuration: 10,
+  };
+
+  // Slot i is centred at 60 * i degrees clockwise from the pointer, so the pointer
+  // lands on slot i when the wheel rotation is congruent to -60 * i (mod 360).
+  const SLOT0_CENTER_DEG = 0;
+  const targetAngle = (index: number, total: number) =>
+    (360 - (360 / total) * index - SLOT0_CENTER_DEG + 360) % 360;
 
   let yaGiro = false;
   let gradosActuales = 0;
@@ -884,30 +644,6 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
     document.querySelector(".ruletaGanadora").classList.remove("hidden");
   };
 
-  function elegirIndiceGanadorPorAngulo(
-    anguloFinal: number,
-    cantidadItems: number,
-    gradosPorItem: number,
-    offsetFlecha: number,
-  ): number {
-    // Normalizar el ángulo en el rango [0, 360)
-    const anguloNormalizado = ((anguloFinal % 360) + 360) % 360;
-
-    // Convertir al sistema usado para la ruleta:
-    // en el cálculo original del ángulo objetivo se usaba:
-    // anguloObjetivo = 360 - gradosPorItem * indice - gradosPorItem / 2 + offsetFlecha
-    // Despejamos para obtener el índice aproximado a partir del ángulo observado.
-    const anguloRelativo =
-      (360 - (anguloNormalizado - offsetFlecha) + 360) % 360;
-
-    let indice = Math.floor(anguloRelativo / gradosPorItem);
-
-    if (indice < 0) indice = 0;
-    if (indice >= cantidadItems) indice = cantidadItems - 1;
-
-    return indice;
-  }
-
   const showModalWin = (dataResponse, user) => {
     window.dispatchEvent(
       new CustomEvent("premio:show", {
@@ -953,7 +689,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
     const categoryIdExclude = isUserFijaFullClaro100Mbps ? 10 : null; //No debe caer en bonos
 
     try {
-      const latestProductsResponse = await getListProducts(
+      const latestProductsResponse = await deps.getListProducts(
         user.provinceId,
         user.serviceId,
       );
@@ -1038,23 +774,20 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
       return;
     }
 
-    // Usamos la circunferencia completa para que cada premio ocupe el mismo ángulo
-    const gradosPorItem = 360 / items.length;
     const vueltasExtras = 360 * 10;
-    const offsetFlecha = 20;
 
     // Elegimos aleatoriamente uno de los items disponibles (con stock > 0)
-    const indiceArray = Math.floor(Math.random() * itemsDisponibles.length);
-    const indiceGanador = itemsDisponibles[indiceArray].index;
+    const indiceGanador = deps.pickIndex(itemsDisponibles);
 
-    // Calculamos el ángulo objetivo para que la flecha quede cerca del centro del premio ganador
-    const anguloObjetivo =
-      360 - gradosPorItem * indiceGanador - gradosPorItem / 2 + offsetFlecha;
-    const anguloFinal = gradosActuales + vueltasExtras + anguloObjetivo;
+    // El ángulo se normaliza para que un segundo giro (sin reset) también caiga
+    // exactamente bajo la flecha del slot ganador.
+    const base = gradosActuales - (((gradosActuales % 360) + 360) % 360);
+    const anguloFinal =
+      base + vueltasExtras + targetAngle(indiceGanador, items.length);
 
     gsap.to(ruletaTable, {
       rotation: anguloFinal,
-      duration: 10,
+      duration: deps.spinDuration,
       ease: "power3.out",
       onComplete: async () => {
         const itemGanador = items[indiceGanador];
@@ -1078,7 +811,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
         btnGirar.disabled = false;
         try {
           //console.log("Giro completado");
-          const spinSaveResultResponse = await spinSaveResult(
+          const spinSaveResultResponse = await deps.spinSaveResult(
             user.serviceId,
             Number(category_id),
           );
@@ -1147,36 +880,6 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
   }
 
   const eventInitRuleta = new CustomEvent("ruleta:enter");
-  const entry_btn = document.querySelector(".entry_ruleta");
-  entry_btn.addEventListener("click", () => {
-    const sinVale = "4e2f787c-6391-467b-894e-d3340e35582e";
-    const conVale = "178ce82c-618d-4f7f-8ec2-2e51ae9abeb1";
-    const userTemp = {
-      id: "6545b221-07af-4fdf-995a-fe21c29bae5c",
-      email: "javiercastro.ik@gmail.com",
-      fullName: "Victor Castro",
-      docType: "DNI",
-      docNumber: "42122122",
-      serviceId: "15efc454-16dc-428c-93af-d8058c1051df",
-      provinceId: conVale,
-      product: "Fija",
-      fullClaro: false,
-      detallePlay: "300",
-      verified: true,
-    };
-    //togglePreloadAnimation(true);
-    userStore.setState({ user: userTemp });
-    document.dispatchEvent(eventInitRuleta);
-    // showModalWin(userWinFake, userTemp);
-    // containerRuleta.classList.remove("opacity-0");
-    // showRuleta();
-    //console.log(userStore.getState());
-  });
-  document.querySelector(".reset_ruleta").addEventListener("click", () => {
-    yaGiro = false;
-    resetRuleta();
-  });
-
   const resetForm = () => {
     const form = document.querySelector("#form-registro") as HTMLFormElement;
     const submitBtn = document.querySelector(
@@ -1220,7 +923,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
     const { user } = userStore.getState();
     console.log({ user });
     try {
-      const userEnabledResponse = await validUserEnabled(
+      const userEnabledResponse = await deps.validUserEnabled(
         user.serviceId,
         user.id,
       );
@@ -1239,7 +942,7 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
       // Animar el isotipo cuando se hace clic en el botón de entrada
       const forseCanSpin = true;
       if (canSpin) {
-        const listProductsResponse = await getListProducts(
+        const listProductsResponse = await deps.getListProducts(
           user.provinceId,
           user.serviceId,
         );
@@ -1276,170 +979,71 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
           });
           return;
         }
-        // console.log({dataProducts})
-        const bonosResponse = dataProducts.find(
-          (product) => product.prizeTypeName === "Bonos",
-        );
-        const equiposYAccesoriosResponse = dataProducts.find(
-          (product) => product.prizeTypeName === "Equipos y accesorios",
-        );
-        const valesResponse = dataProducts.find(
-          (product) => product.prizeTypeName === "Vales",
-        );
-        const valesTailoyResponse = dataProducts.filter(
-          (product) => product.prizeTypeName === "Solo vales Tailoy",
-        );
-        const valesCineResponse = dataProducts.filter(
-          (product) => product.prizeTypeName === "Solo vales Cinemark",
-        );
-        const equiposResponse = dataProducts.filter(
-          (product) => product.prizeTypeName === "Equipos",
-        );
-        const artefactosResponse = dataProducts.filter(
-          (product) => product.prizeTypeName === "Combo 1",
-        );
-        const combosResponse = dataProducts.find(
-          (product) => product.prizeTypeName === "Combos",
-        );
-        // const getValesForItem = (product) => {
-        //   if (valesResponse.length !== 0) {
-        //     product.setAttribute("data-nombre", valesResponse[0].prizeTypeName);
-        //     product.setAttribute(
-        //       "data-stock",
-        //       hasStockAvailable(valesResponse[0].hasStock) ? "1" : "0",
-        //     );
-        //     product.setAttribute(
-        //       "data-category_id",
-        //       valesResponse[0].prizeTypeId,
-        //     );
-        //     product.querySelector("img").src = valesResponse[0].imageUrl;
-        //     return;
-        //   }
-        //   if (valesTailoyResponse.length !== 0) {
-        //     product.setAttribute(
-        //       "data-nombre",
-        //       valesTailoyResponse[0].prizeTypeName,
-        //     );
-        //     product.setAttribute(
-        //       "data-stock",
-        //       hasStockAvailable(valesTailoyResponse[0].hasStock) ? "1" : "0",
-        //     );
-        //     product.setAttribute(
-        //       "data-category_id",
-        //       valesTailoyResponse[0].prizeTypeId,
-        //     );
-        //     product.querySelector("img").src = valesTailoyResponse[0].imageUrl;
-        //     return;
-        //   }
-        //   if (valesCineResponse.length !== 0) {
-        //     product.setAttribute(
-        //       "data-nombre",
-        //       valesCineResponse[0].prizeTypeName,
-        //     );
-        //     product.setAttribute(
-        //       "data-stock",
-        //       hasStockAvailable(valesCineResponse[0].hasStock) ? "1" : "0",
-        //     );
-        //     product.setAttribute(
-        //       "data-category_id",
-        //       valesCineResponse[0].prizeTypeId,
-        //     );
-        //     product.querySelector("img").src = valesCineResponse[0].imageUrl;
-        //     return;
-        //   }
-        //   if (
-        //     valesResponse.length === 0 &&
-        //     valesTailoyResponse.length === 0 &&
-        //     valesCineResponse.length === 0
-        //   ) {
-        //     return;
-        //   }
-        // };
-        items.forEach((item, index) => {
-          const nombre = item.getAttribute("data-nombre");
-          if (nombre === "Bonos") {
-            if (!bonosResponse) {
-              item.setAttribute("data-stock", "0");
-              item.removeAttribute("data-category_id");
-              return;
+        const findType = (name: string) =>
+          dataProducts.find((product) => product.prizeTypeName === name);
+        const bonosResponse = findType("Bonos");
+        const equiposYAccesoriosResponse = findType("Equipos y accesorios");
+        const valesResponse = findType("Vales");
+        const combosResponse = findType("Combos");
+        const subtypes = combosResponse?.subtypes ?? [];
+        const comboRef = combosResponse?.imageUrl;
+
+        // Normalized entry for a slot: id, label/name, stock flag and image URL.
+        const typeEntry = (response, refUrl = response?.imageUrl) =>
+          response && {
+            id: response.prizeTypeId,
+            name: response.prizeTypeName,
+            hasStock: response.hasStock,
+            image: resolveAssetUrl(response.imageUrl, refUrl),
+          };
+        const comboEntry = (name: string) => {
+          const combo = subtypes.find((subtype) => subtype.name === name);
+          return (
+            combo && {
+              id: combo.id,
+              name: combo.name,
+              hasStock: combo.hasStock,
+              image: resolveAssetUrl(combo.imagen, comboRef),
             }
-            item.setAttribute("data-nombre", bonosResponse?.prizeTypeName);
-            item.setAttribute(
-              "data-stock",
-              hasStockAvailable(bonosResponse?.hasStock) ? "1" : "0",
-            );
-            item.setAttribute(
-              "data-category_id",
-              String(bonosResponse?.prizeTypeId),
-            );
-            item.querySelector("img").src = bonosResponse?.imageUrl;
+          );
+        };
+        const entryBySlot = {
+          bonos: typeEntry(bonosResponse),
+          equipos: typeEntry(equiposYAccesoriosResponse),
+          vales: typeEntry(valesResponse),
+          combo2: comboEntry("Combo 2"),
+          combo1: comboEntry("Combo 1"),
+        };
+
+        const hydrateSlot = (item: Element, entry) => {
+          const img = item.querySelector("[data-prize-img]") as HTMLImageElement;
+          const label = item.querySelector("[data-prize-label]") as HTMLElement;
+          // Always restore the static defaults first so a re-enter never keeps
+          // stale data from a previous hydration.
+          img.onerror = () => {
+            img.onerror = null;
+            img.src = img.dataset.fallback;
+          };
+          if (!entry) {
+            item.setAttribute("data-stock", "0");
+            item.removeAttribute("data-category_id");
+            img.src = img.dataset.fallback;
+            label.textContent = label.dataset.defaultLabel;
+            return;
           }
-          if (nombre === "Equipos") {
-            if (!equiposYAccesoriosResponse) {
-              item.setAttribute("data-stock", "0");
-              item.removeAttribute("data-category_id");
-              return;
-            }
-            item.setAttribute(
-              "data-nombre",
-              equiposYAccesoriosResponse?.prizeTypeName,
-            );
-            item.setAttribute(
-              "data-stock",
-              hasStockAvailable(equiposYAccesoriosResponse?.hasStock)
-                ? "1"
-                : "0",
-            );
-            item.setAttribute(
-              "data-category_id",
-              String(equiposYAccesoriosResponse?.prizeTypeId),
-            );
-            item.querySelector("img").src =
-              equiposYAccesoriosResponse?.imageUrl;
-          }
-          if (nombre === "Vales general") {
-            if (!valesResponse) {
-              item.setAttribute("data-stock", "0");
-              item.removeAttribute("data-category_id");
-              return;
-            }
-            item.setAttribute("data-nombre", valesResponse?.prizeTypeName);
-            item.setAttribute(
-              "data-stock",
-              hasStockAvailable(valesResponse?.hasStock) ? "1" : "0",
-            );
-            item.setAttribute(
-              "data-category_id",
-              String(valesResponse?.prizeTypeId),
-            );
-            item.querySelector("img").src = valesResponse?.imageUrl;
-          }
-          if (nombre === "Artefactos") {
-            const { subtypes } = combosResponse;
-            const combo = subtypes.find(
-              (subtype) => subtype.name === "Combo 2",
-            );
-            item.setAttribute("data-nombre", combo?.name);
-            item.setAttribute(
-              "data-stock",
-              hasStockAvailable(combo?.hasStock) ? "1" : "0",
-            );
-            item.setAttribute("data-category_id", String(combo?.id));
-            item.querySelector("img").src = combo?.imagen;
-          }
-          if (nombre === "Accesorios") {
-            const { subtypes } = combosResponse;
-            const combo = subtypes.find(
-              (subtype) => subtype.name === "Combo 1",
-            );
-            item.setAttribute("data-nombre", combo?.name);
-            item.setAttribute(
-              "data-stock",
-              hasStockAvailable(combo?.hasStock) ? "1" : "0",
-            );
-            item.setAttribute("data-category_id", String(combo?.id));
-            item.querySelector("img").src = combo?.imagen;
-          }
+          item.setAttribute("data-nombre", entry.name);
+          item.setAttribute(
+            "data-stock",
+            hasStockAvailable(entry.hasStock) ? "1" : "0",
+          );
+          item.setAttribute("data-category_id", String(entry.id));
+          img.src = entry.image || img.dataset.fallback;
+          img.alt = entry.name || "";
+          label.textContent = entry.name || label.dataset.defaultLabel;
+        };
+
+        items.forEach((item) => {
+          hydrateSlot(item, entryBySlot[item.getAttribute("data-slot")]);
         });
         const rotacion = gsap.to(isotipo, {
           rotation: "+=360",
@@ -1474,11 +1078,10 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
             rotacion.kill();
             gsap.set(isotipo, { rotation: 0 });
             isotipo.classList.remove("bg-logo-claro-gradient", "rounded-full");
+            // The hub logo is part of the wheel art now: fade the zoom-in isotipo out.
+            gsap.to(isotipo, { opacity: 0, duration: 0.3 });
             mainRuleta.classList.add("overflow-hidden");
             mainRuleta.classList.remove("h-full");
-            // setTimeout(() => {
-            //   ruletaTable.removeAttribute("style");
-            // }, 800);
           },
         });
       } else {
@@ -1499,4 +1102,23 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
       togglePreloadAnimation(false);
     }
   });
+
+  // Local-only test harness (window.ruletaDev). Vite strips this branch, and the
+  // dynamic import, from production builds.
+  if (import.meta.env.DEV) {
+    import("@/utils/ruletaDev").then((m) =>
+      m.install({
+        deps,
+        items,
+        ruletaTable,
+        targetAngle,
+        girarRuleta,
+        resetRuleta,
+        resetSpinState: () => {
+          yaGiro = false;
+          btnGirar.disabled = false;
+        },
+      }),
+    );
+  }
 </script>
