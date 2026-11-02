@@ -1,0 +1,634 @@
+---
+import caja from "@/assets/images/modal-premio/caja.webp";
+import cajaSombra from "@/assets/images/modal-premio/caja-sombra.webp";
+import confetiA from "@/assets/images/modal-premio/confeti-a.webp";
+import confetiB from "@/assets/images/modal-premio/confeti-b.webp";
+import fondoDesktop from "@/assets/images/modal-premio/fondo-desktop.svg";
+import fondoTablet from "@/assets/images/modal-premio/fondo-tablet.svg";
+import fondoMobile from "@/assets/images/modal-premio/fondo-mobile.svg";
+import iconCerrar from "@/assets/images/modal-premio/icon-cerrar.svg";
+
+// Confetti pieces, in the 305x419 desktop stage. `sprite` picks the source
+// image; `img` is the crop (percentages) of the sprite inside the rotated box.
+const confetti = [
+  {
+    sprite: confetiA.src,
+    box: { left: 246, top: 238, w: 29.21, h: 34.379 },
+    piece: { w: 25.191, h: 31.241, transform: "rotate(-7.82deg)" },
+    img: { h: 236.34, l: -224.56, t: -100.5, w: 309.36 },
+  },
+  {
+    sprite: confetiA.src,
+    box: { left: 25, top: 200, w: 24.975, h: 26.408 },
+    piece: { w: 19.495, h: 21.653, transform: "rotate(163deg) scaleY(-1)" },
+    img: { h: 229.1, l: -133.74, t: -11.34, w: 268.58 },
+  },
+  {
+    sprite: confetiA.src,
+    box: { left: 0, top: 213, w: 74.563, h: 79.35 },
+    piece: { w: 50.586, h: 62.734, transform: "rotate(151.18deg)" },
+    img: { h: 236.34, l: -121.6, t: -158.76, w: 309.36 },
+  },
+  {
+    sprite: confetiB.src,
+    box: { left: 241, top: 181, w: 43.926, h: 49.235 },
+    piece: { w: 33.303, h: 41.301, transform: "rotate(17deg)" },
+    img: { h: 206.76, l: -102.41, t: 34.97, w: 270.64 },
+  },
+];
+---
+
+<dialog
+  id="premio-modal"
+  class="premio-modal"
+  aria-labelledby="premio-modal-title"
+  aria-describedby="premio-modal-desc"
+>
+  <div class="premio-modal__scroll" data-premio-backdrop>
+    <div class="premio-modal__card">
+      <picture class="premio-modal__bg" aria-hidden="true">
+        <source media="(min-width: 1024px)" srcset={fondoDesktop.src} />
+        <source media="(min-width: 640px)" srcset={fondoTablet.src} />
+        <img src={fondoMobile.src} alt="" width="784" height="546" />
+      </picture>
+
+      <button
+        type="button"
+        class="premio-modal__x"
+        aria-label="Cerrar"
+        data-premio-close="close"
+      >
+        <img
+          src={iconCerrar.src}
+          alt=""
+          width="21.4142"
+          height="21.4142"
+          aria-hidden="true"
+        />
+      </button>
+
+      <h2
+        id="premio-modal-title"
+        class="premio-modal__title font-amx-black text-black"
+      >
+        ¡Felicitaciones!
+      </h2>
+
+      <div class="premio-modal__art" aria-hidden="true">
+        <div class="premio-modal__stage">
+          <div class="premio-modal__slot" data-state="empty">
+            <span class="premio-modal__placeholder"></span>
+            <img id="premio-modal-img" alt="" />
+          </div>
+          {
+            confetti.map((c) => (
+              <div
+                class="premio-modal__confetti"
+                style={`left:${c.box.left}px;top:${c.box.top}px;width:${c.box.w}px;height:${c.box.h}px`}
+              >
+                <div
+                  class="premio-modal__piece"
+                  style={`width:${c.piece.w}px;height:${c.piece.h}px;transform:${c.piece.transform}`}
+                >
+                  <img
+                    src={c.sprite}
+                    alt=""
+                    style={`height:${c.img.h}%;left:${c.img.l}%;top:${c.img.t}%;width:${c.img.w}%`}
+                  />
+                </div>
+              </div>
+            ))
+          }
+          <div class="premio-modal__box premio-modal__box--shadow">
+            <img src={cajaSombra.src} alt="" />
+          </div>
+          <div class="premio-modal__box">
+            <img src={caja.src} alt="" />
+          </div>
+        </div>
+      </div>
+
+      <div class="premio-modal__prize text-white">
+        <p class="premio-modal__won font-amx-medium">Ganaste:</p>
+        <p id="premio-modal-name" class="premio-modal__name font-roboto font-bold">
+        </p>
+      </div>
+
+      <p id="premio-modal-desc" class="premio-modal__desc font-amx-regular text-black">
+        Te contactaremos en los próximos días para coordinar la entrega.
+      </p>
+
+      <button
+        type="button"
+        class="premio-modal__cta font-roboto font-bold text-white bg-claro hover:bg-claro-dark transition-colors duration-300"
+        data-premio-close="confirm"
+        autofocus
+      >
+        Volver al inicio
+      </button>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  /* Dialog reset: full-screen top-layer container, the card is centered inside. */
+  dialog.premio-modal {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    overflow: hidden;
+    color: inherit;
+  }
+  dialog.premio-modal::backdrop {
+    background: rgba(0, 0, 0, 0.6);
+  }
+  dialog.premio-modal[open]::backdrop {
+    animation: premio-fade 0.25s ease-out;
+  }
+  dialog.premio-modal[open] .premio-modal__card {
+    animation: premio-in 0.25s ease-out;
+  }
+  @keyframes premio-fade {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes premio-in {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    dialog.premio-modal[open]::backdrop,
+    dialog.premio-modal[open] .premio-modal__card {
+      animation: none;
+    }
+  }
+  :global(html:has(dialog.premio-modal[open])) {
+    overflow: hidden;
+  }
+
+  .premio-modal__scroll {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    padding: 12px;
+    overflow: auto;
+  }
+
+  /* Card: mobile layout first (335 x 577). */
+  .premio-modal {
+    --s: 0.5622;
+    --art-h: 212px;
+  }
+  .premio-modal__card {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 335px;
+    margin: auto;
+    padding: 54px 0 32px;
+    border-radius: 30px;
+    background: #fff;
+  }
+
+  .premio-modal__bg {
+    position: absolute;
+    z-index: -1;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 459px;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .premio-modal__bg img {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 784px;
+    max-width: none;
+    height: 546px;
+    transform: translateX(-50%);
+  }
+
+  .premio-modal__x {
+    position: absolute;
+    z-index: 2;
+    top: 19px;
+    right: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    border-radius: 9999px;
+  }
+  .premio-modal__x img {
+    width: 21.4142px;
+    height: 21.4142px;
+    max-width: none;
+  }
+  .premio-modal__x:focus-visible,
+  .premio-modal__cta:focus-visible {
+    outline: 3px solid #000;
+    outline-offset: 2px;
+  }
+
+  .premio-modal__title {
+    font-size: 30px;
+    line-height: 35px;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .premio-modal__art {
+    position: relative;
+    width: calc(305px * var(--s));
+    height: var(--art-h);
+    margin-top: 23px;
+    overflow: hidden;
+  }
+  .premio-modal__stage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 305px;
+    height: 419px;
+    transform: scale(var(--s));
+    transform-origin: 0 0;
+  }
+
+  .premio-modal__slot {
+    position: absolute;
+    left: 18px;
+    top: 0;
+    width: 255px;
+    height: 199px;
+  }
+  .premio-modal__slot img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: contain;
+    object-position: center bottom;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .premio-modal__placeholder {
+    position: absolute;
+    left: calc(50% - 73px);
+    bottom: 0;
+    width: 146px;
+    height: 199px;
+    border-radius: 16px;
+    background: rgba(0, 0, 0, 0.06);
+    display: none;
+    animation: premio-pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes premio-pulse {
+    50% {
+      opacity: 0.4;
+    }
+  }
+  .premio-modal__slot[data-state="loading"] .premio-modal__placeholder {
+    display: block;
+  }
+  .premio-modal__slot[data-state="loaded"] img {
+    opacity: 1;
+  }
+  .premio-modal__slot[data-state="empty"] img {
+    display: none;
+  }
+
+  .premio-modal__confetti {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .premio-modal__piece {
+    position: relative;
+    flex: none;
+    overflow: hidden;
+  }
+  .premio-modal__piece img {
+    position: absolute;
+    max-width: none;
+  }
+  .premio-modal__box {
+    position: absolute;
+    left: 0;
+    top: 179px;
+    width: 305px;
+    height: 240px;
+    overflow: hidden;
+  }
+  .premio-modal__box--shadow {
+    mix-blend-mode: multiply;
+  }
+  .premio-modal__box img {
+    position: absolute;
+    left: 6.56%;
+    top: -13.25%;
+    width: 86.89%;
+    height: 110.5%;
+    max-width: none;
+  }
+
+  .premio-modal__prize {
+    width: 100%;
+    max-width: 291px;
+    min-height: 108px;
+    margin-top: 11px;
+    padding: 23px 16px 22px;
+    border-radius: 24px;
+    background: #da291c;
+    text-align: center;
+  }
+  .premio-modal__won {
+    font-size: 20px;
+    line-height: 1.393;
+  }
+  .premio-modal__name {
+    margin-top: 2px;
+    font-size: 24px;
+    line-height: 1.393;
+    overflow-wrap: anywhere;
+    text-wrap: balance;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    overflow: hidden;
+  }
+  .premio-modal__name[data-long] {
+    font-size: 20px;
+  }
+
+  .premio-modal__desc {
+    max-width: 210px;
+    margin-top: 15px;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+  }
+
+  .premio-modal__cta {
+    width: 150px;
+    height: 40px;
+    margin-top: 15px;
+    border-radius: 25px;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  /* Tablet 600 x 664 */
+  @media (min-width: 640px) {
+    .premio-modal {
+      --s: 0.9308;
+      --art-h: 351px;
+    }
+    .premio-modal__card {
+      display: grid;
+      grid-template-columns: 284px 228px;
+      justify-content: start;
+      align-items: start;
+      justify-items: start;
+      max-width: 600px;
+      padding: 58px 50px 56px 38px;
+    }
+    .premio-modal__bg {
+      height: 546px;
+    }
+    .premio-modal__x {
+      top: 19px;
+      right: 17px;
+    }
+    .premio-modal__title {
+      grid-column: 1 / -1;
+      justify-self: stretch;
+      margin: 0 -50px 0 -38px;
+    }
+    .premio-modal__art {
+      grid-column: 1;
+      grid-row: 2;
+      margin-top: 35px;
+    }
+    .premio-modal__prize {
+      grid-column: 2;
+      grid-row: 2;
+      max-width: none;
+      min-height: 135px;
+      margin-top: calc(35px + 101px);
+      padding: 29px 16px 24px 28px;
+      text-align: left;
+    }
+    .premio-modal__won {
+      font-size: 24px;
+    }
+    .premio-modal__name {
+      font-size: 28px;
+      text-wrap: wrap;
+      margin-top: 1.6px;
+    }
+    .premio-modal__name[data-long] {
+      font-size: 22px;
+    }
+    .premio-modal__desc {
+      grid-column: 1 / -1;
+      grid-row: 3;
+      justify-self: stretch;
+      max-width: none;
+      margin: 14px -50px 0 -38px;
+      padding: 0 56.5px;
+      font-size: 18px;
+      line-height: 25px;
+    }
+    .premio-modal__cta {
+      grid-column: 1 / -1;
+      grid-row: 4;
+      justify-self: center;
+      margin: 25px -50px 0 -38px;
+    }
+  }
+
+  /* Desktop 784 x 546 */
+  @media (min-width: 1024px) {
+    .premio-modal {
+      --s: 1;
+      --art-h: 419px;
+    }
+    .premio-modal__card {
+      grid-template-columns: 305px 271px;
+      grid-template-rows: auto auto auto 1fr;
+      column-gap: 22px;
+      max-width: 784px;
+      padding: 71px 94px 41px 92px;
+    }
+    .premio-modal__x {
+      top: 26px;
+      right: 20px;
+    }
+    .premio-modal__title {
+      grid-column: 2;
+      grid-row: 1;
+      justify-self: start;
+      margin: 44px 0 0;
+      text-align: left;
+      font-size: 40px;
+    }
+    .premio-modal__art {
+      grid-column: 1;
+      grid-row: 1 / span 4;
+      margin-top: 0;
+    }
+    .premio-modal__prize {
+      grid-column: 2;
+      grid-row: 2;
+      min-height: 160px;
+      margin-top: 30px;
+      padding: 29px 16px 24px 30px;
+    }
+    .premio-modal__won {
+      padding-left: 8px;
+      font-size: 24px;
+    }
+    .premio-modal__name {
+      font-size: 32px;
+    }
+    .premio-modal__name[data-long] {
+      font-size: 24px;
+    }
+    .premio-modal__desc {
+      grid-column: 2;
+      grid-row: 3;
+      justify-self: start;
+      width: 262px;
+      margin: 30px 0 0 5px;
+      padding: 0;
+      text-align: left;
+    }
+    .premio-modal__cta {
+      grid-column: 1 / -1;
+      grid-row: 5;
+      margin: -25px 0 0;
+      position: relative;
+      z-index: 10;
+    }
+  }
+</style>
+
+<script>
+  import Swal from "sweetalert2";
+
+  const dialog = document.getElementById(
+    "premio-modal",
+  ) as HTMLDialogElement | null;
+
+  if (dialog) {
+    const nameEl = dialog.querySelector<HTMLElement>("#premio-modal-name")!;
+    const slot = dialog.querySelector<HTMLElement>(".premio-modal__slot")!;
+    const img = dialog.querySelector<HTMLImageElement>("#premio-modal-img")!;
+    const LONG_NAME = 28;
+
+    const safeImageUrl = (value: unknown): string | null => {
+      if (typeof value !== "string" || !value.trim()) return null;
+      try {
+        const url = new URL(value.trim(), window.location.href);
+        return url.protocol === "http:" || url.protocol === "https:"
+          ? url.href
+          : null;
+      } catch {
+        return null;
+      }
+    };
+
+    img.addEventListener("load", () => {
+      if (img.getAttribute("src")) slot.dataset.state = "loaded";
+    });
+    img.addEventListener("error", () => {
+      if (img.getAttribute("src")) slot.dataset.state = "empty";
+    });
+
+    const show = (detail: { prizeName?: unknown; prizeImageUrl?: unknown }) => {
+      const name = String(detail?.prizeName ?? "").trim() || "un premio";
+      nameEl.textContent = name;
+      nameEl.title = name;
+      if (name.length > LONG_NAME) nameEl.setAttribute("data-long", "");
+      else nameEl.removeAttribute("data-long");
+
+      img.removeAttribute("src");
+      img.alt = name;
+      const url = safeImageUrl(detail?.prizeImageUrl);
+      if (url) {
+        slot.dataset.state = "loading";
+        img.src = url;
+      } else {
+        slot.dataset.state = "empty";
+      }
+
+      // Only one modal at a time.
+      if (Swal.isVisible()) Swal.close();
+      document
+        .querySelectorAll(".modalTransacciones.active, .section__modals.active")
+        .forEach((el) => el.classList.remove("active"));
+
+      if (!dialog.open) dialog.showModal();
+    };
+
+    window.addEventListener("premio:show", (event) => {
+      show((event as CustomEvent).detail ?? {});
+    });
+
+    // Single close handler: every path goes through dialog.close(reason).
+    dialog.addEventListener("close", () => {
+      window.dispatchEvent(
+        new CustomEvent("premio:close", {
+          detail: { reason: dialog.returnValue || "esc" },
+        }),
+      );
+      requestAnimationFrame(() => {
+        const target =
+          document.querySelector<HTMLElement>(
+            "#form-registro input, #form-registro select",
+          ) ?? document.body;
+        target.focus?.({ preventScroll: true });
+      });
+    });
+
+    // ESC: close through the same path so the reason is reported.
+    dialog.addEventListener("cancel", (event) => {
+      event.preventDefault();
+      dialog.close("esc");
+    });
+
+    dialog.addEventListener("click", (event) => {
+      const target = event.target as HTMLElement;
+      const button = target.closest<HTMLElement>("[data-premio-close]");
+      if (button) {
+        dialog.close(button.dataset.premioClose);
+        return;
+      }
+      if (target === dialog || target.hasAttribute("data-premio-backdrop")) {
+        dialog.close("backdrop");
+      }
+    });
+  }
+</script>

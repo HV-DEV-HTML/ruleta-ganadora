@@ -727,7 +727,6 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
   import { userStore } from "@/store/userStore";
   import { showCustomModal } from "@/utils/modalHelper";
   import icon_no_cumple from "@/assets/icons/icon_no_cumple.svg";
-  import icon_gano_premio from "@/assets/icons/icon_gano_premio.svg";
 
   const userWinFake = {
     success: true,
@@ -910,21 +909,21 @@ import bg_desktop from "@/assets/images/banner_desktop.webp";
   }
 
   const showModalWin = (dataResponse, user) => {
-    showCustomModal({
-      title: `¡Felicitaciones! Ganaste:`,
-      html: `
-        <p class="text-xl font-bold font-roboto text-claro">${dataResponse?.prizeName}</p>
-        <img class="max-w-[250px] mx-auto object-contain" src="${dataResponse?.prizeImageUrl}" alt="${dataResponse?.prizeName}"/>
-        <p class="pt-2 text-base font-amx-bold text-black">Te llegará un correo de confirmación, revisa tu bandeja de entrada.</p>
-      `,
-      iconSrc: icon_gano_premio.src,
-      confirmButtonText: "Volver al inicio",
-      showCloseButton: false,
-      onConfirm: () => {
-        resetRuleta();
-      },
-    });
+    window.dispatchEvent(
+      new CustomEvent("premio:show", {
+        detail: {
+          prizeName: dataResponse?.prizeName,
+          prizeImageUrl: dataResponse?.prizeImageUrl,
+        },
+      }),
+    );
   };
+
+  // The prize modal (Modal/Premio.astro) emits this once per close,
+  // whatever the path (button, X, ESC, backdrop).
+  window.addEventListener("premio:close", () => {
+    resetRuleta();
+  });
 
   const hasStockAvailable = (value) => {
     if (typeof value === "boolean") return value;
