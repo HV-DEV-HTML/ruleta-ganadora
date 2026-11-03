@@ -8,7 +8,7 @@
 // See `help()` for the whole surface.
 import { gsap } from "gsap";
 import { userStore } from "@/store/userStore";
-import gift from "@/assets/images/ruleta/prize-gift.webp";
+import gift from "@/assets/images/ruleta/prize-bonos.webp";
 import vales from "@/assets/images/ruleta/prize-vales.webp";
 import combo1 from "@/assets/images/ruleta/prize-combo1.webp";
 import combo2 from "@/assets/images/ruleta/prize-combo2.webp";
