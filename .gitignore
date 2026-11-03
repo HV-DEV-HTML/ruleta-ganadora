@@ -14,6 +14,7 @@ yarn-error.log*
 pnpm-debug.log*
 pnpm-lock.yaml
 package-lock.json
+pnpm-workspace.yaml
 
 # environment variables
 .env
@@ -24,3 +25,5 @@ package-lock.json
 
 # jetbrains setting folder
 .idea/
+# local tooling
+.atl/
