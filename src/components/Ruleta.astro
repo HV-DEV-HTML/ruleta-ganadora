@@ -616,18 +616,18 @@ const slots = [
       .querySelectorAll(".section_hidden")
       .forEach((section) => section.classList.remove("hidden"));
     sectionRuleta.classList.add("hidden");
-    document.querySelector(".main_ruleta").classList.add("overflow-hidden");
-    document.querySelector("[data-step='3']").classList.add("hidden");
-    document.querySelector("[data-step='2']").classList.remove("hidden");
+    document.querySelector(".main_ruleta")?.classList.add("overflow-hidden");
+    // Step 3 is optional (Paso03 is currently not mounted): a missing node must
+    // never abort the reset, or yaGiro stays true and the wheel cannot spin again.
+    document.querySelector("[data-step='3']")?.classList.add("hidden");
     document
       .querySelector("[data-step='2']")
-      .classList.remove("hidden", "xl:hidden");
+      ?.classList.remove("hidden", "xl:hidden");
     ruletaTable.removeAttribute("style");
     setTimeout(() => AOS.refreshHard(), 50);
-    sectionRuleta
-      .querySelector("svg")
-      .classList.add("bg-logo-claro-gradient", "rounded-full");
-    sectionRuleta.querySelector("svg").removeAttribute("style");
+    const hubSvg = sectionRuleta.querySelector("svg");
+    hubSvg?.classList.add("bg-logo-claro-gradient", "rounded-full");
+    hubSvg?.removeAttribute("style");
     containerRuleta.classList.add("opacity-0");
     // Reiniciar estado interno de la ruleta para que el siguiente giro parta desde 0°
     gradosActuales = 0;
